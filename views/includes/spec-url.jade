@@ -1,0 +1,23 @@
+script(src="/js/make-consoles.js")
+script(src="/bower/swagger-parser/dist/swagger-parser.js")
+script(src="/js/ng/spec-url.js")
+
+link(rel="stylesheet" href="/css/spec-url.css")
+
+.spec-row
+  .brand-col
+    a.navbar-brand(href="https://lucybot.com") LucyBot
+  .form-col.pull-right
+    form
+      .form-group
+        .input-group
+          input.form-control(
+              type="text"
+              ng-model="specURL")
+          span.input-group-btn
+            button.btn.btn-success(ng-click="getSpec()") Go
+        .alert.alert-danger(ng-if="alert.danger") {{ alert.danger }}
+        p.small URL of API Specification&nbsp;
+          a.btn-link(ng-click="showTypes = !showTypes") (Supported Types)
+          ul(ng-if="showTypes")
+            li.small Swagger

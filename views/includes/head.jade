@@ -1,0 +1,21 @@
+link(rel="stylesheet" href="/less/styles.css")
+
+script(src="/bower/jquery/dist/jquery.min.js")
+script(src="/bower/bootstrap/dist/js/bootstrap.min.js")
+script(src="/bower/angular/angular.min.js")
+script(src="/bower/zeroclipboard/dist/ZeroClipboard.min.js")
+script(src="/js/lucy.js")
+
+link(rel="stylesheet" href="/bower/fontawesome/css/font-awesome.min.css")
+
+each i in angularImports
+  script(src="#{i.file}")
+
+script.
+  var angularImports = !{JSON.stringify(angularImports.map(function(i) {return i.name}))};
+  var App = angular.module('App', angularImports)
+  App.controller('Body', function($scope) {
+  });
+
+link(rel="stylesheet" href="/css/#{page}.css")
+script(src="/js/ng/#{page}.js")

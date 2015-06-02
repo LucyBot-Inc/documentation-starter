@@ -1,0 +1,11 @@
+.col-xs-12
+  .panel.panel-warning
+    .panel-heading(data-toggle="collapse"
+                   data-target="#ParameterInputs")
+      h4.panel-title.text-regular
+        i.collapse-icon.fa.fa-plus-square-o &nbsp;&nbsp;
+        span {{ console.method === 'def' ? 'Example' : 'Parameters' }}
+    #ParameterInputs.panel-collapse.collapse(ng-class="{in: parameters.length < 4}")
+      .panel-body
+        div(ng-repeat="input in parameters")
+          include ./input.jade

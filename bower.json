@@ -1,0 +1,23 @@
+{
+  "name": "lucy-console",
+  "version": "0.0.0",
+  "homepage": "https://github.com/bobby-brennan/lucy-console",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "angular": "~1.4.0",
+    "bootstrap": "~3.3.4",
+    "fontawesome": "~4.3.0",
+    "swagger-parser": "~2.4.1",
+    "zeroclipboard": "~2.2.0",
+    "angular-zeroclipboard": "~0.4.2",
+    "highlightjs": "~8.5.0",
+    "angular-highlightjs": "~0.4.1"
+  }
+}

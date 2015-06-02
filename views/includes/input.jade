@@ -1,0 +1,60 @@
+.recipe-input(ng-controller="Input")
+  .form-group(ng-if="input.type === 'text' || input.type === 'number'")
+    label {{input.label}}
+    input.input-sm.form-control(type="{{ input.type }}",
+          placeholder="{{ input.placeholder }}",
+          ng-change="onAnswerChanged()",
+          ng-model="model[input.name]")
+    span.help-block(ng-if="input.tip") {{ input.tip }}
+
+  .form-group(ng-if="input.type === 'radio'")
+    label
+      span {{input.label}}
+      a.btn.btn-xs.text-warning(
+            ng-show="model[input.name] !== undefined && !input.required"
+            ng-click="model[input.name] = undefined; onAnswerChanged()")
+        i.fa.fa-remove
+        span &nbsp;clear
+    span.help-block(ng-if="input.tip") {{ input.tip }}
+    .radio-choice(ng-repeat="choice in input.choices")
+      label.text-black.radio-inline
+        input(type="radio",
+              ng-change="onAnswerChanged()",
+              ng-model="model[input.name]",
+              ng-value="choice.value"
+              ng-checked="choice.value === model[input.name]")
+        span {{ choice.label }} 
+
+  .form-group(ng-if="input.type === 'checkbox'")
+    label
+      span {{ input.label }}
+      input.checkbox(type="checkbox",
+            ng-change="onAnswerChanged()",
+            ng-model="model[input.name]")
+    span.help-block(ng-if="input.tip") {{ input.tip }}
+
+  .form-group(ng-if="input.type === 'checkboxes'",ng-controller="Checkboxes")
+    label {{input.label}}
+    span.help-block(ng-if="input.tip") {{ input.tip }}
+    .checkbox-choice(ng-repeat="choice in input.choices")
+      label.text-black.checkbox-inline
+        input(type="checkbox",
+              ng-change="onAnswerChanged()",
+              ng-model="chosen[choice.value]")
+        span {{ choice.label }}
+
+  .form-group(ng-if="input.type === 'dynamicArray'",ng-controller="DynamicArray")
+    label {{input.label}}
+    span.help-block {{ input.tip }}
+    .input-group(ng-repeat="item in items")
+      span.input-group-btn
+        button.btn.btn-sm.btn-width-sm.btn-warning(ng-click="removeItem($index)")
+          i.fa.fa-remove  
+      input.input-sm.form-control(ng-model="item.value"
+                                  ng-change="onAnswerChanged()")
+    .input-group
+      span.input-group-btn
+        button.btn.btn-sm.btn-width-sm.btn-default(ng-click="addItem()")
+          span.fa.fa-plus
+          span &nbsp; Add
+      input.input-sm.form-control(disabled)

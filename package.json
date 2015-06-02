@@ -1,0 +1,23 @@
+{
+  "name": "lucy-console",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bobby-brennan/lucy-console"
+  },
+  "author": "Bobby Brennan <bobby@lucybot.com> (https://lucybot.com)",
+  "bugs": {
+    "url": "https://github.com/bobby-brennan/lucy-console/issues"
+  },
+  "homepage": "https://github.com/bobby-brennan/lucy-console",
+  "dependencies": {
+    "express": "^4.12.4",
+    "jade": "^1.10.0",
+    "request": "^2.57.0"
+  }
+}

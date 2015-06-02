@@ -1,0 +1,30 @@
+.col-xs-12.response-container
+  hr.visible-xs
+  .row.row-spaced
+    .col-xs-12
+      .btn-toolbar.btn-toolbar-lg
+        .btn-group
+          a.btn.btn-lg.btn-info.text-regular(
+                ng-click="refresh()",
+                ng-disabled="loadingResponse")
+            i.fa.fa-refresh.spin-fix(ng-class="{'fa-spin': loadingResponse}")
+            span &nbsp;
+            span(ng-if="loadingResponse") Sending Request
+            span(ng-if="!loadingResponse") View Results
+        .btn-group.output-type-btn-group(ng-if="console.visual && console.method !== 'def'")
+          a.btn.btn-lg.btn-width-md.btn-primary(
+                  ng-class="{active: outputType === 'visual'}",
+                  ng-click="setOutputType('visual')") Visual
+          a.btn.btn-lg.btn-width-md.btn-primary(
+                  ng-class="{active: outputType === 'raw'}"
+                  ng-click="setOutputType('raw')") Raw
+      .alert.alert-danger.pin-top(ng-if="responseError") {{ responseError }}
+  .row
+    .col-xs-12
+      iframe.response-frame.width-full(
+              ng-if="console.visual"
+              ng-show="outputType === 'visual'"
+              src="")
+      .response-raw(hljs source="response"
+                    ng-if="console.method !== 'def'"
+                    ng-show="outputType === 'raw'")

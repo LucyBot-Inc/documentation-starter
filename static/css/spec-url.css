@@ -1,0 +1,22 @@
+.spec-row {
+  background-color: #ccc;
+  border-bottom: 1px solid #333;
+  padding: 4px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 80px;
+}
+
+.below-spec-row {
+  margin-top: 80px;
+}
+
+.brand-col {
+  width: 10%;
+}
+
+.form-col {
+  width: 80%;
+}
+
