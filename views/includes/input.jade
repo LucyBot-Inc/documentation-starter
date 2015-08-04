@@ -1,12 +1,13 @@
 .recipe-input(ng-controller="Parameter")
-  .form-group(ng-if="!parameter.enum && (parameter.type === 'string' || parameter.type === 'number' || parameter.type === 'integer')")
+  .form-group(ng-if="inputType === 'text' || inputType === 'number'")
     label {{parameter.name}}
-    input.input-sm.form-control(type="{{ parameter.type === 'string' ? 'text' : 'number' }}",
+    input.input-sm.form-control(
+          type="inputType"
           ng-change="onAnswerChanged()",
           ng-model="model[parameter.name]")
     span.help-block(ng-if="parameter.description" marked="parameter.description")
 
-  .form-group(ng-if="parameter.enum")
+  .form-group(ng-if="inputType === 'radio'")
     label
       span {{parameter.name}}
       a.btn.btn-xs.text-warning(
@@ -24,7 +25,7 @@
               ng-checked="choice === model[parameter.name]")
         span {{ choice }} 
 
-  .form-group(ng-if="parameter.type === 'boolean'")
+  .form-group(ng-if="inputType === 'checkbox'")
     label
       span {{ parameter.name }}
       input.checkbox(type="checkbox",
@@ -32,7 +33,18 @@
             ng-model="model[parameter.name]")
     span.help-block(ng-if="parameter.description" marked="parameter.description")
 
-  .form-group(ng-if="parameter.type === 'array'" ng-controller="DynamicArray")
+  .form-group(ng-if="inputType === 'checkboxes'"
+              ng-controller="Checkboxes")
+    label {{parameter.name}}
+    span.help-block(ng-if="parameter.description" marked="parameter.description")
+    .checkbox-choice(ng-repeat="choice in parameter.enum")
+      label.text-black.checkbox-inline
+        input(type="checkbox",
+              ng-change="onAnswerChanged()",
+              ng-model="chosen[choice]")
+        span {{ choice }}
+
+  .form-group(ng-if="inputType === 'dynamicArray'" ng-controller="DynamicArray")
     label {{parameter.name}}
     span.help-block(ng-if="parameter.description" marked="parameter.description")
     .input-group(ng-repeat="item in items")

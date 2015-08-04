@@ -50,6 +50,37 @@ App.controller('Parameter', function($scope) {
   } else {
     $scope.model = $scope.answers;
   }
+  $scope.inputType = 'text';
+  var type = $scope.parameter.type;
+  if (type === 'number' || type === 'integer') {
+    $scope.inputType = 'number';
+  } else if (type === 'array') {
+    if ($scope.parameter.enum) {
+      $scope.inputType = 'checkboxes';
+    } else {
+      $scope.inputType = 'dynamicArray';
+    }
+  } else if ($scope.parameter.enum) {
+    $scope.inputType = 'radio';
+  }
+});
+
+App.controller('Checkboxes', function($scope) {
+  $scope.chosen = {};
+  var defaults = $scope.model[$scope.parameter.name];
+  if (defaults) {
+    defaults.forEach(function(d) {
+      $scope.chosen[d] = true;
+    })
+  }
+  var outerChanged = $scope.onAnswerChanged;
+  $scope.onAnswerChanged = function() {
+    var values = Object.keys($scope.chosen).filter(
+      function(k) {return $scope.chosen[k]}
+    );
+    $scope.model[$scope.parameter.name] = values;
+    outerChanged();
+  }
 })
 
 App.controller('DynamicArray', function($scope) {

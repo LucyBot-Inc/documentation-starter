@@ -1,15 +1,15 @@
 App.controller('Portal', function($scope) {
-  $scope.flatRoutes = [];
+  $scope.routes = [];
   for (path in $scope.spec.paths) {
     var pathParams = $scope.spec.paths[path].parameters || [];
     for (method in $scope.spec.paths[path]) {
       if (method === 'parameters') continue;
-      route = $scope.spec.paths[path][method];
-      route.parameters = (route.parameters || []).concat(pathParams);
-      var flat = {path: path, method: method, route: route};
-      flat.visual = route.responses['200'] && route.responses['200']['x-lucy/view'];
-      $scope.flatRoutes.push(flat);
+      var operation = $scope.spec.paths[path][method];
+      operation.parameters = (operation.parameters || []).concat(pathParams);
+      var route = {path: path, method: method, operation: operation};
+      route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
+      $scope.routes.push(route);
     }
   }
-  $scope.flatRoutes = $scope.flatRoutes.sort(SORT_ROUTES);
+  $scope.routes = $scope.routes.sort(SORT_ROUTES);
 });

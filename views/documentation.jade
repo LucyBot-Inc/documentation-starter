@@ -1,7 +1,24 @@
 #Docs.row(ng-controller="Docs")
+  .col-xs-6.col-md-5.col-md-offset-1(ng-if="spec.tags")
+    .dropdown
+      button.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
+            type="button"
+            data-toggle="dropdown")
+        span.caret
+        span {{ activeTag ? activeTag.name : 'All' }}
+      ul.dropdown-menu(role="menu")
+        li(role="presentation")
+          a(ng-click="activeTag = null")
+            span All
+        li(role="presentation" ng-repeat="tag in spec.tags")
+          a(ng-click="setActiveTag(tag)")
+            span {{ tag.name }}
+            span.pull-right {{ tag.description }}
+
   .col-xs-12.col-md-10.col-md-offset-1
     .panel.panel-default(ng-controller="Route",
                          ng-repeat="route in routes",
+                         ng-show="!activeTag || (route.operation.tags && route.operation.tags.indexOf(activeTag.name) !== -1)"
                          id="route{{$index}}"
                          data-verb="{{ route.method }}")
       .panel-heading(
@@ -13,9 +30,9 @@
       .panel-collapse.collapse(id="{{ getId(route.method, route.path) }}")
         .panel-body
           p
-            small {{ route.route.summary }}
-          p(ng-if="route.route.description && route.route.description !== route.route.summary")
-            small {{ route.route.description }}
+            small {{ route.operation.summary }}
+          p(ng-if="route.operation.description && route.operation.description !== route.operation.summary")
+            small {{ route.operation.description }}
         .panel-body
           h3 Request
           mixin description
@@ -39,7 +56,7 @@
                 th.description Description
             tbody
               tr.parameter(ng-controller="DocParameter",
-                           ng-repeat="parameter in route.route.parameters")
+                           ng-repeat="parameter in route.operation.parameters")
                 td.wrap-break-word.parameter {{ parameter.name }}
                   small(ng-if="parameter.required") <br>(required)
                 td.location.hidden-xs {{ parameter.in }}
@@ -55,7 +72,7 @@
                 th Description
                 th Format
             tbody
-              tr(ng-repeat="(code, response) in route.route.responses")
+              tr(ng-repeat="(code, response) in route.operation.responses")
                 td <code>{{ code }}</code>
                 td {{ response.description }}
                 td

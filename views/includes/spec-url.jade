@@ -2,7 +2,7 @@ script(src="/bower/swagger-parser/dist/swagger-parser.js")
 
 link(rel="stylesheet" href="/css/spec-url.css")
 
-.spec-row
+.spec-row(ng-if="!spec")
   .brand-col
     a.navbar-brand(href="https://lucybot.com") LucyBot
   .form-col.pull-right

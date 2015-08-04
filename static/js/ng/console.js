@@ -1,4 +1,16 @@
 var PROXY_HOST = 'https://api.lucybot.com'
+var getSeparatorFromFormat = function(format) {
+  if (!format || format === 'csv' || format === 'multi') {
+    return ',';
+  } else if (format === 'tsv') {
+    return '\t';
+  } else if (format === 'ssv') {
+    return ' ';
+  } else if (format === 'pipes') {
+    return '|';
+  }
+}
+
 
 App.controller('Console', function($scope) {
   $scope.callOnChange = [];
@@ -11,7 +23,7 @@ App.controller('Console', function($scope) {
   $scope.setActiveRoute = function(route) {
     $scope.answers = {}
     console.log('set active', route.path)
-    route.route.parameters.forEach(function(parameter) {
+    route.operation.parameters.forEach(function(parameter) {
       if (parameter['x-consoleDefault']) {
         $scope.answers[parameter.name] = parameter['x-consoleDefault'];
       }
@@ -19,8 +31,8 @@ App.controller('Console', function($scope) {
     $scope.activeRoute = route;
     $scope.onAnswerChanged();
   }
-  var startRoute = $scope.flatRoutes.filter(function(r) {return r.visual})[0];
-  startRoute = startRoute || $scope.flatRoutes[0];
+  var startRoute = $scope.routes.filter(function(r) {return r.visual})[0];
+  startRoute = startRoute || $scope.routes[0];
   $scope.setActiveRoute(startRoute);
 
   $scope.getRequestParameters = function() {
@@ -45,7 +57,7 @@ App.controller('Console', function($scope) {
         $scope.answers[key] = keys[key];
       }
     }
-    $scope.activeRoute.route.parameters.forEach(function(parameter) {
+    $scope.activeRoute.operation.parameters.forEach(function(parameter) {
       if (typeof $scope.answers[parameter.name] === 'undefined' || $scope.answers[parameter.name] === '') {
         if (parameter.in === 'path') {
           $scope.answers[parameter.name] = '';

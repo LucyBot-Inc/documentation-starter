@@ -2,7 +2,9 @@ App.controller('Docs', function($scope) {
   $scope.getId = function(verb, path) {
     return verb + '_' + path.replace(/\W/g, '-')
   }
-  $scope.routes = $scope.flatRoutes;
+  $scope.setActiveTag = function(tag) {
+    $scope.activeTag = tag;
+  }
 });
 
 App.controller('SidebarNav', function($scope) {
