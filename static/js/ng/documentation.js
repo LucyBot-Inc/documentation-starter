@@ -1,27 +1,8 @@
 App.controller('Docs', function($scope) {
-  $scope.openRoutes = [];
-  var query = window.location.search.substring(1);
-  if (query.indexOf('open=') === 0) {
-    $scope.openRoutes = query.substring(5).split(',').map(function(page) {return parseInt(page)})
-    $(document).ready(function() {
-      $('html, body').animate({
-          scrollTop: $("#route" + $scope.openRoutes[0]).offset().top
-      }, 1000, 'swing');
-    })
-  }
   $scope.getId = function(verb, path) {
     return verb + '_' + path.replace(/\W/g, '-')
   }
-  $scope.routes = [];
-  for (path in $scope.spec.paths) {
-    for (verb in $scope.spec.paths[path]) {
-      var route = $scope.spec.paths[path][verb];
-      route.path = path;
-      route.method = verb;
-      $scope.routes.push(route);
-    }
-  }
-  $scope.routes = $scope.routes.sort(SORT_ROUTES);
+  $scope.routes = $scope.flatRoutes;
 });
 
 App.controller('SidebarNav', function($scope) {

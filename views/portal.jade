@@ -13,6 +13,7 @@ html
     link(rel="stylesheet", href="/css/console.css")
     script(src="/bower/swagger-parser/dist/swagger-parser.min.js")
     script(src="/js/examples.js")
+    script(src="/js/ng/portal.js")
     script(src="/js/ng/documentation.js")
     script(src="/js/ng/console.js")
     script(src="/js/ng/oauth2.js")
@@ -28,7 +29,7 @@ html
       #SpecURL(ng-controller="SpecURL")
         if !specURL
           include ./includes/spec-url.jade
-      #Portal(ng-if="spec" ng-init="activePage = 'console'")
+      #Portal(ng-if="spec" ng-init="activePage = 'console'" ng-controller="Portal")
         nav.navbar.navbar-secondary.navbar-inverse.square
           .container-fluid
             ul.nav.navbar-nav.nav-pills
