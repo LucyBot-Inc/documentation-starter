@@ -18,7 +18,7 @@
           a.btn.btn-lg.btn-width-md.btn-primary(
                   ng-class="{active: outputType === 'raw'}"
                   ng-click="setOutputType('raw')") Raw
-  .row.row-spaced(ng-if="responseError")
+  .row(ng-if="responseError")
     .col-xs-12
       .alert.alert-danger {{ responseError }}
   .row
