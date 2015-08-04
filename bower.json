@@ -18,6 +18,7 @@
     "zeroclipboard": "~2.2.0",
     "angular-zeroclipboard": "~0.4.2",
     "highlightjs": "~8.5.0",
-    "angular-highlightjs": "~0.4.1"
+    "angular-highlightjs": "~0.4.1",
+    "angular-marked": "~0.0.21"
   }
 }

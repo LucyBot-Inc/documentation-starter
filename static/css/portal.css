@@ -1,0 +1,12 @@
+.navbar-secondary .api-title {
+  cursor: default;
+  color: #FFF !important;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.navbar-secondary .action-link {
+  color: #FFF !important;
+  text-transform: capitalize;
+}
+

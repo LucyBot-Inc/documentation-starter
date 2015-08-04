@@ -1,26 +1,10 @@
-App.controller('Input', function($scope) {
+App.controller('Keys', function($scope) {})
+
+App.controller('Parameter', function($scope) {
   if ($scope.keys && $scope.input.name in $scope.keys) {
     $scope.model = $scope.keys;
   } else {
     $scope.model = $scope.answers;
-  }
-})
-
-App.controller('Checkboxes', function($scope) {
-  $scope.chosen = {};
-  var defaults = $scope.model[$scope.input.name];
-  if (defaults) {
-    defaults.forEach(function(d) {
-      $scope.chosen[d] = true;
-    })
-  }
-  var outerChanged = $scope.onAnswerChanged;
-  $scope.onAnswerChanged = function() {
-    var values = Object.keys($scope.chosen).filter(
-      function(k) {return $scope.chosen[k]}
-    );
-    $scope.model[$scope.input.name] = values;
-    outerChanged();
   }
 })
 

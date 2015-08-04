@@ -1,51 +1,40 @@
-.recipe-input(ng-controller="Input")
-  .form-group(ng-if="input.type === 'text' || input.type === 'number'")
-    label {{input.label}}
-    input.input-sm.form-control(type="{{ input.type }}",
-          placeholder="{{ input.placeholder }}",
+.recipe-input(ng-controller="Parameter")
+  .form-group(ng-if="!parameter.enum && (parameter.type === 'string' || parameter.type === 'number' || parameter.type === 'integer')")
+    label {{parameter.name}}
+    input.input-sm.form-control(type="{{ parameter.type === 'string' ? 'text' : 'number' }}",
           ng-change="onAnswerChanged()",
-          ng-model="model[input.name]")
-    span.help-block(ng-if="input.tip") {{ input.tip }}
+          ng-model="model[parameter.name]")
+    span.help-block(ng-if="parameter.description" marked="parameter.description")
 
-  .form-group(ng-if="input.type === 'radio'")
+  .form-group(ng-if="parameter.enum")
     label
-      span {{input.label}}
+      span {{parameter.name}}
       a.btn.btn-xs.text-warning(
-            ng-show="model[input.name] !== undefined && !input.required"
-            ng-click="model[input.name] = undefined; onAnswerChanged()")
+            ng-show="model[parameter.name] !== undefined && !parameter.required"
+            ng-click="model[parameter.name] = undefined; onAnswerChanged()")
         i.fa.fa-remove
         span &nbsp;clear
-    span.help-block(ng-if="input.tip") {{ input.tip }}
-    .radio-choice(ng-repeat="choice in input.choices")
+    span.help-block(ng-if="parameter.description" marked="parameter.description")
+    .radio-choice(ng-repeat="choice in parameter.enum")
       label.text-black.radio-inline
         input(type="radio",
               ng-change="onAnswerChanged()",
-              ng-model="model[input.name]",
-              ng-value="choice.value"
-              ng-checked="choice.value === model[input.name]")
-        span {{ choice.label }} 
+              ng-model="model[parameter.name]",
+              ng-value="choice"
+              ng-checked="choice === model[parameter.name]")
+        span {{ choice }} 
 
-  .form-group(ng-if="input.type === 'checkbox'")
+  .form-group(ng-if="parameter.type === 'boolean'")
     label
-      span {{ input.label }}
+      span {{ parameter.name }}
       input.checkbox(type="checkbox",
             ng-change="onAnswerChanged()",
-            ng-model="model[input.name]")
-    span.help-block(ng-if="input.tip") {{ input.tip }}
+            ng-model="model[parameter.name]")
+    span.help-block(ng-if="parameter.description" marked="parameter.description")
 
-  .form-group(ng-if="input.type === 'checkboxes'",ng-controller="Checkboxes")
-    label {{input.label}}
-    span.help-block(ng-if="input.tip") {{ input.tip }}
-    .checkbox-choice(ng-repeat="choice in input.choices")
-      label.text-black.checkbox-inline
-        input(type="checkbox",
-              ng-change="onAnswerChanged()",
-              ng-model="chosen[choice.value]")
-        span {{ choice.label }}
-
-  .form-group(ng-if="input.type === 'dynamicArray'",ng-controller="DynamicArray")
-    label {{input.label}}
-    span.help-block {{ input.tip }}
+  .form-group(ng-if="parameter.type === 'array'" ng-controller="DynamicArray")
+    label {{parameter.name}}
+    span.help-block(ng-if="parameter.description" marked="parameter.description")
     .input-group(ng-repeat="item in items")
       span.input-group-btn
         button.btn.btn-sm.btn-width-sm.btn-warning(ng-click="removeItem($index)")

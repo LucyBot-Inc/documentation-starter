@@ -11,20 +11,21 @@
             span &nbsp;
             span(ng-if="loadingResponse") Sending Request
             span(ng-if="!loadingResponse") View Results
-        .btn-group.output-type-btn-group(ng-if="console.visual && console.method !== 'def'")
+        .btn-group.output-type-btn-group(ng-if="activeRoute.visual")
           a.btn.btn-lg.btn-width-md.btn-primary(
                   ng-class="{active: outputType === 'visual'}",
                   ng-click="setOutputType('visual')") Visual
           a.btn.btn-lg.btn-width-md.btn-primary(
                   ng-class="{active: outputType === 'raw'}"
                   ng-click="setOutputType('raw')") Raw
-      .alert.alert-danger.pin-top(ng-if="responseError") {{ responseError }}
+  .row.row-spaced(ng-if="responseError")
+    .col-xs-12
+      .alert.alert-danger {{ responseError }}
   .row
     .col-xs-12
       iframe.response-frame.width-full(
-              ng-if="console.visual"
+              ng-if="activeRoute.visual"
               ng-show="outputType === 'visual'"
               src="")
       .response-raw(hljs source="response"
-                    ng-if="console.method !== 'def'"
                     ng-show="outputType === 'raw'")

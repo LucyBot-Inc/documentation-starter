@@ -4,8 +4,8 @@
                    data-target="#ParameterInputs")
       h4.panel-title.text-regular
         i.collapse-icon.fa.fa-plus-square-o &nbsp;&nbsp;
-        span {{ console.method === 'def' ? 'Example' : 'Parameters' }}
-    #ParameterInputs.panel-collapse.collapse(ng-class="{in: parameters.length < 4}")
+        span Parameters
+    #ParameterInputs.panel-collapse.collapse.in
       .panel-body
-        div(ng-repeat="input in parameters")
+        div(ng-repeat="parameter in activeRoute.route.parameters")
           include ./input.jade

@@ -1,0 +1,50 @@
+mixin navitem(name)
+  li(ng-class="{active: activePage === '#{name.toLowerCase()}'}")
+    a.navlink.text-capitalize(ng-click="activePage = '#{name.toLowerCase()}'") #{name}
+
+doctype html
+html
+  head
+    title API Console
+    include ./includes/head.jade
+
+    link(rel="stylesheet", href="/css/portal.css")
+    link(rel="stylesheet", href="/css/verb-colors.css")
+    link(rel="stylesheet", href="/css/console.css")
+    script(src="/bower/swagger-parser/dist/swagger-parser.min.js")
+    script(src="/js/examples.js")
+    script(src="/js/ng/documentation.js")
+    script(src="/js/ng/console.js")
+    script(src="/js/sort-routes.js")
+    script(src="/js/ng/parameter.js")
+    script(src="/js/ng/spec-url.js")
+    script(src="/bower/marked/lib/marked.js")
+    script.
+      SPEC_URL = !{JSON.stringify(specURL)}
+
+  body(ng-app="App" ng-cloak)
+    #Body(ng-controller="Body")
+      #SpecURL(ng-controller="SpecURL")
+        if !specURL
+          include ./includes/spec-url.jade
+      #Portal(ng-if="spec")
+        nav.navbar.navbar-secondary.navbar-inverse.square
+          .container-fluid
+            ul.nav.navbar-nav.nav-pills
+              li
+                a.api-title {{ spec.info.title }} {{ spec.info.title.indexOf('API') === -1 ? 'API' : '' }}
+            .navbar-collapse
+              ul.nav.navbar-nav.nav-pills.navbar-right
+                +navitem('README')
+                +navitem('Console')
+                +navitem('Docs')
+        .container-fluid(ng-cloak)
+          .portal-page(ng-if="activePage === 'readme'")
+            include ./readme.jade
+          .portal-page(ng-if="!activePage || activePage === 'console'")
+            include ./console.jade
+          .portal-page(ng-if="activePage === 'recipes'")
+            include ./recipes.jade
+          .portal-page(ng-if="activePage === 'docs'")
+            include ./documentation.jade
+
