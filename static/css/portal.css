@@ -16,3 +16,12 @@
 .collapsed .collapse-icon::before {
   content: "\f196" !important;
 }
+
+.dropdown .btn.tag-dropdown-btn,
+.dropdown .btn.route-dropdown-btn {
+  border-width: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+

@@ -22,7 +22,6 @@ App.controller('Console', function($scope) {
 
   $scope.setActiveRoute = function(route) {
     $scope.answers = {}
-    console.log('set active', route.path)
     route.operation.parameters.forEach(function(parameter) {
       if (parameter['x-consoleDefault']) {
         $scope.answers[parameter.name] = parameter['x-consoleDefault'];
@@ -31,9 +30,19 @@ App.controller('Console', function($scope) {
     $scope.activeRoute = route;
     $scope.onAnswerChanged();
   }
-  var startRoute = $scope.routes.filter(function(r) {return r.visual})[0];
-  startRoute = startRoute || $scope.routes[0];
-  $scope.setActiveRoute(startRoute);
+
+  $scope.goToBestRoute = function() {
+    var taggedRoutes= $scope.routes
+        .filter(function(r) {
+          console.log('rtags', r.tags, $scope.activeTag)
+          return !$scope.activeTag || (r.operation.tags && r.operation.tags.indexOf($scope.activeTag.name) !== -1)
+        })
+    console.log('r', taggedRoutes);
+    var startRoute = taggedRoutes.filter(function(r) {return r.visual})[0];
+    startRoute = startRoute || taggedRoutes[0] || $scope.routes[0];
+    $scope.setActiveRoute(startRoute);
+  }
+  $scope.goToBestRoute();
 
   $scope.getRequestParameters = function() {
     var protocol = $scope.spec.schemes.indexOf('https') !== -1 ? 'https' : 'http';

@@ -3,7 +3,22 @@ include ./oauth2-modal.jade
   .row
     .col-xs-12.col-sm-6
       .row.row-spaced
-        .col-xs-12
+        .hidden-xs.col-sm-3
+          .dropdown.tag-dropdown
+            button.tag-dropdown-btn.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
+                  type="button"
+                  data-toggle="dropdown")
+              span.caret
+              span &nbsp;&nbsp;{{ activeTag ? activeTag.name : 'All' }}
+            ul.dropdown-menu(role="menu")
+              li(role="presentation")
+                a(ng-click="setActiveTag(null)")
+                  span All
+              li(role="presentation" ng-repeat="tag in spec.tags")
+                a(ng-click="setActiveTag(tag); goToBestRoute()")
+                  span {{ tag.name }}
+                  span.pull-right {{ tag.description }}
+        .col-xs-12.col-sm-9
           .dropdown.route-dropdown
             button.route-dropdown-btn.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
                   type="button"
@@ -13,7 +28,8 @@ include ./oauth2-modal.jade
               span.text-uppercase(data-verb="{{ activeRoute.method }}") {{ activeRoute.method }}&nbsp;
               span {{ activeRoute.path }}
             ul.dropdown-menu(role="menu")
-              li(role="presentation" ng-repeat="route in routes")
+              li(role="presentation" ng-repeat="route in routes"
+                 ng-show="!activeTag || (route.operation.tags && route.operation.tags.indexOf(activeTag.name) !== -1)")
                 a(ng-click="setActiveRoute(route)")
                   span.text-uppercase(data-verb="{{ route.method }}") {{ route.method }}&nbsp;
                   span {{ route.path }}

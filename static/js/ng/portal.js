@@ -12,4 +12,8 @@ App.controller('Portal', function($scope) {
     }
   }
   $scope.routes = $scope.routes.sort(SORT_ROUTES);
+
+  $scope.setActiveTag = function(tag) {
+    $scope.activeTag = tag;
+  }
 });
