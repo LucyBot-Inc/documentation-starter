@@ -18,8 +18,6 @@
           p(ng-if="route.description && route.description !== route.summary")
             small {{ route.description }}
         .panel-body
-          a.btn.btn-info(ng-click="openConsole()") Try it in the Console
-        .panel-body
           h3 Request
           mixin description
             span(ng-if="parameter.description") {{ parameter.description }}<br>

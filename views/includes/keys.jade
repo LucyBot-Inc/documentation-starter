@@ -3,12 +3,12 @@
     .panel-heading(data-toggle="collapse",
                    data-target="#KeyInputs")
       h4.panel-title.text-regular
-        i.fa.fa-plus-square-o &nbsp;
+        i.fa.collapse-icon &nbsp;
         span API Keys
         .pull-right(ng-if="!changedKeys")
           i.fa.fa-exclamation-circle
           span &nbsp;The console may not work until you add your credentials
-    #KeyInputs.panel-collapse.collapse
+    #KeyInputs.panel-collapse.collapse.in
       .panel-body
         .key.form-group(ng-repeat="input in keyInputs")
           label {{ input.label || input.name }}

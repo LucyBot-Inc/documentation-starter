@@ -15,12 +15,13 @@ html
     script(src="/js/examples.js")
     script(src="/js/ng/documentation.js")
     script(src="/js/ng/console.js")
+    script(src="/js/ng/oauth2.js")
     script(src="/js/sort-routes.js")
     script(src="/js/ng/parameter.js")
     script(src="/js/ng/spec-url.js")
     script(src="/bower/marked/lib/marked.js")
     script.
-      SPEC_URL = !{JSON.stringify(specURL)}
+      var SPEC_URL = !{JSON.stringify(specURL)};
 
   body(ng-app="App" ng-cloak)
     #Body(ng-controller="Body")

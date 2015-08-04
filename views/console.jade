@@ -1,3 +1,4 @@
+include ./oauth2-modal.jade
 #Console.below-spec-row(ng-controller="Console" ng-if="spec")
   .row
     .col-xs-12.col-sm-6
@@ -18,7 +19,7 @@
                   span {{ route.path }}
       .row(ng-if="activeRoute.route.description")
         .col-xs-12
-          .alert.alert-info.route-description {{ activeRoute.description }}
+          .alert.alert-info.route-description(marked="activeRoute.route.description")
       #Keys.row(ng-show="keyInputs.length > 0" ng-controller="Keys")
         include ./includes/keys.jade
       #Parameters.row(ng-show="activeRoute.route.parameters.length > 0")

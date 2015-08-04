@@ -1,0 +1,26 @@
+#OAuth2.modal.fade(ng-controller="OAuth2", tabindex="-1")
+  .modal-dialog
+    form.modal-content(ng-submit="authorize()")
+      .modal-header
+        button(type="button"
+               class="close"
+               data-dismiss="modal"
+               aria-label="Close")
+          span(aria-hidden="true") &times;
+        .modal-title
+          h3 OAuth 2.0 Authorization
+      .modal-body
+        p You'll need to authorize the API console to perform certain actions
+        .form-group(ng-repeat="(scope, description) in definition.scopes")
+          label.checkbox-inline 
+            input(type="checkbox" ng-model="addedScopes[scope]" checked)
+            span {{ scope }}
+          p.small {{ description }}
+      .modal-footer
+        .text-left
+          .alert.alert-success(ng-if="alert.success") {{ alert.success }}
+          .alert.alert-warning(ng-if="alert.warning") {{ alert.warning }}
+          .alert.alert-danger(ng-if="alert.danger") {{ alert.danger }}
+        button.btn.btn-success(ng-if="!alert.success" type="submit")
+          span(ng-if="!loading") Authorize
+          i.fa.fa-spin.fa-refresh(ng-if="loading")

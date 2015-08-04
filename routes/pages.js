@@ -10,7 +10,7 @@ var consoleImports = [
 
 var renderOpts = {
   angularImports: consoleImports,
-  specURL: ''
+  specURL: '',
 }
 
 Router.get('/', Render('portal', renderOpts));

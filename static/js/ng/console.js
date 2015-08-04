@@ -7,18 +7,13 @@ App.controller('Console', function($scope) {
     for (method in $scope.spec.paths[path]) {
       if (method === 'parameters') continue;
       route = $scope.spec.paths[path][method];
-      route.parameters = route.parameters.concat(pathParams);
+      route.parameters = (route.parameters || []).concat(pathParams);
       var flat = {path: path, method: method, route: route};
       flat.visual = route.responses['200'] && route.responses['200']['x-lucy/view'];
       $scope.flatRoutes.push(flat);
     }
   }
-
-  $scope.setActiveRoute = function(route) {
-    $scope.answers = {}
-    $scope.activeRoute = route;
-  }
-  $scope.setActiveRoute($scope.flatRoutes[0]);
+  $scope.flatRoutes = $scope.flatRoutes.sort(SORT_ROUTES);
 
   $scope.callOnChange = [];
   $scope.onAnswerChanged = function() {
@@ -26,6 +21,21 @@ App.controller('Console', function($scope) {
       fn();
     })
   }
+
+  $scope.setActiveRoute = function(route) {
+    $scope.answers = {}
+    console.log('set active', route.path)
+    route.route.parameters.forEach(function(parameter) {
+      if (parameter['x-consoleDefault']) {
+        $scope.answers[parameter.name] = parameter['x-consoleDefault'];
+      }
+    })
+    $scope.activeRoute = route;
+    $scope.onAnswerChanged();
+  }
+  var startRoute = $scope.flatRoutes.filter(function(r) {return r.visual})[0];
+  startRoute = startRoute || $scope.flatRoutes[0];
+  $scope.setActiveRoute(startRoute);
 
   $scope.getRequestParameters = function() {
     var protocol = $scope.spec.schemes.indexOf('https') !== -1 ? 'https' : 'http';
@@ -42,7 +52,12 @@ App.controller('Console', function($scope) {
     params.path = basePath + $scope.activeRoute.path;
     var keys = $('#Keys').scope().keys;
     for (key in keys) {
-      $scope.answers[key] = keys[key];
+      console.log('key', key, keys[key]);
+      if (key === 'oauth2' && keys[key]) {
+        params.headers = {'Authorization': 'Bearer ' + keys[key]}
+      } else {
+        $scope.answers[key] = keys[key];
+      }
     }
     $scope.activeRoute.route.parameters.forEach(function(parameter) {
       if (typeof $scope.answers[parameter.name] === 'undefined' || $scope.answers[parameter.name] === '') {
@@ -116,9 +131,12 @@ App.controller('SampleCode', function($scope) {
   $scope.callOnChange.push($scope.refresh);
 });
 
-App.controller('Response', function($scope) {
-  $scope.outputType = $scope.activeRoute.route.responses['200']['x-lucy/view'] ? 'visual' : 'raw';
+App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
+  $scope.frameSrc = "";
+  $scope.outputType = $scope.activeRoute.visual ? 'visual' : 'raw';
+  $scope.askedForRaw = false;
   $scope.setOutputType = function(type) {
+    $scope.askedForRaw = type === 'raw';
     $scope.outputType = type;
   }
 
@@ -127,8 +145,17 @@ App.controller('Response', function($scope) {
     demoURL += 'lucy_swaggerURL=' + encodeURIComponent($('#SpecURL').scope().specURL);
     demoURL += '&lucy_method=' + encodeURIComponent($scope.activeRoute.method);
     demoURL += '&lucy_path=' + encodeURIComponent($scope.activeRoute.path);
+    var keys = $('#Keys').scope().keys;
+    var keysAdded = [];
+    for (key in keys) {
+      if (keys[key] !== undefined && keys[key] !== null && keysAdded.indexOf(key) === -1) {
+        keysAdded.push(key);
+        demoURL += '&' + key + '=' + encodeURIComponent(JSON.stringify(keys[key]));
+      }
+    }
     for (key in $scope.answers) {
-      if ($scope.answers[key] !== undefined && $scope.answers[key] !== null) {
+      if ($scope.answers[key] !== undefined && $scope.answers[key] !== null && keysAdded.indexOf(key) === -1) {
+        keysAdded.push(key);
         demoURL += '&' + key + '=' + encodeURIComponent(JSON.stringify($scope.answers[key]));
       }
     }
@@ -136,12 +163,12 @@ App.controller('Response', function($scope) {
   }
 
   $scope.refresh = function() {
-    console.log('refr');
+    $scope.outputType = !$scope.askedForRaw && $scope.activeRoute.visual ? 'visual' : 'raw';
+    $scope.response = '';
     if ($scope.activeRoute.visual) {
-      var frameSrc = $scope.getDemoUrl();
-      console.log('src', frameSrc)
+      $scope.frameSrc = $sce.trustAsResourceUrl($scope.getDemoUrl());
       var frame = $('iframe.response-frame');
-      frame.attr('src', frameSrc);
+      frame.attr('src', $scope.frameSrc);
     }
 
     $scope.loadingResponse = true;
@@ -211,5 +238,5 @@ App.controller('Response', function($scope) {
     $scope.refresh()
     $scope.callOnChange.push($scope.refresh);
   }
-});
+}]);
 

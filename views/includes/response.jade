@@ -24,8 +24,8 @@
   .row
     .col-xs-12
       iframe.response-frame.width-full(
+              ng-src="{{ frameSrc }}"
               ng-if="activeRoute.visual"
-              ng-show="outputType === 'visual'"
-              src="")
+              ng-show="outputType === 'visual'")
       .response-raw(hljs source="response"
                     ng-show="outputType === 'raw'")
