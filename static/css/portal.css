@@ -24,4 +24,10 @@
   text-overflow: ellipsis;
 }
 
+.panel-heading {
+  cursor: pointer;
+}
 
+#Footer {
+  margin-top: 50px;
+}
