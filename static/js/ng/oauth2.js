@@ -14,7 +14,8 @@ oauth.onOAuthComplete = function(qs) {
 
 var CLIENT_IDS = {
   'googleapis.com': "281611287830-66urn3gbae0a7doemo3jqg3impislvqh.apps.googleusercontent.com",
-  'facebook.com': '509396115881819'
+  'facebook.com': '509396115881819',
+  'instagram.com': '5bce7994099644e4b2ac4a3c75f840a1',
 }
 
 App.controller('OAuth2', function($scope) {
