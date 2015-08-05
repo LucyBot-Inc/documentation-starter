@@ -31,3 +31,7 @@
 #Footer {
   margin-top: 50px;
 }
+
+span.pull-right {
+  line-height: 20px;
+}

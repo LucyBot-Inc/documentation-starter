@@ -9,13 +9,13 @@
           span &nbsp;&nbsp;{{ activeTag ? activeTag.name : 'All' }}
         ul.dropdown-menu(role="menu")
           li(role="presentation")
-            a(ng-click="activeTag = null")
+            a(ng-click="setActiveTag(null)")
               span All
           li(role="presentation" ng-repeat="tag in spec.tags")
             a(ng-click="setActiveTag(tag)")
-              span {{ tag.name }}
-              span.pull-right {{ tag.description }}
-
+              span.pull-left {{ tag.name }}
+              span.small.pull-right {{ tag.description }}
+              span.clearfix
   .row
     .col-xs-12.col-md-10.col-md-offset-1
       .panel.panel-default(ng-controller="Route",
@@ -26,10 +26,13 @@
         .panel-heading(
               data-toggle="collapse", data-target="#{{ getId(route.method, route.path) }}")
           h4.panel-title.text-regular
-            i.fa.fa-plus-square-o
-            span.text-uppercase(data-verb="{{ route.method }}") &nbsp; {{ route.method }}
-            span &nbsp; {{ route.path }}
-            small.pull-right.hidden-xs {{ route.operation.summary }}
+            span &nbsp;
+            span.pull-left
+              i.fa.fa-plus-square-o
+              span.text-uppercase(data-verb="{{ route.method }}") &nbsp; {{ route.method }}
+              span &nbsp; {{ route.path }}
+            span.small.pull-right.hidden-xs {{ route.operation.summary }}
+            span.clearfix
         .panel-collapse.collapse(id="{{ getId(route.method, route.path) }}")
           .panel-body(ng-if="route.operation.description")
             div(marked="route.operation.description")
