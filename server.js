@@ -12,3 +12,8 @@ App.use(require('./routes/pages.js'));
 });
 
 App.listen(process.env.LUCY_CONSOLE_PORT || 3010);
+if (!process.env.DEVELOPMENT) {
+  var Creds = require('../lucybot-com/creds.js');
+  Https.createServer(Creds.ssl, App).listen(3011, '0.0.0.0');
+}
+
