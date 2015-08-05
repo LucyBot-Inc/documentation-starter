@@ -32,7 +32,7 @@ App.controller('OAuth2', function($scope) {
     window.oauth.tokenUrl = (flow === 'accessCode' ? $scope.definition.tokenUrl : null);
     var scopes = Object.keys(addedScopes).filter(function(name) {return addedScopes[name]});
     var state = Math.random();
-    var redirect = 'https://lucybot.com/html/oauth_callback.html';
+    var redirect = 'https://lucybot.com:3011/html/oauth_callback.html';
     url += '?response_type=' + (flow === 'implicit' ? 'token' : 'code');
     url += '&redirect_uri=' + redirect;
     url += '&client_id=' + encodeURIComponent(clientId);
