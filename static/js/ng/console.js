@@ -11,6 +11,13 @@ var getSeparatorFromFormat = function(format) {
   }
 }
 
+var oauthIsImplicit = function(defns) {
+  for (def in defns) {
+    var obj = defns[def];
+    if (obj.type === 'oauth2' && obj.flow === 'implicit') return true;
+  }
+  return false;
+}
 
 App.controller('Console', function($scope) {
   $scope.callOnChange = [];
@@ -61,7 +68,7 @@ App.controller('Console', function($scope) {
     for (key in keys) {
       console.log('key', key, keys[key]);
       if (key === 'oauth2' && keys[key]) {
-        if ($scope.spec.securityDefinitions.oauth2.flow === 'implicit') {
+        if (oauthIsImplicit($scope.spec.securityDefinitions)) {
           params.query = {'access_token': keys[key]};
         } else {
           params.headers = {'Authorization': 'Bearer ' + keys[key]};
