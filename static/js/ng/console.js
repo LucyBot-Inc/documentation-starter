@@ -61,7 +61,11 @@ App.controller('Console', function($scope) {
     for (key in keys) {
       console.log('key', key, keys[key]);
       if (key === 'oauth2' && keys[key]) {
-        params.headers = {'Authorization': 'Bearer ' + keys[key]}
+        if ($scope.spec.securityDefinitions.oauth2.flow === 'implicit') {
+          params.query = {'access_token': keys[key]};
+        } else {
+          params.headers = {'Authorization': 'Bearer ' + keys[key]};
+        }
       } else if (!$scope.answers[key]){
         $scope.answers[key] = keys[key];
       }
