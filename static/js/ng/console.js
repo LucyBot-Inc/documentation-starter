@@ -62,7 +62,7 @@ App.controller('Console', function($scope) {
       console.log('key', key, keys[key]);
       if (key === 'oauth2' && keys[key]) {
         params.headers = {'Authorization': 'Bearer ' + keys[key]}
-      } else {
+      } else if (!$scope.answers[key]){
         $scope.answers[key] = keys[key];
       }
     }
