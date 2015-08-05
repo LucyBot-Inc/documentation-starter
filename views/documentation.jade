@@ -1,6 +1,6 @@
 #Docs(ng-controller="Docs")
   .row.row-spaced
-    .col-xs-6.col-md-5.col-md-offset-1(ng-if="spec.tags")
+    .col-xs-12.col-md-10.col-md-offset-1(ng-if="spec.tags")
       .dropdown
         button.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
               type="button"
@@ -29,12 +29,10 @@
             i.fa.fa-plus-square-o
             span.text-uppercase(data-verb="{{ route.method }}") &nbsp; {{ route.method }}
             span &nbsp; {{ route.path }}
+            small.pull-right.hidden-xs {{ route.operation.summary }}
         .panel-collapse.collapse(id="{{ getId(route.method, route.path) }}")
-          .panel-body
-            p
-              small {{ route.operation.summary }}
-            p(ng-if="route.operation.description && route.operation.description !== route.operation.summary")
-              small {{ route.operation.description }}
+          .panel-body(ng-if="route.operation.description")
+            div(marked="route.operation.description")
           .panel-body
             h3 Request
             mixin description

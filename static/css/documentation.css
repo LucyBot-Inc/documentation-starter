@@ -1,0 +1,146 @@
+body {
+  position: relative;
+}
+
+table.doc-table {
+  table-layout: fixed;
+}
+
+table.doc-table th.parameter, 
+table.doc-table td.parameter {
+  width: 15%
+}
+
+table.doc-table th.location, 
+table.doc-table td.location {
+  width: 10%
+}
+
+table.doc-table th.type, 
+table.doc-table td.type {
+  width: 10%
+}
+
+table.doc-table th.example, 
+table.doc-table td.example {
+  width: 20%
+}
+
+table.doc-table th.description, 
+table.doc-table td.description {
+  width: 70%;
+}
+
+table.doc-table td.description.description-xs {
+  width: 100%;
+}
+
+table.doc-table td.example div,
+table.doc-table td.example {
+  overflow-x: scroll;
+}
+
+table.doc-table td.example {
+  position: relative;
+  z-index: 1;
+}
+
+.response-schema.resizable-y {
+  max-height: 324px;
+}
+.response-container.resizable-y,
+.parameter-list.resizable-y {
+  max-height: 318px;
+}
+
+.resizable,
+.resizable-y,
+.resizable-x {
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+.resizable pre,
+.resizable-y pre,
+.resizable-x pre {
+  margin-bottom: 0px;
+}
+
+span[data-verb] {
+  color: #777;
+  display: inline-block;
+  text-align: left;
+  margin-right: 10px;
+}
+
+panel-heading span[data-verb] {
+  margin-left: 10px;
+}
+
+span[data-verb="def"] {
+  color: #34495e;
+}
+
+span[data-verb="get"] {
+  color: #3498db;
+}
+
+span[data-verb="put"] {
+  color: #e67e22;
+}
+
+span[data-verb="patch"] {
+  color: #f1c40f;
+}
+
+span[data-verb="post"] {
+  color: #27ae60;
+}
+
+span[data-verb="delete"] {
+  color: #c0392b;
+}
+
+.panel-heading.collapsed {
+  border-radius: 3px;
+}
+
+.open .btn-default[data-verb="def"],
+.btn-default[data-verb="def"],
+.panel-default[data-verb="def"] {
+  border-color: #34495e;
+}
+.open .btn-default[data-verb="get"],
+.btn-default[data-verb="get"],
+.panel-default[data-verb="get"] {
+  border-color: #3498db;
+}
+.open .btn-default[data-verb="put"],
+.btn-default[data-verb="put"],
+.panel-default[data-verb="put"] {
+  border-color: #e67e22;
+}
+.open .btn-default[data-verb="patch"],
+.btn-default[data-verb="patch"],
+.panel-default[data-verb="patch"] {
+  border-color: #f1c40f;
+}
+.open .btn-default[data-verb="post"],
+.btn-default[data-verb="post"],
+.panel-default[data-verb="post"] {
+  border-color: #27ae60;
+}
+.open .btn-default[data-verb="delete"],
+.btn-default[data-verb="delete"],
+.panel-default[data-verb="delete"] {
+  border-color: #c0392b;
+}
+
+.enum-list {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.btn.header-btn {
+  margin-top: -4px;
+}

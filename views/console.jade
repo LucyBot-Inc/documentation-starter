@@ -3,7 +3,7 @@ include ./oauth2-modal.jade
   .row
     .col-xs-12.col-sm-6
       .row.row-spaced
-        .hidden-xs.col-sm-3
+        .hidden-xs.col-sm-3(ng-if="spec.tags")
           .dropdown.tag-dropdown
             button.tag-dropdown-btn.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
                   type="button"
@@ -18,7 +18,7 @@ include ./oauth2-modal.jade
                 a(ng-click="setActiveTag(tag); goToBestRoute()")
                   span {{ tag.name }}
                   span.pull-right {{ tag.description }}
-        .col-xs-12.col-sm-9
+        .col-xs-12(ng-class="{'col-sm-9': spec.tags}")
           .dropdown.route-dropdown
             button.route-dropdown-btn.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
                   type="button"
