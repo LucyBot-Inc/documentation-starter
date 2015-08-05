@@ -11,4 +11,4 @@ App.use(require('./routes/pages.js'));
   App.use('/' + route, require('./routes/' + route + '.js'));
 });
 
-App.listen(process.env.PORT || 3000);
+App.listen(process.env.LUCY_CONSOLE_PORT || 3010);
