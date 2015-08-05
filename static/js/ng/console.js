@@ -126,7 +126,14 @@ App.controller('SampleCode', function($scope) {
     $scope.$apply();
   });
 
+  var refreshTimeout = null;
+  var refreshTimeoutLength = 350;
   $scope.refresh = function() {
+    if (refreshTimeout) clearTimeout(refreshTimeout);
+    refreshTimeout = setTimeout($scope.refreshInner, refreshTimeoutLength);
+  }
+
+  $scope.refreshInner = function() {
     Lucy.post('/sample_code/build/request', {
       request: $scope.getRequestParameters(),
       language: $scope.selectedLanguage.id,
@@ -180,7 +187,15 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     return demoURL;
   }
 
+  var refreshTimeout = null;
+  var refreshTimeoutLength = 350;
   $scope.refresh = function() {
+    $scope.loadingResponse = true;
+    if (refreshTimeout) clearTimeout(refreshTimeout);
+    refreshTimeout = setTimeout($scope.refreshInner, refreshTimeoutLength);
+  }
+
+  $scope.refreshInner = function() {
     $scope.outputType = !$scope.askedForRaw && $scope.activeRoute.visual ? 'visual' : 'raw';
     $scope.response = '';
     if ($scope.activeRoute.visual) {
@@ -189,7 +204,6 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
       frame.attr('src', $scope.frameSrc);
     }
 
-    $scope.loadingResponse = true;
     var request = $scope.getRequestParameters();
     request.path = 'proxy/' + request.protocol + '/' + request.domain
         + (request.port ? ':' + request.port : '') + request.path;
