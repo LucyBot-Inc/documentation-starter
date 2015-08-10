@@ -16,8 +16,14 @@ each i in angularImports
 script.
   var angularImports = !{JSON.stringify(angularImports.map(function(i) {return i.name}))};
   var App = angular.module('App', angularImports)
-  App.controller('Body', function($scope) {
-  });
+  App.config(['markedProvider', function(markedProvider) {
+    markedProvider.setRenderer({
+      link: function(href, title, text) {
+        return '<a href="' + href + '"' + ' target="_blank">' + text + '</a>';
+      }
+    });
+  }]);
+  App.controller('Body', function($scope) {});
 
 link(rel="stylesheet" href="/css/#{page}.css")
 script(src="/js/ng/#{page}.js")
