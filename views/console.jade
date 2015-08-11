@@ -1,7 +1,7 @@
 include ./oauth2-modal.jade
 #Console(ng-controller="Console" ng-if="spec")
   .row
-    .col-xs-12.col-sm-6
+    .col-xs-12.col-sm-6.left-col
       .row.row-spaced
         .hidden-xs.col-sm-3(ng-if="spec.tags")
           .dropdown.tag-dropdown
@@ -51,6 +51,6 @@ include ./oauth2-modal.jade
           span.copy-btn-container
             a.btn.btn-primary.copy-btn.pin-top.pin-right(ui-zeroclip zeroclip-text="{{ sampleCode }}") Copy
           div(hljs source="sampleCodeError || sampleCode")
-    .col-xs-12.col-sm-6
+    .col-xs-12.col-sm-6.right-col
       #Response.row(ng-controller="Response")
         include ./includes/response.jade
