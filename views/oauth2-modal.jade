@@ -13,7 +13,7 @@
         p You'll need to authorize the API console to perform certain actions
         .form-group(ng-repeat="(scope, description) in definition.scopes")
           label.checkbox-inline 
-            input(type="checkbox" ng-model="addedScopes[scope]" checked)
+            input(type="checkbox" ng-model="addedScopes[scope]")
             span {{ scope }}
           p.small {{ description }}
       .modal-footer
