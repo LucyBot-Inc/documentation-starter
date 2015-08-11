@@ -24,6 +24,12 @@ var CLIENT_IDS = {
 App.controller('OAuth2', function($scope) {
   $scope.alert = {};
   var addedScopes = $scope.addedScopes = {};
+  $scope.setDefinition = function(def) {
+    $scope.definition = def;
+    for (key in $scope.definition.scopes) {
+      addedScopes[key] = true;
+    }
+  }
 
   $scope.authorize = function() {
     var flow = $scope.definition.flow;

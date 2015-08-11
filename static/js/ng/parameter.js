@@ -28,7 +28,7 @@ App.controller('Keys', function($scope) {
     for (var label in $scope.spec.securityDefinitions) {
       def = $scope.spec.securityDefinitions[label];
       if (def.type === 'oauth2') {
-        $('#OAuth2').scope().definition = def;
+        $('#OAuth2').scope().setDefinition(def);
         $('#OAuth2').modal('show');
         mixpanel.track('prompt_oauth', {
           host: $scope.spec.host,
