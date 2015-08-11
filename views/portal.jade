@@ -28,6 +28,7 @@ html
   body(ng-app="App" ng-cloak)
     #Body(ng-controller="Body")
       #SpecURL(ng-controller="SpecURL")
+        .alert.alert-danger(ng-if="alert.danger") {{ alert.danger }}
         if !specURL
           include ./includes/spec-url.jade
       #Portal(ng-if="spec" ng-init="activePage = 'console'" ng-controller="Portal")

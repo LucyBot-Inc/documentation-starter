@@ -1,14 +1,14 @@
 link(rel="stylesheet" href="/less/styles.css")
+link(rel="stylesheet", href="/bower/highlightjs/styles/github.css")
+link(rel="stylesheet" href="/bower/fontawesome/css/font-awesome.min.css")
 
+script(src="/js/mixpanel.js")
 script(src="/bower/jquery/dist/jquery.min.js")
 script(src="/bower/bootstrap/dist/js/bootstrap.min.js")
 script(src="/bower/angular/angular.min.js")
-link(rel="stylesheet", href="/bower/highlightjs/styles/github.css")
 script(src="/bower/highlightjs/highlight.pack.js")
 script(src="/bower/zeroclipboard/dist/ZeroClipboard.min.js")
 script(src="/js/lucy.js")
-
-link(rel="stylesheet" href="/bower/fontawesome/css/font-awesome.min.css")
 
 each i in angularImports
   script(src="#{i.file}")

@@ -1,6 +1,9 @@
 var oauth = window.oauth = {};
 
 oauth.onOAuthComplete = function(qs) {
+  mixpanel.track('oauth_done', {
+    host: $scope.spec.host
+  })
   oauth.token = qs;
   var keyScope = $('#Keys').scope()
   keyScope.keys.oauth2 = qs.access_token;
@@ -39,7 +42,10 @@ App.controller('OAuth2', function($scope) {
     url += '&client_id=' + encodeURIComponent(clientId);
     url += '&scope=' + encodeURIComponent(scopes.join(' '));
     url += '&state=' + encodeURIComponent(state);
-    console.log(url);
+    mixpanel.track('oauth_start', {
+      host: $scope.spec.host,
+      scopes: scopes.length,
+    })
     window.open(url);
   }
 })

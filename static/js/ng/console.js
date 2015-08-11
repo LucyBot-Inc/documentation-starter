@@ -34,6 +34,11 @@ App.controller('Console', function($scope) {
         $scope.answers[parameter.name] = parameter['x-consoleDefault'];
       }
     })
+    mixpanel.track('set_route', {
+      host: $scope.spec.host,
+      method: route.method,
+      path: route.path,
+    })
     $scope.activeRoute = route;
     $scope.onAnswerChanged();
   }
@@ -41,10 +46,8 @@ App.controller('Console', function($scope) {
   $scope.goToBestRoute = function() {
     var taggedRoutes= $scope.routes
         .filter(function(r) {
-          console.log('rtags', r.tags, $scope.activeTag)
           return !$scope.activeTag || (r.operation.tags && r.operation.tags.indexOf($scope.activeTag.name) !== -1)
         })
-    console.log('r', taggedRoutes);
     var startRoute = taggedRoutes.filter(function(r) {return r.visual})[0];
     startRoute = startRoute || taggedRoutes[0] || $scope.routes[0];
     $scope.setActiveRoute(startRoute);
@@ -66,7 +69,6 @@ App.controller('Console', function($scope) {
     params.path = basePath + $scope.activeRoute.path;
     var keys = $('#Keys').scope().keys;
     for (key in keys) {
-      console.log('key', key, keys[key]);
       if (key === 'oauth2' && keys[key]) {
         if (oauthIsImplicit($scope.spec.securityDefinitions)) {
           params.query = {'access_token': keys[key]};
