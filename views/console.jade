@@ -39,18 +39,19 @@ include ./oauth2-modal.jade
           .alert.alert-info.route-description(marked="activeRoute.operation.description")
       #Keys.row(ng-show="keyInputs.length > 0" ng-controller="Keys")
         include ./includes/keys.jade
-      #Parameters.row(ng-show="activeRoute.operation.parameters.length > 0")
-        include ./includes/parameters.jade
       #SampleCode.row(ng-controller="SampleCode")
         .col-xs-12
+          h3 Sample Code
           .btn-group.btn-group-sm.language-buttons
             .btn.btn-link.pin-bottom(
                   ng-repeat="language in languages"
                   ng-disabled="language.id === selectedLanguage.id"
                   ng-click="setLanguage(language)") {{ language.label }}
           span.copy-btn-container
-            a.btn.btn-primary.copy-btn.pin-top.pin-right(ui-zeroclip zeroclip-text="{{ sampleCode }}") Copy
-          div(hljs source="sampleCodeError || sampleCode")
+            a.btn.btn-primary.copy-btn(ui-zeroclip zeroclip-text="{{ sampleCode }}") Copy
+          div(hljs source="sampleCodeError || sampleCode" language="{{ selectedLanguage.hljsID || selectedLanguage.id }}")
+      #Parameters.row(ng-show="activeRoute.operation.parameters.length > 0")
+        include ./includes/parameters.jade
     .col-xs-12.col-sm-6.right-col
       #Response.row(ng-controller="Response")
         include ./includes/response.jade
