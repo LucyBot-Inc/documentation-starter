@@ -2,7 +2,7 @@ var oauth = window.oauth = {};
 
 oauth.onOAuthComplete = function(qs) {
   mixpanel.track('oauth_done', {
-    host: $scope.spec.host
+    host: $('#Portal').scope().spec.host
   })
   oauth.token = qs;
   var keyScope = $('#Keys').scope()
