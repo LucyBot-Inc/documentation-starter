@@ -30,6 +30,9 @@ App.controller('Keys', function($scope) {
       if (def.type === 'oauth2') {
         $('#OAuth2').scope().definition = def;
         $('#OAuth2').modal('show');
+        mixpanel.track('prompt_oauth', {
+          host: $scope.spec.host,
+        })
       }
       $scope.keyInputs.push({
         name: def.type === 'oauth2' ? 'oauth2' : def.name,
