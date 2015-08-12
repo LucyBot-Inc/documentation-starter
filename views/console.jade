@@ -44,13 +44,12 @@ include ./oauth2-modal.jade
           #SampleCode.row(ng-controller="SampleCode")
             .col-xs-12
               h3 Sample Code
+                a.btn.btn-primary.copy-btn.pull-right(ui-zeroclip zeroclip-text="{{ sampleCode }}") Copy
               .btn-group.btn-group-sm.language-buttons
                 .btn.btn-link.pin-bottom(
                       ng-repeat="language in languages"
                       ng-disabled="language.id === selectedLanguage.id"
                       ng-click="setLanguage(language)") {{ language.label }}
-              span.copy-btn-container
-                a.btn.btn-primary.copy-btn(ui-zeroclip zeroclip-text="{{ sampleCode }}") Copy
               div(hljs source="sampleCodeError || sampleCode" language="{{ selectedLanguage.hljsID || selectedLanguage.id }}")
           #Parameters.row(ng-show="activeRoute.operation.parameters.length > 0")
             include ./includes/parameters.jade
