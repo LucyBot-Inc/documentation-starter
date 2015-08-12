@@ -1,6 +1,6 @@
 .col-xs-12
   h3.text-regular
     span Parameters
-  #ParameterInputs.collapse.in
+  #ParameterInputs
     div(ng-repeat="parameter in activeRoute.operation.parameters")
       include ./input.jade

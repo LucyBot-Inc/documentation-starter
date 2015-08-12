@@ -93,6 +93,10 @@
   margin-right: 5px;
 }
 
+.form-group.body-form-group {
+  margin-left: 15px;
+}
+
 .language-buttons .btn[disabled] {
   color: #333;
   opacity: 1;

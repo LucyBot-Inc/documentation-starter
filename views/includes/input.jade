@@ -1,4 +1,21 @@
-.recipe-input(ng-controller="Parameter")
+.parameter-input(ng-controller="Parameter")
+  div(ng-if="inputType === 'body'" ng-controller="BodyInput")
+    label JSON Body
+    .alert.alert-danger(ng-if="bodyParseError") {{ bodyParseError }}
+    span.help-block(ng-if="parameter.description" marked="parameter.description")
+    .form-group.body-form-group(
+          ng-repeat="(key, subSchema) in parameter.schema.properties")
+      label {{ key }} ({{ subSchema.type }})
+      input.input-sm.form-control(
+            ng-if="subSchema.type !== 'array' && subSchema.type !== 'object'"
+            ng-model="body[key]"
+            ng-change="onAnswerChanged()")
+      textarea.form-control(
+            ng-if="subSchema.type === 'array' || subSchema.type === 'object'"
+            ng-model="body[key]"
+            ng-change="onAnswerChanged()")
+      span.help-block(ng-if="subSchema.description" marked="subSchema.description")
+
   .form-group(ng-if="inputType === 'text' || inputType === 'number'")
     label {{parameter.name}}
     input.input-sm.form-control(
