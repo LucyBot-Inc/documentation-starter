@@ -9,6 +9,7 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope) {
+  var VISUAL_TAG = "Has Visual";
   $scope.routes = [];
   var info = $scope.spec.info = $scope.spec.info || {};
   info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
@@ -21,6 +22,14 @@ App.controller('Portal', function($scope) {
       operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
       var route = {path: path, method: method, operation: operation};
       route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
+      if (route.visual) {
+        route.operation.tags = route.operation.tags || [];
+        route.operation.tags.push(VISUAL_TAG);
+        $scope.spec.tags = $scope.spec.tags || [];
+        if ($scope.spec.tags.length === 0 || $scope.spec.tags[0].name !== VISUAL_TAG) {
+          $scope.spec.tags.unshift({name: VISUAL_TAG});
+        }
+      }
       $scope.routes.push(route);
     }
   }
