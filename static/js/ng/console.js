@@ -122,23 +122,22 @@ App.controller('Console', function($scope) {
 });
 
 App.controller('SampleCode', function($scope) {
-  $scope.selectedLanguage = {id: 'javascript', label: "JavaScript"};
-  Lucy.get('/sample_code/languages', function(err, languages) {
-    $scope.languages = languages;
-    $scope.$apply();
-  });
-
   var refreshTimeout = null;
   var refreshTimeoutLength = 350;
-  $scope.refresh = function() {
+  $scope.refresh = function(language, callback) {
+    if (!language) {
+      language = $scope.selectedLanguage;
+    }
     if (refreshTimeout) clearTimeout(refreshTimeout);
-    refreshTimeout = setTimeout($scope.refreshInner, refreshTimeoutLength);
+    refreshTimeout = setTimeout(function() {
+      $scope.refreshInner(language, callback);
+    }, refreshTimeoutLength);
   }
 
-  $scope.refreshInner = function() {
+  $scope.refreshInner = function(language, callback) {
     Lucy.post('/sample_code/build/request', {
       request: $scope.getRequestParameters(),
-      language: $scope.selectedLanguage.id,
+      language: language.id
     }, function(err, result) {
       $scope.sampleCodeError = $scope.sampleCode = '';
       if (err) {
@@ -147,18 +146,29 @@ App.controller('SampleCode', function($scope) {
         $scope.sampleCode = result.code;
       }
       $scope.$apply();
+      if (callback) callback(err);
     })
   }
   $scope.setLanguage = function(language) {
-    $scope.selectedLanguage.id = language.id;
-    $scope.selectedLanguage.label = language.label;
-    $scope.refresh();
+    $scope.refresh(language, function() {
+      $scope.selectedLanguage = language;
+      $scope.$apply();
+    });
   }
-  $scope.refresh();
   $scope.callOnChange.push($scope.refresh);
+
+  Lucy.get('/sample_code/languages', function(err, languages) {
+    $scope.languages = languages;
+    $scope.languages.forEach(function(l) {
+      if (l.id === 'node') l.hljsID = 'javascript';
+    })
+    $scope.setLanguage($scope.languages[0]);
+    $scope.$apply();
+  });
 });
 
 App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
+  $scope.MAX_HIGHLIGHT_LEN = 75000;
   $scope.frameSrc = "";
   $scope.outputType = $scope.activeRoute.visual ? 'visual' : 'raw';
   $scope.askedForRaw = false;
