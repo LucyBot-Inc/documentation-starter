@@ -1,3 +1,7 @@
+body {
+  background-color: #f7f7f7;
+}
+
 .navbar-secondary .api-title {
   cursor: default;
   color: #FFF !important;

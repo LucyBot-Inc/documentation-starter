@@ -1,19 +1,11 @@
 .col-xs-12
-  .panel.panel-warning
-    .panel-heading(data-toggle="collapse",
-                   data-target="#KeyInputs")
-      h4.panel-title.text-regular
-        i.fa.collapse-icon &nbsp;
-        span API Keys
-        .pull-right(ng-if="!changedKeys")
-          i.fa.fa-exclamation-circle
-          span &nbsp;The console may not work until you add your credentials
-    #KeyInputs.panel-collapse.collapse.in
-      .panel-body
-        .key.form-group(ng-repeat="input in keyInputs")
-          label {{ input.label || input.name }}
-          input.input-sm.form-control(type="text", ng-model="keys[input.name]", ng-change="keyChanged()")
-        .form-group
-          input(type="checkbox" ng-model="checks.saveKeys" ng-change="saveChanged()")
-          label &nbsp;&nbsp;Remember Keys
+  h3.text-regular
+    span Credentials
+  #KeyInputs
+    .key.form-group(ng-repeat="input in keyInputs")
+      label {{ input.label || input.name }}
+      input.input-sm.form-control(type="text", ng-model="keys[input.name]", ng-change="keyChanged()")
+    .form-group
+      input(type="checkbox" ng-model="checks.saveKeys" ng-change="saveChanged()")
+      label &nbsp;&nbsp;Remember Keys
 

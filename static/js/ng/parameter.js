@@ -48,14 +48,16 @@ App.controller('Keys', function($scope) {
 });
 
 App.controller('Parameter', function($scope) {
-  if ($scope.keys && $scope.input.name in $scope.keys) {
+  if ($scope.keys && $scope.parameter.name in $scope.keys) {
     $scope.model = $scope.keys;
   } else {
     $scope.model = $scope.answers;
   }
   $scope.inputType = 'text';
   var type = $scope.parameter.type;
-  if (type === 'number' || type === 'integer') {
+  if ($scope.parameter.in === 'body') {
+    $scope.inputType = 'body';
+  } else if (type === 'number' || type === 'integer') {
     $scope.inputType = 'number';
   } else if (type === 'array') {
     if ($scope.parameter.enum) {
@@ -98,7 +100,37 @@ App.controller('DynamicArray', function($scope) {
 
   var outerChanged = $scope.onAnswerChanged;
   $scope.onAnswerChanged = function() {
-    $scope.model[$scope.input.name] = $scope.items.map(function(item) {return item.value});
+    $scope.model[$scope.parameter.name] = $scope.items.map(function(item) {return item.value});
+    outerChanged();
+  }
+});
+
+App.controller('BodyInput', function($scope) {
+  $scope.body = {};
+  var outerChanged = $scope.onAnswerChanged;
+  var errTimeout = null;
+  $scope.onAnswerChanged = function() {
+    $scope.bodyParseError = '';
+    if (errTimeout) {
+      clearTimeout(errTimeout);
+      errTimeout = null;
+    }
+    var bodyObj = JSON.parse(JSON.stringify($scope.body));
+    for (key in $scope.parameter.schema.properties) {
+      var schema = $scope.parameter.schema.properties[key];
+      if (schema.type !== 'string' && bodyObj[key]) {
+        try {
+          bodyObj[key] = JSON.parse(bodyObj[key]);
+        } catch (e) {
+          if (errTimeout) clearTimeout(errTimeout);
+          var msg = 'Error parsing JSON field ' + key;
+          errTimeout = setTimeout(function() {
+            $scope.bodyParseError = msg;
+          }, 1000);
+        }
+      }
+    }
+    $scope.model[$scope.parameter.name] = JSON.stringify(bodyObj);
     outerChanged();
   }
 })
