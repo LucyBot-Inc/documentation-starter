@@ -37,6 +37,8 @@ html
             ul.nav.navbar-nav.nav-pills
               li
                 a.api-title {{ spec.info.title }} {{ spec.info.title.indexOf('API') === -1 ? 'API' : '' }}
+              li
+                include ./includes/specURL.jade
             .navbar-collapse
               ul.nav.navbar-nav.nav-pills.navbar-right
                 +navitem('README')
@@ -51,13 +53,3 @@ html
             include ./recipes.jade
           .portal-page(ng-if="activePage === 'docs'")
             include ./documentation.jade
-      #Footer(ng-if="spec")
-        .container-fluid
-          p
-            if specURL.indexOf('any-api.com/models') !== -1
-              a(target="_blank"
-                href="#{specURL.replace('any-api.com/models', 'raw.githubusercontent.com/APIs-guru/api-models/master')}/swagger.json")
-                span Source: [Swagger {{ spec.swagger }}]
-            else
-              a(href="#{specURL}" target="_blank")
-                span Source: [Swagger {{ spec.swagger }}]
