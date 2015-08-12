@@ -5,6 +5,7 @@
 
 .left-col {
   left: 0px;
+  margin-top: -20px;
 }
 
 .right-col {
@@ -12,11 +13,16 @@
   right: 0px;
 }
 
+.right-col iframe {
+  min-height: 500px;
+}
+
 @media (min-width: 768px) {
   .left-col, .right-col {
     position: fixed;
     top: 52px;
     bottom: 0px;
+    margin-top: 0;
     padding-bottom: 100px;
   }
 
