@@ -4,6 +4,10 @@ link(rel="stylesheet" href="/bower/fontawesome/css/font-awesome.min.css")
 link(rel="stylesheet" href="/bower/highlightjs/styles/atelier-forest.light.css")
 
 script(src="/js/mixpanel.js")
+if !enableMixpanel
+  script.
+    mixpanel.register({"$ignore":true});
+
 script(src="/bower/jquery/dist/jquery.min.js")
 script(src="/bower/bootstrap/dist/js/bootstrap.min.js")
 script(src="/bower/angular/angular.min.js")
@@ -18,12 +22,23 @@ script.
   var angularImports = !{JSON.stringify(angularImports.map(function(i) {return i.name}))};
   var App = angular.module('App', angularImports)
   App.config(['markedProvider', function(markedProvider) {
+    markedProvider.setOptions({
+      gfm: true,
+      highlight: function (code) {
+        return hljs.highlightAuto(code).value;
+      }
+    });
     markedProvider.setRenderer({
       link: function(href, title, text) {
         return '<a href="' + href + '"' + ' target="_blank">' + text + '</a>';
       }
     });
   }]);
+  App.config(['uiZeroclipConfigProvider', function(uiZeroclipConfigProvider) {
+    uiZeroclipConfigProvider.setZcConf({
+      swfPath: '/bower/zeroclipboard/dist/ZeroClipboard.swf'
+    });
+  }])
   App.controller('Body', function($scope) {});
 
 link(rel="stylesheet" href="/css/#{page}.css")

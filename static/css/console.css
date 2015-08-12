@@ -4,18 +4,43 @@
 }
 
 .left-col {
-  padding-top: 20px;
-  margin-top: -20px;
-  background-color: #eee;
+  left: 0px;
 }
 
 .right-col {
-  padding-top: 20px;
-  margin-top: -20px;
+  background-color: #fff;
+  right: 0px;
 }
 
-#Parameters .panel {
-  background-color: none;
+@media (min-width: 768px) {
+  .left-col, .right-col {
+    position: fixed;
+    top: 52px;
+    bottom: 0px;
+    padding-bottom: 100px;
+  }
+
+  .right-col .body-row,
+  .left-col .body-row {
+    height: 100%;
+    overflow-y: scroll;
+  }
+
+  .right-col iframe,
+  .right-col > .body-row > .col-xs-12 {
+    height: 100%;
+  }
+}
+
+.control-row {
+  background-color: #333;
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.control-row .dropdown ul {
+  max-height: 308px;
+  overflow-y: scroll;
 }
 
 .below-spec-row {
@@ -94,64 +119,17 @@
   }
 }
 
-.response-container > * > pre,
-.response-container > * {
-  border-radius: 0px;
-}
-
-@media (min-height: 400px) and (max-height: 499px) {
-  .response-container .response-frame {
-    min-height: 400px;
-  }
-}
-
-@media (min-height: 500px) and (max-height: 599px) {
-  .response-container .response-frame {
-    min-height: 500px;
-  }
-}
-
-@media (min-height: 600px) and (max-height: 699px) {
-  .response-container .response-frame {
-    min-height: 600px;
-  }
-}
-
-@media (min-height: 700px) and (max-height: 799px) {
-  .response-container .response-frame {
-    min-height: 700px;
-  }
-}
-
-@media (min-height: 800px) and (max-height: 899px) {
-  .response-container .response-frame {
-    min-height: 800px;
-  }
-}
-
-@media (min-height: 900px) and (max-height: 999px) {
-  .response-container .response-frame {
-    min-height: 900px;
-  }
-}
-
-@media (min-height: 1000px) {
-  .response-container .response-frame {
-    min-height: 1000px;
-  }
-}
-
-.response-container pre,
-.response-container iframe {
+#Response pre,
+#Response iframe {
   border: none;
 }
 
-.response-container pre,
-.response-container code {
+#Response pre,
+#Response code {
   background-color: #fff;
 }
 
-.response-container .btn {
+#Response .control-row .btn {
   border-width: 3px;
   border-color: transparent;
 }

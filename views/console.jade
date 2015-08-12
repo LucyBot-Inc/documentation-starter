@@ -2,7 +2,7 @@ include ./oauth2-modal.jade
 #Console(ng-controller="Console" ng-if="spec")
   .row
     .col-xs-12.col-sm-6.left-col
-      .row.row-spaced
+      .row.control-row
         .hidden-xs.col-sm-3(ng-if="spec.tags")
           .dropdown.tag-dropdown
             button.tag-dropdown-btn.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
@@ -34,24 +34,25 @@ include ./oauth2-modal.jade
                 a(ng-click="setActiveRoute(route)")
                   span.text-uppercase(data-verb="{{ route.method }}") {{ route.method }}&nbsp;
                   span {{ route.path }}
-      .row(ng-if="activeRoute.operation.description")
+      .row.body-row
         .col-xs-12
-          .alert.alert-info.route-description(marked="activeRoute.operation.description")
-      #Keys.row(ng-show="keyInputs.length > 0" ng-controller="Keys")
-        include ./includes/keys.jade
-      #SampleCode.row(ng-controller="SampleCode")
-        .col-xs-12
-          h3 Sample Code
-          .btn-group.btn-group-sm.language-buttons
-            .btn.btn-link.pin-bottom(
-                  ng-repeat="language in languages"
-                  ng-disabled="language.id === selectedLanguage.id"
-                  ng-click="setLanguage(language)") {{ language.label }}
-          span.copy-btn-container
-            a.btn.btn-primary.copy-btn(ui-zeroclip zeroclip-text="{{ sampleCode }}") Copy
-          div(hljs source="sampleCodeError || sampleCode" language="{{ selectedLanguage.hljsID || selectedLanguage.id }}")
-      #Parameters.row(ng-show="activeRoute.operation.parameters.length > 0")
-        include ./includes/parameters.jade
-    .col-xs-12.col-sm-6.right-col
-      #Response.row(ng-controller="Response")
-        include ./includes/response.jade
+          .row.alert.alert-info.pin-left.pin-right(
+              ng-if="activeRoute.operation.description"
+              marked="activeRoute.operation.description")
+          #Keys.row(ng-show="keyInputs.length > 0" ng-controller="Keys")
+            include ./includes/keys.jade
+          #SampleCode.row(ng-controller="SampleCode")
+            .col-xs-12
+              h3 Sample Code
+              .btn-group.btn-group-sm.language-buttons
+                .btn.btn-link.pin-bottom(
+                      ng-repeat="language in languages"
+                      ng-disabled="language.id === selectedLanguage.id"
+                      ng-click="setLanguage(language)") {{ language.label }}
+              span.copy-btn-container
+                a.btn.btn-primary.copy-btn(ui-zeroclip zeroclip-text="{{ sampleCode }}") Copy
+              div(hljs source="sampleCodeError || sampleCode" language="{{ selectedLanguage.hljsID || selectedLanguage.id }}")
+          #Parameters.row(ng-show="activeRoute.operation.parameters.length > 0")
+            include ./includes/parameters.jade
+    #Response.col-xs-12.col-sm-6.right-col(ng-controller="Response")
+      include ./includes/response.jade
