@@ -23,5 +23,8 @@
             ng-src="{{ frameSrc }}"
             ng-if="activeRoute.visual"
             ng-show="outputType === 'visual'")
+    .response-raw(ng-if="outputType === 'raw' && response.length >= MAX_HIGHLIGHT_LEN")
+      pre
+        code {{ response }}
     .response-raw(hljs source="response"
-                  ng-show="outputType === 'raw'")
+                  ng-if="outputType === 'raw' && response.length < MAX_HIGHLIGHT_LEN")
