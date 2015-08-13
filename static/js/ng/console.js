@@ -279,7 +279,6 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     })
   }
   var autorefresh = function() {
-    console.log('autoref');
     if ($scope.activeRoute.method === 'get') {
       $scope.refresh()
     }

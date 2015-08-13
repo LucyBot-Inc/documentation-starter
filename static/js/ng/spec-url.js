@@ -25,7 +25,6 @@ App.controller('SpecURL', function($scope) {
           host: api.host,
           url: $scope.specURL,
         });
-        console.log('tracked get swag');
         var bodyScope = $('#Body').scope();
         bodyScope.spec = api;
         bodyScope.$apply();
