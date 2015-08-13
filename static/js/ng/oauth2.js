@@ -31,6 +31,10 @@ App.controller('OAuth2', function($scope) {
     }
   }
 
+  $scope.clearScopes = function() {
+    for (var scope in addedScopes) addedScopes[scope] = false;
+  }
+
   $scope.authorize = function() {
     var flow = $scope.definition.flow;
     var url = $scope.definition.authorizationUrl;
@@ -46,7 +50,9 @@ App.controller('OAuth2', function($scope) {
     url += '?response_type=' + (flow === 'implicit' ? 'token' : 'code');
     url += '&redirect_uri=' + redirect;
     url += '&client_id=' + encodeURIComponent(clientId);
-    url += '&scope=' + encodeURIComponent(scopes.join(' '));
+    if (scopes.length > 0) {
+      url += '&scope=' + encodeURIComponent(scopes.join(' '));
+    }
     url += '&state=' + encodeURIComponent(state);
     mixpanel.track('oauth_start', {
       host: $scope.spec.host,
