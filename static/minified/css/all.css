@@ -8798,6 +8798,25 @@ span.pull-right {
   line-height: 20px;
 }
 
+.spec-row {
+  background-color: #ccc;
+  border-bottom: 1px solid #333;
+  padding: 4px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 80px;
+}
+
+.brand-col {
+  width: 10%;
+}
+
+.form-col {
+  width: 80%;
+}
+
+
 span[data-verb] {
   color: #777;
   display: inline-block;

@@ -63,7 +63,6 @@ toMinify.forEach(function(m) {
   });
   var concat = inFiles.join('\n');
   if (m.processor) concat = m.processor(concat);
-  console.log('concat');
   FS.writeFileSync(__dirname + '/' + m.fileOut, inFiles.join('\n'));
 })
 
