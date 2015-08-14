@@ -103,7 +103,7 @@ App.controller('Console', function($scope) {
       } else if (parameter.in === 'formData') {
         if (params.body) params.body += '&';
         else params.body = '';
-        params.body += parameter.name + '=' + answer;
+        params.body += parameter.name + '=' + encodeURIComponent(answer);
       } else if (parameter.in === 'query') {
         params.query = params.query || {};
         params.query[parameter.name] = answer;
