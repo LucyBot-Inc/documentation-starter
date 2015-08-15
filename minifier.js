@@ -47,9 +47,9 @@ var minify = function(m) {
   var inFiles = m.fileIn.map(function(f) {
     return FS.readFileSync(__dirname + '/' + f, 'utf8')
   });
-  var concat = inFiles.join('\n');
+  var concat = inFiles.join(m.join || '\n');
   if (m.processor) concat = m.processor(concat);
-  FS.writeFileSync(__dirname + '/' + m.fileOut, inFiles.join('\n'));
+  FS.writeFileSync(__dirname + '/' + m.fileOut, concat);
 };
 
 toMinify.forEach(minify);
