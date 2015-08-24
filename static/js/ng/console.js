@@ -135,6 +135,9 @@ App.controller('SampleCode', function($scope) {
   }
 
   $scope.refreshInner = function(language, callback) {
+    mixpanel.track('refresh_sample_code', {
+      language: language.id
+    })
     Lucy.post('/sample_code/build/request', {
       request: $scope.getRequestParameters(),
       language: language.id
@@ -208,6 +211,12 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
   }
 
   $scope.refreshInner = function() {
+    mixpanel.track('refresh_response', {
+      visual: $scope.activeRoute.visual,
+      method: $scope.activeRoute.method,
+      path: $scope.activeRoute.path,
+      host: $scope.spec.host
+    })
     $scope.outputType = !$scope.askedForRaw && $scope.activeRoute.visual ? 'visual' : 'raw';
     $scope.response = '';
     if ($scope.activeRoute.visual) {
