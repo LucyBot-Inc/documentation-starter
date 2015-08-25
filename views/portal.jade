@@ -22,7 +22,14 @@ html
           .container-fluid
             ul.nav.navbar-nav.nav-pills
               li
-                a.api-title {{ spec.info.title }} {{ spec.info.title.indexOf('API') === -1 ? 'API' : '' }}
+                if isAnyAPI
+                  a.api-title(href="https://any-api.com")
+                    span Any
+                    span.fa.fa-bolt
+                    span API -&nbsp;
+                    span {{ spec.info.title }}
+                else
+                  a.no-click.api-title {{ spec.info.title }} {{ spec.info.title.toUpperCase().indexOf('API') === -1 ? 'API' : '' }}
               li
                 include ./includes/specURL.jade
             .navbar-collapse

@@ -12,5 +12,6 @@ Router.get('/embed', function(req, res) {
   Render('portal', {
     specURL: req.query.swaggerURL,
     enableMixpanel: !process.env.DEVELOPMENT,
+    isAnyAPI: req.query.any_api,
   })(req, res);
 });
