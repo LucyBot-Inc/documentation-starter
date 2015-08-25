@@ -2,11 +2,18 @@ body {
   background-color: #f7f7f7;
 }
 
+.fa-bolt {
+  color: #df691a;
+}
+
 .navbar-secondary .api-title {
-  cursor: default;
   color: #FFF !important;
   font-weight: 600;
   font-size: 20px;
+}
+
+a.no-click {
+  cursor: default;
 }
 
 .navbar-secondary .action-link {
