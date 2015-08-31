@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "postinstall": "./node_modules/bower/bin/bower --config.interactive=false install"
+    "postinstall": "bower --config.interactive=false install"
   },
   "repository": {
     "type": "git",
