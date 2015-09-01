@@ -2,7 +2,7 @@ var FS = require('fs');
 var App = require('express')();
 var ONE_HOUR = 1000 * 60 * 60;
 var ConsoleRouter = new (require('./router.js'))({
-  cache: ONE_HOUR,
+  cache: process.env.DEVELOPMENT ? false : ONE_HOUR,
   swagger: JSON.parse(FS.readFileSync(__dirname + '/examples/hacker_news.json')),
 })
 

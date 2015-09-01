@@ -17,7 +17,7 @@ html
         .alert.alert-danger(ng-if="alert.danger") {{ alert.danger }}
         if !specURL
           include ./includes/spec-url.jade
-      #Portal(ng-if="spec" ng-init="activePage = 'console'" ng-controller="Portal")
+      #Portal(ng-if="spec" ng-controller="Portal")
         nav.navbar.navbar-secondary.navbar-inverse.square
           .container-fluid
             ul.nav.navbar-nav.nav-pills
@@ -40,9 +40,10 @@ html
         .container-fluid(ng-cloak)
           .portal-page(ng-if="activePage === 'readme'")
             include ./readme.jade
-          .portal-page(ng-if="activePage === 'console'")
+          .portal-page(ng-if="activePage === 'console' || !activePage")
             include ./console.jade
           .portal-page(ng-if="activePage === 'recipes'")
             include ./recipes.jade
           .portal-page(ng-if="activePage === 'docs'")
             include ./documentation.jade
+
