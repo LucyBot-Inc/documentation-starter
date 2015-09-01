@@ -24,6 +24,7 @@
     "express": "^4.12.4",
     "jade": "^1.10.0",
     "request": "^2.57.0",
-    "uglify-js": "~2.4.24"
+    "uglify-js": "~2.4.24",
+    "underscore": "^1.8.3"
   }
 }
