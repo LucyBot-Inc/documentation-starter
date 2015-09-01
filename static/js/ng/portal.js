@@ -8,34 +8,38 @@ var maybeAddExternalDocs = function(description, externalDocs) {
   return description;
 }
 
-App.controller('Portal', function($scope) {
+App.controller('Portal', function($scope, spec) {
   var VISUAL_TAG = "Has Visual";
   $scope.routes = [];
-  var info = $scope.spec.info = $scope.spec.info || {};
-  info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
-  for (path in $scope.spec.paths) {
-    var pathParams = $scope.spec.paths[path].parameters || [];
-    for (method in $scope.spec.paths[path]) {
-      if (method === 'parameters') continue;
-      var operation = $scope.spec.paths[path][method];
-      operation.parameters = (operation.parameters || []).concat(pathParams);
-      operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
-      var route = {path: path, method: method, operation: operation};
-      route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
-      if (route.visual) {
-        route.operation.tags = route.operation.tags || [];
-        route.operation.tags.push(VISUAL_TAG);
-        $scope.spec.tags = $scope.spec.tags || [];
-        if ($scope.spec.tags.length === 0 || $scope.spec.tags[0].name !== VISUAL_TAG) {
-          $scope.spec.tags.unshift({name: VISUAL_TAG});
+  spec.then(function(spec) {
+    $scope.spec = spec.data;
+    console.log('spec', $scope.spec);
+    var info = $scope.spec.info = $scope.spec.info || {};
+    info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
+    for (path in $scope.spec.paths) {
+      var pathParams = $scope.spec.paths[path].parameters || [];
+      for (method in $scope.spec.paths[path]) {
+        if (method === 'parameters') continue;
+        var operation = $scope.spec.paths[path][method];
+        operation.parameters = (operation.parameters || []).concat(pathParams);
+        operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
+        var route = {path: path, method: method, operation: operation};
+        route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
+        if (route.visual) {
+          route.operation.tags = route.operation.tags || [];
+          route.operation.tags.push(VISUAL_TAG);
+          $scope.spec.tags = $scope.spec.tags || [];
+          if ($scope.spec.tags.length === 0 || $scope.spec.tags[0].name !== VISUAL_TAG) {
+            $scope.spec.tags.unshift({name: VISUAL_TAG});
+          }
         }
+        $scope.routes.push(route);
       }
-      $scope.routes.push(route);
     }
-  }
-  $scope.routes = $scope.routes.sort(SORT_ROUTES);
+    $scope.routes = $scope.routes.sort(SORT_ROUTES);
 
-  $scope.setActiveTag = function(tag) {
-    $scope.activeTag = tag;
-  }
+    $scope.setActiveTag = function(tag) {
+      $scope.activeTag = tag;
+    }
+  })
 });

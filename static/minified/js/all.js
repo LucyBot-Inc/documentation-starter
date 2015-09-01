@@ -2215,6 +2215,12 @@ https://github.com/pc035860/angular-highlightjs.git */
 }());
 
 var App = angular.module('App', ['hc.marked', 'zeroclipboard', 'hljs'])
+App.service('spec', function($http) {
+  var promise = $http.get(SPEC_URL).success(function(data) {
+    return data.data;
+  })
+  return promise;
+})
 App.config(['markedProvider', function(markedProvider) {
   markedProvider.setOptions({
     gfm: true,
@@ -2246,36 +2252,40 @@ var maybeAddExternalDocs = function(description, externalDocs) {
   return description;
 }
 
-App.controller('Portal', function($scope) {
+App.controller('Portal', function($scope, spec) {
   var VISUAL_TAG = "Has Visual";
   $scope.routes = [];
-  var info = $scope.spec.info = $scope.spec.info || {};
-  info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
-  for (path in $scope.spec.paths) {
-    var pathParams = $scope.spec.paths[path].parameters || [];
-    for (method in $scope.spec.paths[path]) {
-      if (method === 'parameters') continue;
-      var operation = $scope.spec.paths[path][method];
-      operation.parameters = (operation.parameters || []).concat(pathParams);
-      operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
-      var route = {path: path, method: method, operation: operation};
-      route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
-      if (route.visual) {
-        route.operation.tags = route.operation.tags || [];
-        route.operation.tags.push(VISUAL_TAG);
-        $scope.spec.tags = $scope.spec.tags || [];
-        if ($scope.spec.tags.length === 0 || $scope.spec.tags[0].name !== VISUAL_TAG) {
-          $scope.spec.tags.unshift({name: VISUAL_TAG});
+  spec.then(function(spec) {
+    $scope.spec = spec.data;
+    console.log('spec', $scope.spec);
+    var info = $scope.spec.info = $scope.spec.info || {};
+    info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
+    for (path in $scope.spec.paths) {
+      var pathParams = $scope.spec.paths[path].parameters || [];
+      for (method in $scope.spec.paths[path]) {
+        if (method === 'parameters') continue;
+        var operation = $scope.spec.paths[path][method];
+        operation.parameters = (operation.parameters || []).concat(pathParams);
+        operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
+        var route = {path: path, method: method, operation: operation};
+        route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
+        if (route.visual) {
+          route.operation.tags = route.operation.tags || [];
+          route.operation.tags.push(VISUAL_TAG);
+          $scope.spec.tags = $scope.spec.tags || [];
+          if ($scope.spec.tags.length === 0 || $scope.spec.tags[0].name !== VISUAL_TAG) {
+            $scope.spec.tags.unshift({name: VISUAL_TAG});
+          }
         }
+        $scope.routes.push(route);
       }
-      $scope.routes.push(route);
     }
-  }
-  $scope.routes = $scope.routes.sort(SORT_ROUTES);
+    $scope.routes = $scope.routes.sort(SORT_ROUTES);
 
-  $scope.setActiveTag = function(tag) {
-    $scope.activeTag = tag;
-  }
+    $scope.setActiveTag = function(tag) {
+      $scope.activeTag = tag;
+    }
+  })
 });
 
 App.controller('Docs', function($scope) {
@@ -2511,7 +2521,7 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
 
   $scope.getDemoUrl = function() {
     var demoURL = '/code/build/embed?';
-    demoURL += 'lucy_swaggerURL=' + encodeURIComponent($('#SpecURL').scope().specURL);
+    demoURL += 'lucy_swaggerURL=' + encodeURIComponent(SPEC_URL);
     demoURL += '&lucy_method=' + encodeURIComponent($scope.activeRoute.method);
     demoURL += '&lucy_path=' + encodeURIComponent($scope.activeRoute.path);
     var keys = $('#Keys').scope().keys;
@@ -2842,48 +2852,4 @@ App.controller('BodyInput', function($scope) {
     $scope.model[$scope.parameter.name] = JSON.stringify(bodyObj);
     outerChanged();
   }
-})
-
-var PARSER_OPTS = {
-  strictValidation: false,
-  validateSchema: false
-}
-
-App.controller('SpecURL', function($scope) {
-  $scope.specURL = SPEC_URL || "https://api.lucybot.com/v1/apis/hacker_news";
-  $scope.alert = {};
-  $scope.getSpec = function() {
-    $.ajax({
-      url: $scope.specURL
-    })
-    .done(function(response, status, request) {
-      swagger.parser.parse(response, PARSER_OPTS, function(err, api, metadata) {
-        if (!api || !api.swagger) {
-          $scope.alert = {danger: "Error parsing Swagger"};
-          $scope.$apply();
-          mixpanel.track('err_swagger', {
-            url: $scope.specURL,
-            error: err,
-          });
-          return;
-        }
-        mixpanel.track('get_swagger', {
-          host: api.host,
-          url: $scope.specURL,
-        });
-        var bodyScope = $('#Body').scope();
-        bodyScope.spec = api;
-        bodyScope.$apply();
-      });
-    })
-    .fail(function(xhr, details) {
-      $scope.alert = {danger: "Error getting spec from " + $scope.specURL}
-      mixpanel.track('err_swagger', {
-        url: $scope.specURL,
-        error: 'load'
-      })
-      $scope.$apply();
-    })
-  }
-  if (SPEC_URL) $scope.getSpec();
 })

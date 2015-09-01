@@ -11,5 +11,6 @@ if !enableMixpanel
     mixpanel.register({"$ignore":true});
 
 script.
+  SPEC_URL = !{JSON.stringify(specURL)};
   PROXY_HOST = '#{proxyHost}'
 script(src="/minified/js/all.js")

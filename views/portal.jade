@@ -8,17 +8,10 @@ html
     title API Console
     include ./includes/head.jade
 
-    script.
-      var SPEC_URL = !{JSON.stringify(specURL)};
-
   body(ng-app="App" ng-cloak)
     #Body(ng-controller="Body")
-      #SpecURL(ng-controller="SpecURL")
-        .alert.alert-danger(ng-if="alert.danger") {{ alert.danger }}
-        if !specURL
-          include ./includes/spec-url.jade
-      #Portal(ng-if="spec" ng-controller="Portal")
-        nav.navbar.navbar-secondary.navbar-inverse.square
+      #Portal(ng-controller="Portal" ng-show="spec")
+        #nav.navbar.navbar-secondary.navbar-inverse.square
           .container-fluid
             ul.nav.navbar-nav.nav-pills
               li
@@ -38,7 +31,7 @@ html
                 +navitem('README')
                 +navitem('Console')
                 +navitem('Docs')
-        .container-fluid(ng-cloak)
+        .container-fluid(ng-if="spec")
           .portal-page(ng-if="activePage === 'readme'")
             include ./readme.jade
           .portal-page(ng-if="activePage === 'console' || !activePage")

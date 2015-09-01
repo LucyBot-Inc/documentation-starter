@@ -181,7 +181,7 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
 
   $scope.getDemoUrl = function() {
     var demoURL = '/code/build/embed?';
-    demoURL += 'lucy_swaggerURL=' + encodeURIComponent($('#SpecURL').scope().specURL);
+    demoURL += 'lucy_swaggerURL=' + encodeURIComponent(SPEC_URL);
     demoURL += '&lucy_method=' + encodeURIComponent($scope.activeRoute.method);
     demoURL += '&lucy_path=' + encodeURIComponent($scope.activeRoute.path);
     var keys = $('#Keys').scope().keys;
