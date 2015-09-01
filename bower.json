@@ -20,5 +20,8 @@
     "highlightjs": "~8.5.0",
     "angular-highlightjs": "~0.4.1",
     "angular-marked": "~0.0.21"
+  },
+  "resolutions": {
+    "angular": "1.4.3"
   }
 }
