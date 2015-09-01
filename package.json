@@ -2,7 +2,7 @@
   "name": "lucy-console",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha",
     "postinstall": "bower --config.interactive=false install"
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/bobby-brennan/lucy-console",
   "dependencies": {
+    "body-parser": "^1.13.3",
     "bower": "^1.5.2",
     "clean-css": "~3.3.9",
     "compression": "~1.5.2",
