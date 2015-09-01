@@ -31,7 +31,7 @@ html
                 else
                   a.no-click.api-title {{ spec.info.title }} {{ spec.info.title.toUpperCase().indexOf('API') === -1 ? 'API' : '' }}
               li
-                include ./includes/specURL.jade
+                include ./includes/spec-link.jade
             .navbar-collapse
               ul.nav.navbar-nav.nav-pills.navbar-right
                 +navitem('README')
