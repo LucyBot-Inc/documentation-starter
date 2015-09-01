@@ -11,7 +11,7 @@
   ],
   "dependencies": {
     "jquery": "~2.1.4",
-    "angular": "~1.4.x",
+    "angular": "1.4.3",
     "bootstrap": "~3.3.4",
     "fontawesome": "~4.3.0",
     "swagger-parser": "~2.4.1",
@@ -22,6 +22,6 @@
     "angular-marked": "~0.0.21"
   },
   "resolutions": {
-    "angular": "~1.4.x"
+    "angular": "1.4.3"
   }
 }
