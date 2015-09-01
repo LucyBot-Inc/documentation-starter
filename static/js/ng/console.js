@@ -198,7 +198,6 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
         demoURL += '&' + key + '=' + encodeURIComponent(JSON.stringify($scope.answers[key]));
       }
     }
-    console.log('dem', demoURL);
     return demoURL;
   }
 
