@@ -7,7 +7,6 @@ var Jade = require('jade');
 var ConsoleRouter = module.exports = function(options) {
   var self = this;
   self.options = options || {};
-  self.options.rootDir = self.options.rootDir || '/';
 
   self.router = Express.Router();
   self.router.use(require('compression')());
@@ -30,7 +29,7 @@ var ConsoleRouter = module.exports = function(options) {
     proxyHost: self.options.proxy,
   }
   if (self.options.swagger) {
-    renderOpts.specURL = Path.join(self.options.rootDir, '/swagger.json'),
+    renderOpts.specURL = (self.options.rootDir || '') + '/swagger.json',
     codeRouter.swagger = self.options.swagger;
     self.router.get('/swagger.json', function(req, res) {
       res.json(self.options.swagger);
