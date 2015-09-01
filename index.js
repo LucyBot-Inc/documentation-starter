@@ -1,1 +1,1 @@
-module.exports = require('router.js');
+module.exports = require('./router.js');
