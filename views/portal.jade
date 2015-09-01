@@ -29,7 +29,8 @@ html
                     span API -&nbsp;
                     span {{ spec.info.title }}
                 else
-                  a.no-click.api-title {{ spec.info.title }} {{ spec.info.title.toUpperCase().indexOf('API') === -1 ? 'API' : '' }}
+                  a.no-click.api-title(
+                    ng-bind-template="{{ spec.info.title }} {{ spec.info.title.toUpperCase().indexOf('API') === -1 ? 'API' : '' }}")
               li
                 include ./includes/spec-link.jade
             .navbar-collapse
