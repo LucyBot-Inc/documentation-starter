@@ -1,3 +1,4 @@
+var Request = require('request');
 var Codegen = require('lucy-codegen');
 var RequestBuilder = Codegen.generators.request;
 var Router = module.exports = require('express').Router();
@@ -57,15 +58,18 @@ Router.get('/build/embed', getSpec, function(req, res) {
   buildOpts.views[viewName].all = route.responses['200']['x-lucy/view'] || '';
   buildOpts.main.view = viewName;
   buildOpts.main.data = {
-    action: route.operationId || req.query.lucy_method + req.query.lucy_path,
+    action: (route.operationId || req.query.lucy_method + req.query.lucy_path).replace(/\W/g, ''),
     answers: JSON.parse(JSON.stringify(buildOpts.answers)),
   };
   for (var def in req.swagger.definitions) {
-    var view = buildOpts.views[def] = {};
+    var viewName = def.replace(/\W/g, '');
+    var view = buildOpts.views[viewName] = {};
     view.all = req.swagger.definitions[def]['x-lucy/view'] || '';
   }
-  var actions = SwaggerImporter.importActions(req.swagger);
+  var opts = {proxy: Router.proxy};
+  var actions = SwaggerImporter.importActions(req.swagger, opts);
   actions.forEach(function(action) {
+    action.name = action.name.replace(/\W/g, '');
     buildOpts.actions[action.name] = {};
     buildOpts.actions[action.name].javascript = action.contents;
   })
