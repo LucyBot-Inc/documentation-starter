@@ -10,9 +10,18 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 
 App.controller('Portal', function($scope, spec) {
   var VISUAL_TAG = "Has Visual";
+  var PARSER_OPTS = {
+    strictValidation: false,
+    validateSchema: false
+  }
   $scope.routes = [];
   spec.then(function(spec) {
     $scope.spec = spec.data;
+    swagger.parser.parse($scope.spec, PARSER_OPTS, function(err, api) {
+      console.log('parse', err, api);
+      if (!err) $scope.spec = api;
+      $scope.$apply();
+    })
     console.log('spec', $scope.spec);
     var info = $scope.spec.info = $scope.spec.info || {};
     info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
