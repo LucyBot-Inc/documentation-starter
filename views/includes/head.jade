@@ -12,5 +12,8 @@ if !enableMixpanel
 
 script.
   SPEC_URL = !{JSON.stringify(specURL)};
-  PROXY_HOST = '#{proxyHost}'
+  PROXY_HOST = '#{proxyHost}';
+  CLIENT_IDS = !{JSON.stringify(client_ids)};
+  OAUTH_CALLBACK = !{JSON.stringify(oauth_callback)};
+
 script(src="/minified/js/all.js")

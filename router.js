@@ -27,6 +27,8 @@ var ConsoleRouter = module.exports = function(options) {
     enableMixpanel: self.options.mixpanel,
     isAnyAPI: self.options.any_api,
     proxyHost: self.options.proxy,
+    client_ids: self.options.client_ids || {},
+    oauth_callback: self.options.oauth_callback,
   }
   if (self.options.swagger) {
     renderOpts.specURL = (self.options.rootDir || '') + '/swagger.json',
