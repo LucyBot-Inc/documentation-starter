@@ -2,6 +2,19 @@ body {
   background-color: #f7f7f7;
 }
 
+.navbar.navbar-secondary {
+  margin-bottom: 0;
+  z-index: 100;
+}
+
+.navbar.navbar-secondary a {
+  cursor: pointer;
+}
+
+#README {
+  padding-top: 20px;
+}
+
 .fa-bolt {
   color: #df691a;
 }
