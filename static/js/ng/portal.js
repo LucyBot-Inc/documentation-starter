@@ -37,6 +37,24 @@ App.controller('Portal', function($scope, spec) {
               $scope.spec.tags.unshift({name: VISUAL_TAG});
             }
           }
+          var joinSearchFields = function(fields) {
+            return fields.filter(function(f) {return f}).join(' ').toLowerCase();
+          }
+          var searchFields = [
+            route.path,
+            route.method,
+            route.operation.description,
+            route.operation.summary,
+          ];
+          searchFields = searchFields.concat(route.operation.parameters.map(function(p) {
+            var paramFields = [
+              p.in,
+              p.name,
+              p.description,
+            ];
+            return joinSearchFields(paramFields);
+          }));
+          route.searchText = joinSearchFields(searchFields);
           $scope.routes.push(route);
         }
       }
