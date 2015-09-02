@@ -15,12 +15,6 @@ oauth.onOAuthComplete = function(qs) {
   }, 1000);
 }
 
-var CLIENT_IDS = {
-  'googleapis.com': "281611287830-66urn3gbae0a7doemo3jqg3impislvqh.apps.googleusercontent.com",
-  'facebook.com': '509396115881819',
-  'instagram.com': '5bce7994099644e4b2ac4a3c75f840a1',
-}
-
 App.controller('OAuth2', function($scope) {
   $scope.alert = {};
   var addedScopes = $scope.addedScopes = {};
@@ -46,7 +40,7 @@ App.controller('OAuth2', function($scope) {
     window.oauth.tokenUrl = (flow === 'accessCode' ? $scope.definition.tokenUrl : null);
     var scopes = Object.keys(addedScopes).filter(function(name) {return addedScopes[name]});
     var state = Math.random();
-    var redirect = 'https://lucybot.com:3011/html/oauth_callback.html';
+    var redirect = OAUTH_CALLBACK;
     url += '?response_type=' + (flow === 'implicit' ? 'token' : 'code');
     url += '&redirect_uri=' + redirect;
     url += '&client_id=' + encodeURIComponent(clientId);
