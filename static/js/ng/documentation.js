@@ -5,18 +5,21 @@ App.controller('Docs', function($scope) {
   $scope.scrollTo = function(idx) {
     var curTop = $('.docs-col').scrollTop();
     var colTop = $('.docs-col').offset().top;
-    var routeTop = $('#ScrollRoute' + idx).offset().top;
-    console.log('tops', curTop, colTop, routeTop);
-    $('.docs-col').scrollTop(routeTop - colTop + curTop);
+    var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
+    $('.docs-col').scrollTop(routeTop - colTop + curTop - 15);
   }
 
   $scope.routesFiltered = $scope.routes;
-  $scope.$watch('query', function(q) {
+  var filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
         .filter($scope.showRoute)
-  })
+        .filter(function(r) {
+          return !$scope.activeTag || (r.operation.tags && r.operation.tags.indexOf($scope.activeTag.name) !== -1)
+        })
+  }
+  $scope.$watch('query', filterRoutes);
+  $scope.$watch('activeTag', filterRoutes);
   $scope.showRoute = function(route) {
-    console.log('if', route, $scope.query)
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
     var terms = query.split(' ');

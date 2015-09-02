@@ -6,6 +6,14 @@
   width: 100%;
 }
 
+.docs-nav-col .method-text {
+  min-width: 50px;
+}
+
+.docs-nav-col a {
+  color: #86E2D5;
+}
+
 .docs-nav-col, .docs-col {
   position: fixed;
   top: 52px;
@@ -19,6 +27,12 @@
   padding-left: 10px;
 }
 
+.docs-nav-col li{
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .docs-col {
   overflow-y: scroll;
   background-color: #eee;
@@ -27,12 +41,6 @@
 
 .docs-col hr {
   border-color: #333;
-}
-
-.docs-request-col {
-}
-
-.docs-response-col {
 }
 
 table.doc-table {
@@ -90,13 +98,13 @@ table.doc-table td.example {
   max-height: 318px;
 }
 
-.response-schema.hide-code[hljs] > pre {
+.hide-code[hljs] > pre {
   padding: 0px;
   background: none;
   border: none;
 }
 
-.response-schema.hide-code code {
+.hide-code code {
   background-color: none;
   background: none;
 }

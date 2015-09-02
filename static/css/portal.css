@@ -7,6 +7,10 @@ body {
   z-index: 100;
 }
 
+.navbar.navbar-secondary a {
+  cursor: pointer;
+}
+
 #README {
   padding-top: 20px;
 }
