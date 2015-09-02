@@ -74,11 +74,7 @@ Router.get('/build/embed', getSpec, function(req, res) {
     buildOpts.actions[action.name].javascript = action.contents;
   })
 
-  Codegen.generators.app.fixAnswers(buildOpts.answers, function(err, answers) {
-    if (err) return res.status(500).json(err);
-    buildOpts.answers = answers;
-    Codegen.generators.app.build(buildOpts, function(err, files) {
-      res.send(files[0].contents);
-    })
+  Codegen.generators.app.build(buildOpts, function(err, files) {
+    res.send(files[0].contents);
   })
 })

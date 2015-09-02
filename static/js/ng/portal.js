@@ -42,6 +42,8 @@ App.controller('Portal', function($scope, spec) {
       }
       $scope.routes = $scope.routes.sort(SORT_ROUTES);
     }
+    $scope.setSpec(spec.data);
+    /*
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
       if (!err) {
         $scope.setSpec(api);
@@ -50,6 +52,7 @@ App.controller('Portal', function($scope, spec) {
         console.log(err);
       }
     })
+    */
 
     $scope.setActiveTag = function(tag) {
       $scope.activeTag = tag;
