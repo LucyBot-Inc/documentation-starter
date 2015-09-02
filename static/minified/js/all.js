@@ -2261,7 +2261,6 @@ App.controller('Portal', function($scope, spec) {
   spec.then(function(spec) {
     $scope.routes = [];
     $scope.setSpec = function(spec) {
-      console.log('spec', spec)
       $scope.spec = spec;
       var info = $scope.spec.info = $scope.spec.info || {};
       info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
@@ -2288,12 +2287,9 @@ App.controller('Portal', function($scope, spec) {
       $scope.routes = $scope.routes.sort(SORT_ROUTES);
     }
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
-      if (!err) {
-        $scope.setSpec(api);
-        $scope.$apply();
-      } else {
-        console.log(err);
-      }
+      if (err) console.log(err);
+      $scope.setSpec(api || spec.data);
+      $scope.$apply();
     })
 
     $scope.setActiveTag = function(tag) {
