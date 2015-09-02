@@ -2254,33 +2254,47 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 
 App.controller('Portal', function($scope, spec) {
   var VISUAL_TAG = "Has Visual";
-  $scope.routes = [];
+  var PARSER_OPTS = {
+    strictValidation: false,
+    validateSchema: false
+  }
   spec.then(function(spec) {
-    $scope.spec = spec.data;
-    console.log('spec', $scope.spec);
-    var info = $scope.spec.info = $scope.spec.info || {};
-    info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
-    for (path in $scope.spec.paths) {
-      var pathParams = $scope.spec.paths[path].parameters || [];
-      for (method in $scope.spec.paths[path]) {
-        if (method === 'parameters') continue;
-        var operation = $scope.spec.paths[path][method];
-        operation.parameters = (operation.parameters || []).concat(pathParams);
-        operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
-        var route = {path: path, method: method, operation: operation};
-        route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
-        if (route.visual) {
-          route.operation.tags = route.operation.tags || [];
-          route.operation.tags.push(VISUAL_TAG);
-          $scope.spec.tags = $scope.spec.tags || [];
-          if ($scope.spec.tags.length === 0 || $scope.spec.tags[0].name !== VISUAL_TAG) {
-            $scope.spec.tags.unshift({name: VISUAL_TAG});
+    $scope.routes = [];
+    $scope.setSpec = function(spec) {
+      console.log('spec', spec)
+      $scope.spec = spec;
+      var info = $scope.spec.info = $scope.spec.info || {};
+      info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
+      for (path in $scope.spec.paths) {
+        var pathParams = $scope.spec.paths[path].parameters || [];
+        for (method in $scope.spec.paths[path]) {
+          if (method === 'parameters') continue;
+          var operation = $scope.spec.paths[path][method];
+          operation.parameters = (operation.parameters || []).concat(pathParams);
+          operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
+          var route = {path: path, method: method, operation: operation};
+          route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
+          if (route.visual) {
+            route.operation.tags = route.operation.tags || [];
+            route.operation.tags.push(VISUAL_TAG);
+            $scope.spec.tags = $scope.spec.tags || [];
+            if ($scope.spec.tags.length === 0 || $scope.spec.tags[0].name !== VISUAL_TAG) {
+              $scope.spec.tags.unshift({name: VISUAL_TAG});
+            }
           }
+          $scope.routes.push(route);
         }
-        $scope.routes.push(route);
       }
+      $scope.routes = $scope.routes.sort(SORT_ROUTES);
     }
-    $scope.routes = $scope.routes.sort(SORT_ROUTES);
+    swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
+      if (!err) {
+        $scope.setSpec(api);
+        $scope.$apply();
+      } else {
+        console.log(err);
+      }
+    })
 
     $scope.setActiveTag = function(tag) {
       $scope.activeTag = tag;
@@ -2655,12 +2669,6 @@ oauth.onOAuthComplete = function(qs) {
   }, 1000);
 }
 
-var CLIENT_IDS = {
-  'googleapis.com': "281611287830-66urn3gbae0a7doemo3jqg3impislvqh.apps.googleusercontent.com",
-  'facebook.com': '509396115881819',
-  'instagram.com': '5bce7994099644e4b2ac4a3c75f840a1',
-}
-
 App.controller('OAuth2', function($scope) {
   $scope.alert = {};
   var addedScopes = $scope.addedScopes = {};
@@ -2686,7 +2694,7 @@ App.controller('OAuth2', function($scope) {
     window.oauth.tokenUrl = (flow === 'accessCode' ? $scope.definition.tokenUrl : null);
     var scopes = Object.keys(addedScopes).filter(function(name) {return addedScopes[name]});
     var state = Math.random();
-    var redirect = 'https://lucybot.com:3011/html/oauth_callback.html';
+    var redirect = OAUTH_CALLBACK;
     url += '?response_type=' + (flow === 'implicit' ? 'token' : 'code');
     url += '&redirect_uri=' + redirect;
     url += '&client_id=' + encodeURIComponent(clientId);
