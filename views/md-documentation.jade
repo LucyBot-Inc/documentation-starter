@@ -1,0 +1,59 @@
+.row.docs-row
+  .col-md-3.docs-nav-col
+    .form-group
+    .form-group
+      .input-group.input-group-sm.width-full
+        span.input-group-addon
+          i.fa.fa-search
+        input.form-control(type="text" ng-model="query")
+    ul
+      li(ng-repeat="route in routesFiltered")
+         a(ng-click="scrollTo($index)")
+           span.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
+           span &nbsp;
+           span {{ route.path }}
+  .col-md-9.docs-col
+    .row(ng-controller="Route"
+         ng-repeat="route in routesFiltered"
+         id="ScrollRoute{{$index}}")
+      a(name="route{{$index}}")
+      .col-md-12
+        hr(ng-if="$index !== 0")
+        h3.text-regular
+          span
+            span.text-uppercase(data-verb="{{ route.method }}") {{ route.method }}
+            span &nbsp; {{ route.path }}
+        p.small {{ route.operation.summary }}
+      .col-md-6.docs-request-col
+        div(ng-if="route.operation.description" marked="route.operation.description")
+        h4 Parameters
+        div(ng-controller="DocParameter"
+            ng-repeat="parameter in route.operation.parameters")
+          p
+            span
+              strong {{ parameter.name }}
+            span &nbsp;&nbsp;{{ parameter.schema ? 'object' : parameter.format || parameter.type }}
+          .parameter-details
+            p
+              span In: {{ parameter.in }}
+            p
+              span(ng-if="parameter.description") {{ parameter.description }}<br>
+            p
+              strong Example:&nbsp;
+              span.wrap-break-word(ng-if="!parameter.schema") <code>{{ getExample() }}</code>
+              .request-schema.hide-code(ng-if="parameter.schema"
+                                        ng-controller="Schema"
+                                        hljs source="printSchema(parameter.schema)")
+              div(ng-if="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
+              div(ng-if="parameter.enum") Allowed values are:
+              .enum-list
+                ul
+                  li(ng-repeat="item in parameter.enum") {{ item }}
+      .col-md-6.docs-response-col
+        div(ng-repeat="(code, response) in route.operation.responses")
+          h4 Response {{ code }}
+          p {{ response.description }}
+          .response-schema.hide-code(
+                ng-controller="Schema"
+                ng-if="response.schema"
+                hljs source="printSchema(response.schema)")

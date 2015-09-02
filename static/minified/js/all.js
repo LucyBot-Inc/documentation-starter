@@ -2281,6 +2281,24 @@ App.controller('Portal', function($scope, spec) {
               $scope.spec.tags.unshift({name: VISUAL_TAG});
             }
           }
+          var joinSearchFields = function(fields) {
+            return fields.filter(function(f) {return f}).join(' ').toLowerCase();
+          }
+          var searchFields = [
+            route.path, 
+            route.method,
+            route.operation.description,
+            route.operation.summary,
+          ];
+          searchFields = searchFields.concat(route.operation.parameters.map(function(p) {
+            var paramFields = [
+              p.in,
+              p.name,
+              p.description,
+            ];
+            return joinSearchFields(paramFields);
+          }));
+          route.searchText = joinSearchFields(searchFields);
           $scope.routes.push(route);
         }
       }
@@ -2304,7 +2322,30 @@ App.controller('Portal', function($scope, spec) {
 
 App.controller('Docs', function($scope) {
   $scope.getId = function(verb, path) {
-    return verb + '_' + path.replace(/\W/g, '-')
+    return verb + '_' + path.replace(/\W/g, '_')
+  }
+  $scope.scrollTo = function(idx) {
+    var curTop = $('.docs-col').scrollTop();
+    var colTop = $('.docs-col').offset().top;
+    var routeTop = $('#ScrollRoute' + idx).offset().top;
+    console.log('tops', curTop, colTop, routeTop);
+    $('.docs-col').scrollTop(routeTop - colTop + curTop);
+  }
+
+  $scope.routesFiltered = $scope.routes;
+  $scope.$watch('query', function(q) {
+    $scope.routesFiltered = $scope.routes
+        .filter($scope.showRoute)
+  })
+  $scope.showRoute = function(route) {
+    console.log('if', route, $scope.query)
+    if (!$scope.query) return true;
+    var query = $scope.query.toLowerCase();
+    var terms = query.split(' ');
+    for (var i = 0; i < terms.length; ++i) {
+      if (route.searchText.indexOf(terms[i]) !== -1) return true;
+    }
+    return false;
   }
 });
 
