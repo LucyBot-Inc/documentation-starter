@@ -2288,6 +2288,10 @@ App.controller('Portal', function($scope, spec) {
     }
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
       if (err) console.log(err);
+      mixpanel.track('get_swagger', {
+        host: api.host,
+        url: SPEC_URL,
+      })
       $scope.setSpec(api || spec.data);
       $scope.$apply();
     })
