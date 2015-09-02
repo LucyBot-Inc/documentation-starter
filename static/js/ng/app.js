@@ -1,4 +1,10 @@
 var App = angular.module('App', ['hc.marked', 'zeroclipboard', 'hljs'])
+App.service('spec', function($http) {
+  var promise = $http.get(SPEC_URL).success(function(data) {
+    return data.data;
+  })
+  return promise;
+})
 App.config(['markedProvider', function(markedProvider) {
   markedProvider.setOptions({
     gfm: true,

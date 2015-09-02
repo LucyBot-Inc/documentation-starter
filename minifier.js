@@ -25,7 +25,6 @@ var toMinify = [{
     "static/js/ng/oauth2.js",
     "static/js/sort-routes.js",
     "static/js/ng/parameter.js",
-    "static/js/ng/spec-url.js",
   ],
   fileOut: 'static/minified/js/all.js',
 }, {

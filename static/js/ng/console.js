@@ -1,4 +1,3 @@
-var PROXY_HOST = 'https://api.lucybot.com'
 var getSeparatorFromFormat = function(format) {
   if (!format || format === 'csv' || format === 'multi') {
     return ',';
@@ -138,7 +137,7 @@ App.controller('SampleCode', function($scope) {
     mixpanel.track('refresh_sample_code', {
       language: language.id
     })
-    Lucy.post('/sample_code/build/request', {
+    Lucy.post('/code/build/request', {
       request: $scope.getRequestParameters(),
       language: language.id
     }, function(err, result) {
@@ -160,7 +159,7 @@ App.controller('SampleCode', function($scope) {
   }
   $scope.callOnChange.push($scope.refresh);
 
-  Lucy.get('/sample_code/languages', function(err, languages) {
+  Lucy.get('/code/languages', function(err, languages) {
     $scope.languages = languages;
     $scope.languages.forEach(function(l) {
       if (l.id === 'node') l.hljsID = 'javascript';
@@ -181,8 +180,8 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
   }
 
   $scope.getDemoUrl = function() {
-    var demoURL = 'https://api.lucybot.com/v1/fromURL/embed?';
-    demoURL += 'lucy_swaggerURL=' + encodeURIComponent($('#SpecURL').scope().specURL);
+    var demoURL = '/code/build/embed?';
+    demoURL += 'lucy_swaggerURL=' + encodeURIComponent(SPEC_URL);
     demoURL += '&lucy_method=' + encodeURIComponent($scope.activeRoute.method);
     demoURL += '&lucy_path=' + encodeURIComponent($scope.activeRoute.path);
     var keys = $('#Keys').scope().keys;
@@ -226,13 +225,15 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     }
 
     var request = $scope.getRequestParameters();
-    request.path = 'proxy/' + request.protocol + '/' + request.domain
-        + (request.port ? ':' + request.port : '') + request.path;
-    var parts = PROXY_HOST.split(':');
-    request.protocol = parts[0];
-    request.domain = parts[1].substring(2);
-    if (parts[2]) request.port = parts[2];
-    Lucy.post('/sample_code/build/request', {
+    if (PROXY_HOST) {
+      request.path = 'proxy/' + request.protocol + '/' + request.domain
+          + (request.port ? ':' + request.port : '') + request.path;
+      var parts = PROXY_HOST.split(':');
+      request.protocol = parts[0];
+      request.domain = parts[1].substring(2);
+      if (parts[2]) request.port = parts[2];
+    }
+    Lucy.post('/code/build/request', {
       request: request, 
       language: 'javascript',
     }, function(err, result) {
