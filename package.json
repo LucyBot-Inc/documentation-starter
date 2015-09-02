@@ -2,9 +2,10 @@
   "name": "lucy-console",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "postinstall": "bower cache clean && bower --config.interactive=false install"
   },
   "repository": {
     "type": "git",
@@ -16,11 +17,15 @@
   },
   "homepage": "https://github.com/bobby-brennan/lucy-console",
   "dependencies": {
+    "lucy-codegen": "https://github.com/bobby-brennan/lucy-codegen.git",
+    "body-parser": "^1.13.3",
+    "bower": "^1.5.2",
+    "clean-css": "~3.3.9",
+    "compression": "~1.5.2",
     "express": "^4.12.4",
     "jade": "^1.10.0",
     "request": "^2.57.0",
-    "compression": "~1.5.2",
     "uglify-js": "~2.4.24",
-    "clean-css": "~3.3.9"
+    "underscore": "^1.8.3"
   }
 }

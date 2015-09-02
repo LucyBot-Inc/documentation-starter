@@ -1,29 +1,12 @@
-var Https = require('https');
-var Express = require('express');
-var App = Express();
-
-App.set('views', __dirname + '/views')
-App.set('view engine', 'jade');
-App.engine('jade', require('jade').__express);
-
-App.use(require('compression')());
-App.use(require('./minifier.js'));
-
+var FS = require('fs');
+var App = require('express')();
 var ONE_HOUR = 1000 * 60 * 60;
-if (process.env.DEVELOPMENT) {
-  App.use(Express.static(__dirname + '/static'));
-} else {
-  App.use(Express.static(__dirname + '/static', {maxAge: ONE_HOUR}));
-}
+var ConsoleRouter = new (require('./router.js'))({
+  cache: process.env.DEVELOPMENT ? false : ONE_HOUR,
+  swagger: JSON.parse(FS.readFileSync(__dirname + '/examples/hacker_news.json')),
+})
 
-App.use(require('./routes/pages.js'));
-['proxy'].forEach(function(route) {
-  App.use('/' + route, require('./routes/' + route + '.js'));
-});
+App.use(ConsoleRouter.router);
 
 App.listen(process.env.LUCY_CONSOLE_PORT || 3010);
-if (!process.env.DEVELOPMENT) {
-  var Creds = require('../lucybot-com/creds.js');
-  Https.createServer(Creds.ssl, App).listen(3011, '0.0.0.0');
-}
 
