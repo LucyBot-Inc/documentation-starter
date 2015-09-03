@@ -32,6 +32,10 @@ App.controller('Docs', function($scope) {
     }
     return false;
   }
+  $scope.editorMode = false;
+  $scope.switchMode = function() {
+    $scope.editorMode = !$scope.editorMode;
+  }
 });
 
 App.controller('SidebarNav', function($scope) {
