@@ -29,14 +29,11 @@ App.controller('Keys', function($scope) {
     for (var label in $scope.spec.securityDefinitions) {
       def = $scope.spec.securityDefinitions[label];
       if (def.type === 'oauth2') {
-        $scope.$watch('activePage', function(page) {
-          if (page !== 'console') return;
-          $('#OAuth2').scope().setDefinition(def);
-          $('#OAuth2').modal('show');
-          mixpanel.track('prompt_oauth', {
-            host: $scope.spec.host,
-          })
-        });
+        $('#OAuth2').scope().setDefinition(def);
+        $('#OAuth2').modal('show');
+        mixpanel.track('prompt_oauth', {
+          host: $scope.spec.host,
+        })
       }
       $scope.keyInputs.push({
         name: def.type === 'oauth2' ? 'oauth2' : def.name,
