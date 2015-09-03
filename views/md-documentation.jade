@@ -23,12 +23,19 @@
               span.small.pull-right {{ tag.description }}
               span.clearfix
     ul
+      li.readme-link(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
+        a(ng-click="scrollTo(-1)")
+          span README
       li(ng-repeat="route in routesFiltered")
          a(ng-click="scrollTo($index)")
            span.method-text.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
            span &nbsp;
            span {{ route.path }}
   .col-md-9.docs-col
+    #README.row(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
+      .col-md-12
+        div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description")
+        hr
     .row(ng-controller="Route"
          ng-repeat="route in routesFiltered"
          id="ScrollRoute{{$index}}")

@@ -27,10 +27,14 @@
   padding-left: 10px;
 }
 
-.docs-nav-col li{
+.docs-nav-col li {
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.docs-nav-col li.readme-link a {
+  color: #eee;
 }
 
 .docs-col {
