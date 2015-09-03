@@ -150,6 +150,10 @@ App.controller('Docs', function($scope) {
     initMenu();
   }
   $scope.$watch('query', $scope.filterRoutes);
+  $scope.editorMode = false;
+  $scope.switchMode = function() {
+    $scope.editorMode = !$scope.editorMode;
+  }
 });
 
 App.controller('Route', function($scope) {})
