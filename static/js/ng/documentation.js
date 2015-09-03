@@ -3,10 +3,14 @@ App.controller('Docs', function($scope) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
   $scope.scrollTo = function(idx) {
-    var curTop = $('.docs-col').scrollTop();
-    var colTop = $('.docs-col').offset().top;
-    var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
-    $('.docs-col').scrollTop(routeTop - colTop + curTop - 15);
+    if (idx === -1) {
+      $('.docs-col').scrollTop(0);
+    } else {
+      var curTop = $('.docs-col').scrollTop();
+      var colTop = $('.docs-col').offset().top;
+      var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
+      $('.docs-col').scrollTop(routeTop - colTop + curTop - 15);
+    }
   }
 
   $scope.routesFiltered = $scope.routes;
