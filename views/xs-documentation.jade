@@ -1,6 +1,6 @@
-#README.row
+#README.row(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
   .col-xs-12.col-md-10.col-md-offset-1
-    div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description || 'No description'")
+    div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description")
 .row.row-spaced
   .col-xs-12.col-md-10.col-md-offset-1(ng-if="spec.tags")
     .dropdown
