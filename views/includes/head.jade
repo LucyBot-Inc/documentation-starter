@@ -2,18 +2,19 @@ meta(charset='utf-8')
 meta(content='IE=edge', http-equiv='X-UA-Compatible')
 meta(content='width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no', name='viewport')
 
-link(rel="stylesheet" href="/bower/fontawesome/css/font-awesome.min.css")
-link(rel="stylesheet" href="/minified/css/all.css")
+link(rel="stylesheet" href="#{basePath}/bower/fontawesome/css/font-awesome.min.css")
+link(rel="stylesheet" href="#{basePath}/minified/css/all.css")
 
-script(src="/js/mixpanel.js")
+script(src="#{basePath}/js/mixpanel.js")
 if !enableMixpanel
   script.
     mixpanel.register({"$ignore":true});
 
 script.
   SPEC_URL = !{JSON.stringify(specURL)};
+  BASE_URL = '#{basePath}';
   PROXY_HOST = '#{proxyHost}';
   CLIENT_IDS = !{JSON.stringify(client_ids)};
   OAUTH_CALLBACK = !{JSON.stringify(oauth_callback)};
 
-script(src="/minified/js/all.js")
+script(src="#{basePath}/minified/js/all.js")

@@ -1,4 +1,3 @@
-var BASE_URL = '';
 var LUCY_DONE = function(callback) {
   return function(response, status, request) {
      var isJson = request.getResponseHeader('Content-Type').indexOf('application/json') !== -1;
