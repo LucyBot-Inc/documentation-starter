@@ -1750,7 +1750,6 @@ EXAMPLES.resolveRef = function(object, ref) {
 }
 
 
-var BASE_URL = '';
 var LUCY_DONE = function(callback) {
   return function(response, status, request) {
      var isJson = request.getResponseHeader('Content-Type').indexOf('application/json') !== -1;
@@ -2597,7 +2596,7 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
   }
 
   $scope.getDemoUrl = function() {
-    var demoURL = '/code/build/embed?';
+    var demoURL = BASE_URL + '/code/build/embed?';
     demoURL += 'lucy_swaggerURL=' + encodeURIComponent(SPEC_URL);
     demoURL += '&lucy_method=' + encodeURIComponent($scope.activeRoute.method);
     demoURL += '&lucy_path=' + encodeURIComponent($scope.activeRoute.path);
@@ -2627,6 +2626,7 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
   }
 
   $scope.refreshInner = function() {
+    console.log('ref inner');
     mixpanel.track('refresh_response', {
       visual: $scope.activeRoute.visual,
       method: $scope.activeRoute.method,
@@ -2636,6 +2636,7 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     $scope.outputType = !$scope.askedForRaw && $scope.activeRoute.visual ? 'visual' : 'raw';
     $scope.response = '';
     if ($scope.activeRoute.visual) {
+      console.log('srcing');
       $scope.frameSrc = $sce.trustAsResourceUrl($scope.getDemoUrl());
       var frame = $('iframe.response-frame');
       frame.attr('src', $scope.frameSrc);
