@@ -2626,7 +2626,6 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
   }
 
   $scope.refreshInner = function() {
-    console.log('ref inner');
     mixpanel.track('refresh_response', {
       visual: $scope.activeRoute.visual,
       method: $scope.activeRoute.method,
@@ -2636,7 +2635,6 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     $scope.outputType = !$scope.askedForRaw && $scope.activeRoute.visual ? 'visual' : 'raw';
     $scope.response = '';
     if ($scope.activeRoute.visual) {
-      console.log('srcing');
       $scope.frameSrc = $sce.trustAsResourceUrl($scope.getDemoUrl());
       var frame = $('iframe.response-frame');
       frame.attr('src', $scope.frameSrc);
