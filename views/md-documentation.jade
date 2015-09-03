@@ -1,0 +1,83 @@
+.row.docs-row
+  .col-md-3.docs-nav-col
+    .form-group
+    .form-group
+      .input-group.input-group-sm.width-full
+        span.input-group-addon
+          i.fa.fa-search
+        input.form-control(type="text" ng-model="query")
+    .form-group
+      .dropdown
+        button.btn.btn-default.btn-sm.dropdown-toggle.width-full.btn-text-left(
+              type="button"
+              data-toggle="dropdown")
+          span.caret
+          span &nbsp;&nbsp;{{ activeTag ? activeTag.name : 'All' }}
+        ul.dropdown-menu(role="menu")
+          li(role="presentation")
+            a(ng-click="setActiveTag(null)")
+              span All
+          li(role="presentation" ng-repeat="tag in spec.tags" ng-show="tag.name !== 'Has Visual'")
+            a(ng-click="setActiveTag(tag)")
+              span.pull-left {{ tag.name }}
+              span.small.pull-right {{ tag.description }}
+              span.clearfix
+    ul
+      li.readme-link(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
+        a(ng-click="scrollTo(-1)")
+          span README
+      li(ng-repeat="route in routesFiltered")
+         a(ng-click="scrollTo($index)")
+           span.method-text.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
+           span &nbsp;
+           span {{ route.path }}
+  .col-md-9.docs-col
+    #README.row(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
+      .col-md-12
+        div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description")
+        hr
+    .row(ng-controller="Route"
+         ng-repeat="route in routesFiltered"
+         id="ScrollRoute{{$index}}")
+      a(name="route{{$index}}")
+      .col-md-12
+        hr(ng-if="$index !== 0")
+        h3.text-regular
+          span
+            span.text-uppercase(data-verb="{{ route.method }}") {{ route.method }}
+            span &nbsp; {{ route.path }}
+        p.small {{ route.operation.summary }}
+      .col-md-6.docs-request-col
+        div(ng-if="route.operation.description" marked="route.operation.description")
+        h4 Parameters
+        div(ng-controller="DocParameter"
+            ng-repeat="parameter in route.operation.parameters")
+          p
+            span
+              strong {{ parameter.name }}
+            span &nbsp;&nbsp;{{ parameter.schema ? 'object' : parameter.format || parameter.type }}
+            i(ng-if="parameter.required") &nbsp;&nbsp;required
+          .parameter-details
+            p(ng-if="parameter.in !== 'body'")
+              span In: {{ parameter.in }}
+            p
+              span(ng-if="parameter.description" marked="parameter.description")
+            p
+              strong Example:&nbsp;
+              span.wrap-break-word(ng-if="!parameter.schema") <code>{{ getExample() }}</code>
+              .request-schema.hide-code(ng-if="parameter.schema"
+                                        ng-controller="Schema"
+                                        hljs source="printSchema(parameter.schema)")
+              div(ng-if="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
+              div(ng-if="parameter.enum") Allowed values are:
+              .enum-list
+                ul
+                  li(ng-repeat="item in parameter.enum") {{ item }}
+      .col-md-6.docs-response-col
+        div(ng-repeat="(code, response) in route.operation.responses")
+          h4 Response {{ code }}
+          p(ng-if="response.description" marked="response.description")
+          .response-schema.hide-code(
+                ng-controller="Schema"
+                ng-if="response.schema"
+                hljs source="printSchema(response.schema)")

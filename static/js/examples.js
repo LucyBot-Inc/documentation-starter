@@ -50,7 +50,7 @@ EXAMPLES.parameterExample = function(param, path) {
   if (param.in === 'path') {
     ret = path.replace('{' + param.name + '}', ret);
   } else if (param.in === 'query') {
-    ret = param.name + '=' + ret;
+    ret = '?' + param.name + '=' + ret;
   } else if (param.in === 'header') {
     ret = param.name + ': ' + ret;
   }

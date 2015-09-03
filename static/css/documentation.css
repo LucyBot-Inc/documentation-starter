@@ -1,5 +1,50 @@
-body {
-  position: relative;
+.docs-row {
+  background-color: #333;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.docs-nav-col .method-text {
+  min-width: 50px;
+}
+
+.docs-nav-col a {
+  color: #86E2D5;
+}
+
+.docs-nav-col, .docs-col {
+  position: fixed;
+  top: 52px;
+  bottom: 0px;
+  margin-top: 0;
+  overflow-y: scroll;
+}
+
+.docs-nav-col ul {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+.docs-nav-col li {
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.docs-nav-col li.readme-link a {
+  color: #eee;
+}
+
+.docs-col {
+  overflow-y: scroll;
+  background-color: #eee;
+  right: 0;
+}
+
+.docs-col hr {
+  border-color: #333;
 }
 
 table.doc-table {
@@ -45,12 +90,27 @@ table.doc-table td.example {
   z-index: 1;
 }
 
+.parameter-details {
+  padding-left: 20px;
+}
+
 .response-schema.resizable-y {
   max-height: 324px;
 }
 .response-container.resizable-y,
 .parameter-list.resizable-y {
   max-height: 318px;
+}
+
+.hide-code[hljs] > pre {
+  padding: 0px;
+  background: none;
+  border: none;
+}
+
+.hide-code code {
+  background-color: none;
+  background: none;
 }
 
 .resizable,

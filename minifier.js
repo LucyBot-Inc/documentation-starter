@@ -13,6 +13,7 @@ var toMinify = [{
     "static/bower/zeroclipboard/dist/ZeroClipboard.min.js",
     "static/bower/marked/lib/marked.js",
     "static/bower/swagger-parser/dist/swagger-parser.min.js",
+    "static/js/smooth-scroll.js",
     "static/js/examples.js",
     "static/js/lucy.js",
     "static/bower/angular-zeroclipboard/src/angular-zeroclipboard.js",

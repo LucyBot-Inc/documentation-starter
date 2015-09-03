@@ -1,0 +1,86 @@
+#README.row(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
+  .col-xs-12.col-md-10.col-md-offset-1
+    div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description")
+.row.row-spaced
+  .col-xs-12.col-md-10.col-md-offset-1(ng-if="spec.tags")
+    .dropdown
+      button.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
+            type="button"
+            data-toggle="dropdown")
+        span.caret
+        span &nbsp;&nbsp;{{ activeTag ? activeTag.name : 'All' }}
+      ul.dropdown-menu(role="menu")
+        li(role="presentation")
+          a(ng-click="setActiveTag(null)")
+            span All
+        li(role="presentation" ng-repeat="tag in spec.tags")
+          a(ng-click="setActiveTag(tag)")
+            span.pull-left {{ tag.name }}
+            span.small.pull-right {{ tag.description }}
+            span.clearfix
+.row
+  .col-xs-12.col-md-10.col-md-offset-1
+    .panel.panel-default(ng-controller="Route",
+                         ng-repeat="route in routes",
+                         ng-show="!activeTag || (route.operation.tags && route.operation.tags.indexOf(activeTag.name) !== -1)"
+                         id="route{{$index}}"
+                         data-verb="{{ route.method }}")
+      .panel-heading(
+            data-toggle="collapse", data-target="#{{ getId(route.method, route.path) }}")
+        h4.panel-title.text-regular
+          span &nbsp;
+          span.pull-left
+            i.fa.fa-plus-square-o
+            span.text-uppercase(data-verb="{{ route.method }}") &nbsp; {{ route.method }}
+            span &nbsp; {{ route.path }}
+          span.small.pull-right.hidden-xs {{ route.operation.summary }}
+          span.clearfix
+      .panel-collapse.collapse(id="{{ getId(route.method, route.path) }}")
+        .panel-body(ng-if="route.operation.description")
+          div(marked="route.operation.description")
+        .panel-body
+          h3 Request
+          mixin description
+            span(ng-if="parameter.description") {{ parameter.description }}<br>
+            strong Example:&nbsp;
+            span.wrap-break-word(ng-if="!parameter.schema") <code>{{ getExample() }}</code>
+            div.resizable-y(ng-if="parameter.schema"
+                            ng-controller="Schema"
+                            hljs source="printSchema(parameter.schema)")
+            div(ng-if="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
+            div(ng-if="parameter.enum") Allowed values are:
+            .enum-list
+              ul
+                li(ng-repeat="item in parameter.enum") {{ item }}
+          table.table.table-hover.doc-table
+            thead
+              tr
+                th.parameter Parameter
+                th.location.hidden-xs Location
+                th.type.hidden-xs Type
+                th.description Description
+            tbody
+              tr.parameter(ng-controller="DocParameter",
+                           ng-repeat="parameter in route.operation.parameters")
+                td.wrap-break-word.parameter {{ parameter.name }}
+                  small(ng-if="parameter.required") <br>(required)
+                td.location.hidden-xs {{ parameter.in }}
+                td.type.hidden-xs {{ parameter.schema ? 'object' : parameter.format || parameter.type }}
+                td.description
+                  +description
+        .panel-body
+          h3 Response
+          table.table.table-hover
+            thead
+              tr
+                th Code
+                th Description
+                th Format
+            tbody
+              tr(ng-repeat="(code, response) in route.operation.responses")
+                td <code>{{ code }}</code>
+                td {{ response.description }}
+                td
+                  .response-schema.resizable-y(ng-controller="Schema"
+                                                ng-if="response.schema"
+                                                hljs source="printSchema(response.schema)")
