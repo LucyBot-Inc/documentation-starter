@@ -90,8 +90,12 @@ App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
     return JSON.stringify(EXAMPLES.schemaExample($scope.schema), null, 2);
   }
+  var removeView = function(key, val) {
+    if (key === 'x-lucy/view') return undefined;
+    return val;
+  }
   $scope.edit = function(schema) {
-    $scope.schemaString = JSON.stringify(schema, null, 2);
+    $scope.schemaString = JSON.stringify(schema, removeView, 2);
     $scope.clicked = true;
   }
   $scope.save = function() {
@@ -106,7 +110,7 @@ App.controller('Schema', function($scope) {
     }
   }
   $scope.getString = function(schema) {
-    return JSON.stringify(schema, null, 2);
+    return JSON.stringify(schema, removeView, 2);
   }
   $scope.codemirrorLoad = function(editor) {
     editor.on("change", function(ch) {
