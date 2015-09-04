@@ -36,7 +36,7 @@
       .col-md-12
         div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description")
         hr
-    .row(ng-controller="Route"
+    .row.scroll-route(ng-controller="Route"
          ng-repeat="route in routesFiltered"
          id="ScrollRoute{{$index}}")
       a(name="route{{$index}}")

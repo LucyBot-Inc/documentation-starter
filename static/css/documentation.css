@@ -10,7 +10,7 @@
   min-width: 50px;
 }
 
-.docs-nav-col a {
+.docs-nav-col li.route-link a {
   color: #86E2D5;
 }
 
@@ -45,6 +45,10 @@
 
 .docs-col hr {
   border-color: #333;
+}
+
+.scroll-route {
+  padding-bottom: 20px;
 }
 
 table.doc-table {

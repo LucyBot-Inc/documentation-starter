@@ -1,122 +1,111 @@
+mixin edit-markdown(name, field)
+  div(ng-controller="EditMarkdown")
+    a(ng-show="!clicked" ng-click="clicked = true")
+      span(ng-if="!#{field}") Add&nbsp;
+      span #{name}
+    a.btn.btn-sm.btn-success(ng-show="clicked" ng-click="clicked = false") Done
+    i(ng-show="clicked") &nbsp;Tip: you can include&nbsp;
+      a(href="https://help.github.com/articles/markdown-basics/" target="_blank") markdown
+    div(ng-if="!clicked")
+      div(marked="#{field}")
+    div(ng-if="clicked")
+      div(ui-codemirror ng-model="#{field}")
+mixin edit-schema(name, field)
+  div(ng-controller="Schema")
+    a(ng-show="!clicked" ng-click="edit(#{field})")
+      span(ng-if="!#{field}") Add&nbsp;
+      span #{name}
+    a.btn.btn-sm.btn-success(ng-show="clicked" ng-click="#{field} = save() || #{field}") Done
+    .alert.alert-sm.alert-danger(ng-if="parseError") {{ parseError }}
+    div(ng-if="!clicked")
+      .hide-code(
+            ng-if="#{field}"
+            hljs source="getString(#{field})")
+    div(ng-if="clicked")
+      div(ui-codemirror="{onLoad: codemirrorLoad}" ng-model="schemaString" ng-change="log")
 .row.docs-row
   .col-md-3.docs-nav-col
     .form-group
     .form-group
-      .input-group.input-group-sm.width-full
-        span.input-group-addon
-          i.fa.fa-search
-        input.form-control(type="text" ng-model="query")
-    .form-group
-      .dropdown
-        button.btn.btn-default.btn-sm.dropdown-toggle.width-full.btn-text-left(
-              type="button"
-              data-toggle="dropdown")
-          span.caret
-          span &nbsp;&nbsp;{{ activeTag ? activeTag.name : 'All' }}
-        ul.dropdown-menu(role="menu")
-          li(role="presentation")
-            a(ng-click="setActiveTag(null)")
-              span All
-          li(role="presentation" ng-repeat="tag in spec.tags" ng-show="tag.name !== 'Has Visual'")
-            a(ng-click="setActiveTag(tag)")
-              span.pull-left {{ tag.name }}
-              span.small.pull-right {{ tag.description }}
-              span.clearfix
-    .form-group
-      a.btn(ng-click="switchMode()" ng-class="{'btn-success': editorMode, 'btn-warning': !editorMode}")
-        span(ng-if="editorMode") Save
-        span(ng-if="!editorMode") Edit
+      a.btn.btn-success Save
     ul
-      li(ng-if="editorMode")
-        a + New Route
       li.readme-link(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
         a(ng-click="scrollTo(-1)")
           span README
-      li(ng-repeat="route in routesFiltered")
+      li.route-link(ng-repeat="route in routesFiltered")
          a(ng-click="scrollTo($index)")
            span.method-text.text-uppercase(
                data-verb="{{route.method}}") {{ route.method }}
            span &nbsp;
            span {{ route.path }}
+    p
+      a.btn.btn-sm.btn-success(ng-click="addOperation()") + New Operation
   .col-md-9.docs-col
     #README.row(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
-      .col-md-12(ng-if="editorMode")
-        div(ui-codemirror ng-model="spec.info['x-lucy/readme']")
-      .col-md-12(ng-if="!editorMode")
-        div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description")
+      .col-md-12
+        +edit-markdown('README', 'spec.info["x-lucy/readme"]')
         hr
-    .row(ng-controller="Route"
+    .row.scroll-route(ng-controller="Route"
          ng-repeat="route in routesFiltered"
          id="ScrollRoute{{$index}}")
       .col-md-12
         hr(ng-if="$index !== 0")
         h3.text-regular
-          span(ng-if="editorMode")
+          span
             span.text-uppercase(
-                editable-text="route.method"
+                editable-select="route.method"
+                e-ng-options="i for i in ['get', 'put', 'post', 'delete', 'options', 'head', 'patch']"
                 blur="submit"
                 data-verb="{{ route.method }}") {{ route.method }}
             span &nbsp;
             span(editable-text="route.path" blur="submit") {{ route.path }}
-          span(ng-if="!editorMode")
-            span.text-uppercase(
-                data-verb="{{ route.method }}" ng-bind="route.method")
-            span &nbsp;
-            span(ng-bind="route.path")
-        p.small {{ route.operation.summary }}
+        p.small(editable-text="route.operation.summary" blur="submit") {{ route.operation.summary || 'Add summary' }}
       .col-md-6.docs-request-col
-        div(ng-if="route.operation.description" marked="route.operation.description")
+        +edit-markdown('Operation Description', 'route.operation.description')
         h4 Parameters
         div(ng-controller="DocParameter"
             ng-repeat="parameter in route.operation.parameters")
-          p(ng-if="!editorMode")
-            span
-              strong(ng-bind="parameter.name")
+          p
+            strong Name:&nbsp;
+            span(editable-text="parameter.name" blur="submit") {{ parameter.name }}
             span &nbsp;&nbsp;
-            span(ng-bind="parameter.type")
-            i(ng-if="parameter.required") &nbsp;&nbsp;required
-          div(ng-if="editorMode")
-            p
-              span Name:&nbsp;
-              span(editable-text="parameter.name" blur="submit") {{ parameter.name }}
-            p
-              span Type:&nbsp;
-              span(editable-select="parameter.type" blur="submit"
-                  e-ng-options="i as i for i in ['string', 'number', 'integer', 'boolean', 'array', 'file']") {{ parameter.type }}
-            p
-              span Required:&nbsp;
-              input(type="checkbox" ng-model="parameter.required")
-            p
-              span In:&nbsp;
-              span(editable-select="parameter.in"
-                   e-ng-options="i as i for i in ['path', 'query', 'header', 'body', 'formData']") {{ parameter.in }}
-          .parameter-details
-            p(ng-if="!editorMode")
-              span In: {{ parameter.in }}
-            p
-              div(ng-if="editorMode && clicked" ui-codemirror ng-model="parameter.description")
-              span(ng-if="!editorMode || !clicked" marked="parameter.description")
-            div(ng-if="editorMode && clicked && parameter.in === 'body'")
-              a(ng-click="clicked = true") Example:&nbsp;
-              div(ui-codemirror ng-model="parameter.schema")
-
-            p(ng-if="!editorMode || !clicked" ng-click="clicked = true")
-              a(ng-if="editorMode" ng-click="clicked = true") Example:&nbsp;
-              strong(ng-if="!editorMode") Example:&nbsp;
-              span.wrap-break-word(ng-if="!parameter.schema") <code>{{ getExample() }}</code>
-              .request-schema.hide-code(ng-if="parameter.schema"
-                                        ng-controller="Schema"
-                                        hljs source="printSchema(parameter.schema)")
-              div(ng-if="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
-              div(ng-if="parameter.enum") Allowed values are:
-              .enum-list
-                ul
-                  li(ng-repeat="item in parameter.enum") {{ item }}
+            a(ng-click="removeParameter($index)")
+              i.text-danger remove
+          p
+            span Type:&nbsp;
+            span(editable-select="parameter.type" blur="submit"
+                e-ng-options="i as i for i in ['string', 'number', 'integer', 'boolean', 'array', 'file']") {{ parameter.type }}
+          p
+            span Required:&nbsp;
+            input(type="checkbox" ng-model="parameter.required")
+          p
+            span In:&nbsp;
+            span(editable-select="parameter.in" blur="submit"
+                 e-ng-options="i as i for i in ['path', 'query', 'header', 'body', 'formData']") {{ parameter.in }}
+          p
+            +edit-markdown('Parameter Description', 'parameter.description')
+          p
+            div(ng-if="parameter.in === 'body'")
+              +edit-schema('Schema', 'parameter.schema')
+          p
+            div(ng-if="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
+            div(ng-if="parameter.enum") Allowed values are:
+            .enum-list
+              ul
+                li(ng-repeat="item in parameter.enum") {{ item }}
+        a(ng-click="addParameter()") + Add Parameter
       .col-md-6.docs-response-col
-        div(ng-repeat="(code, response) in route.operation.responses")
-          h4 Response {{ code }}
-          p(ng-if="response.description" marked="response.description")
-          .response-schema.hide-code(
-                ng-controller="Schema"
-                ng-if="response.schema"
-                hljs source="printSchema(response.schema)")
+        div(ng-repeat="(code, response) in route.operation.responses" ng-controller="ResponseCode")
+          h4
+            span Response&nbsp;&nbsp;
+            span(editable-text="code" blur="submit" onbeforesave="save($data)") {{ code }}
+            span &nbsp;&nbsp;
+            small
+              a(ng-click="removeResponse(code)")
+                i.text-danger remove
+          p
+            +edit-markdown('Response Description', 'response.description')
+          p
+            +edit-schema('Response Schema', 'response.schema')
+        h4
+          a.text-lg(ng-click="addResponse()") Add Response
