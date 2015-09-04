@@ -10,6 +10,10 @@
   min-width: 50px;
 }
 
+.docs-nav-col li.route-link a {
+  color: #86E2D5;
+}
+
 .docs-nav-col, .docs-col {
   position: fixed;
   top: 52px;
@@ -131,6 +135,10 @@
 
 .route-description {
   margin-bottom: 28px;
+}
+
+.scroll-route {
+  padding-bottom: 20px;
 }
 
 table.doc-table {

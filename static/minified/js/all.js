@@ -11520,6 +11520,7 @@ App.controller('Docs', function($scope) {
       }
     })
   }
+<<<<<<< HEAD
   $('.docs-col').scroll(function() {
     $scope.onScroll();
     $scope.$apply();
@@ -11527,6 +11528,12 @@ App.controller('Docs', function($scope) {
 
   $scope.query = '';
   $scope.matchesQuery = function(route) {
+=======
+  $scope.$watch('query', filterRoutes);
+  $scope.$watch('activeTag', filterRoutes);
+  $scope.$watch('routes', filterRoutes);
+  $scope.showRoute = function(route) {
+>>>>>>> Full editor
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
     var terms = query.split(' ');
@@ -11570,14 +11577,88 @@ App.controller('Docs', function($scope) {
   $scope.switchMode = function() {
     $scope.editorMode = !$scope.editorMode;
   }
+<<<<<<< HEAD
 >>>>>>> first psas
 });
 
 App.controller('Route', function($scope) {})
+=======
+
+  $scope.addOperation = function() {
+    var path = '/newOperation';
+    var i = 0;
+    while ($scope.spec.paths[path]) path = '/newOperation' + (++i);
+    var op = $scope.spec.paths[path] = {
+      parameters: [],
+      responses: {
+        '200': {
+          description: 'Successful Response'
+        }
+      }
+    };
+    $scope.routes.push({operation: op, method: 'get', path: path})
+    filterRoutes();
+  }
+});
+
+App.controller('SidebarNav', function($scope) {
+  $scope.navLinks = [];
+});
+
+App.controller('Route', function($scope) {
+  $scope.openConsole = function() {
+    $('#Body').scope().activePage = 'console';
+    $('#Consoles').scope().activeConsole = $scope.$index;
+  }
+
+  $scope.addParameter = function() {
+    $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
+  }
+
+  $scope.removeParameter = function(idx) {
+    $scope.route.operation.parameters.splice(idx, 1);
+  }
+
+  $scope.addResponse = function() {
+    var code = 200;
+    while ($scope.route.operation.responses[String(code)]) ++code;
+    $scope.route.operation.responses[String(code)] = {}
+  }
+
+  $scope.removeResponse = function(code) {
+    delete $scope.route.operation.responses[code];
+  }
+})
+>>>>>>> Full editor
+
+App.controller('EditMarkdown', function($scope) {})
 
 App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
-    return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
+    return JSON.stringify(EXAMPLES.schemaExample($scope.schema), null, 2);
+  }
+  $scope.edit = function(schema) {
+    $scope.schemaString = JSON.stringify(schema, null, 2);
+    $scope.clicked = true;
+  }
+  $scope.save = function() {
+    try {
+      var ret = $scope.schemaString ? JSON.parse($scope.schemaString) : null;
+      $scope.clicked = false;
+      $scope.parseError = '';
+      return ret;
+    } catch (e) {
+      console.log('err')
+      $scope.parseError = e.message;
+    }
+  }
+  $scope.getString = function(schema) {
+    return JSON.stringify(schema, null, 2);
+  }
+  $scope.codemirrorLoad = function(editor) {
+    editor.on("change", function(ch) {
+      $scope.schemaString = ch.getValue();
+    });
   }
   $scope.schemaExample = $scope.printSchema($scope.schema);
 })
@@ -11611,6 +11692,19 @@ App.controller('DocParameter', function($scope) {
 
 App.controller('DocResponse', function($scope) {
   $scope.schema = $scope.response.schema;
+})
+
+App.controller('ResponseCode', function($scope) {
+  var origCode = $scope.code;
+  console.log('orig', origCode);
+  $scope.save = function(code) {
+    if (code !== origCode) {
+      console.log('swag', origCode, code);
+      $scope.route.operation.responses[code] = $scope.route.operation.responses[origCode];
+      delete $scope.route.operation.responses[origCode];
+    }
+    return true;
+  }
 })
 
 var getSeparatorFromFormat = function(format) {
