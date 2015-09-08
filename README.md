@@ -65,22 +65,30 @@ Case (1) is the default behavior. In addition, you can use ```<lucy include="Vie
 Case (2) is useful if you need more data from the API. You can specify ```action```, which is the name of the action to use, and ```inputvars``` which is a mapping from variable names to API inputs.
 
 ### Example
+Let's consider an API with two endpoints:
+* ```GET /users```, which returns an array of user IDs
+* ```GET /users/{id}```, which returns the details for a given user
+
+First let's tell LucyBot how to display the details for a given User
 swagger.definitions.User['x-lucy/view']
 ```html
 <h2>{{ result.name }}</h2>
 <p>{{ result.about }}</p>
 ```
 
-
+Next let's tell LucyBot to use that view for the /users/{id} endpoint
 swagger.paths['/users/{id}'].responses['200']['x-lucy/view']
 ```html
-<lucy include="User">
+<lucy include="User"></lucy>
 ```
 
+For the /users endpoint, we only get an array of user IDs. In order to display their details, we'll need to tell LucyBot to call the /users/{id} endpoint. For this example, we assume GET /users/{id} has its operationId set to "getUserById".
 swagger.paths['/users'].responses['200']['x-lucy/view']
 ```html
 <lucy for="userID in result">
-  <lucy include="User" action="getUserById" inputvars="{id: userID}">
+  <lucy if="index < 10">
+    <lucy include="User" action="getUserById" inputvars="{id: userID}">
+    </lucy>
   </lucy>
 </lucy>
 ```
