@@ -69,11 +69,9 @@ Let's consider an API with two endpoints:
 * ```GET /users```, which returns an array of user IDs
 * ```GET /users/{id}```, which returns the details for a given user
 
-First let's tell LucyBot how to display the details for a given User
+First let's tell LucyBot how to display the details for a given User by setting
+```js swagger.definitions.User['x-lucy/view'] ```
 
-```js
-swagger.definitions.User['x-lucy/view']
-```
 ```html
 <h2>{{ result.name }}</h2>
 <p>{{ result.about }}</p>
