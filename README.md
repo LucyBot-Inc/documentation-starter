@@ -66,17 +66,20 @@ Case (2) is useful if you need more data from the API. You can specify ```action
 
 ### Example
 ```swagger.definitions.User['x-lucy/view']```
+
 ```html
 <h2>{{ result.name }}</h2>
 <p>{{ result.about }}</p>
 ```
 
 ```swagger.paths['/users/{id}'].responses['200']['x-lucy/view']```
+
 ```html
 <lucy include="User">
 ```
 
 ```swagger.paths['/users'].responses['200']['x-lucy/view']```
+
 ```html
 <lucy for="userID in result">
   <lucy include="User" action="getUserById" inputvars="{id: userID}">
