@@ -88,7 +88,7 @@ For the /users endpoint, we only get an array of user IDs. In order to display t
 ``` swagger.paths['/users'].responses['200']['x-lucy/view'] ```
 
 ```html
-<lucy for="userID in result">
+<lucy for="userID" in="result">
   <lucy if="index < 10">
     <lucy include="User" action="getUserById" inputvars="{id: userID}">
     </lucy>
