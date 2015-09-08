@@ -37,3 +37,29 @@ var myConsole = new LucyConsole({
 });
 App.use('/api', Console.router);
 ```
+
+## Visual Overlays
+In addition to showing the raw output of your API, the LucyBot Console UI allows you to display neatly-formatted output using snippets of HTML.
+
+Views are snippets of HTML for displaying responses from the API. Any valid HTML can be used here, including ```<script>``` and ```<style>``` tags.  You can attach HTML to any endpoint's response, or to a definition's schema, by adding the field 'x-lucy/view'.
+
+LucyBot also provides some helper tags:
+* Use ```{{ variable.name }}``` to print the value of a given variable
+* Use ```<lucy for="thing" in="array">``` to iterate over an array
+* Use ```<lucy if="condition">``` to add conditionals
+* Use ```<lucy if="result.message && result.code">``` to check for errors and print error messages
+* Use ```<lucy include="ViewName">``` to include other views
+
+You have access to two global variables inside of your views:
+* ```result``` which is the API's response (but can be overriden via ```<lucy include>```)
+* ```answers``` which contains the user's responses from inside the recipe
+
+```<lucy include>``` can operate in two different ways:
+
+1. It can simply copy the HTML of the included view
+
+2. It can make a new call to the API, and use the included view as a template for displaying the result.
+
+Case (1) is the default behavior. In addition, you can use ```<lucy include="ViewName" resultvar="foo">``` to use variable "foo" in place of API output.
+
+Case (2) is useful if you need more data from the API. You can specify ```action```, which is the name of the action to use, and ```inputvars``` which is a mapping from variable names to API inputs.
