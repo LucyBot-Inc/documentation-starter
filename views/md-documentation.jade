@@ -59,12 +59,11 @@
             i(ng-if="parameter.required") &nbsp;&nbsp;required
           .parameter-details
             p(ng-if="parameter.in !== 'body'")
-              span In: {{ parameter.in }}
+              span Location: {{ parameter.in }}&nbsp;
+              span.wrap-break-word(ng-if="!parameter.schema") <code>{{ getExample() }}</code>
             p
               span(ng-if="parameter.description" marked="parameter.description")
             p
-              strong Example:&nbsp;
-              span.wrap-break-word(ng-if="!parameter.schema") <code>{{ getExample() }}</code>
               .request-schema.hide-code(ng-if="parameter.schema"
                                         ng-controller="Schema"
                                         hljs source="printSchema(parameter.schema)")
