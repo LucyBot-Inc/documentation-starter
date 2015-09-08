@@ -17,7 +17,7 @@ App.get('/', function(req, res) {
   res.redirect('/console');
 });
 
-App.use(Console.router);
+App.use(hackerNewsConsole.router);
 
 App.listen(process.env.PORT || 3000);
 ```
@@ -35,7 +35,7 @@ var myConsole = new LucyConsole({
   },
   cache: 1000 * 60 * 60, // The number of ms to cache static assets like JS and CSS
 });
-App.use('/api', Console.router);
+App.use('/api', myConsole.router);
 ```
 
 ## Visual Overlays
@@ -47,7 +47,6 @@ LucyBot also provides some helper tags:
 * Use ```{{ variable.name }}``` to print the value of a given variable
 * Use ```<lucy for="thing" in="array">``` to iterate over an array
 * Use ```<lucy if="condition">``` to add conditionals
-* Use ```<lucy if="result.message && result.code">``` to check for errors and print error messages
 * Use ```<lucy include="ViewName">``` to include other views
 
 You have access to two global variables inside of your views:
