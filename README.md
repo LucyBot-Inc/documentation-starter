@@ -70,19 +70,24 @@ Let's consider an API with two endpoints:
 * ```GET /users/{id}```, which returns the details for a given user
 
 First let's tell LucyBot how to display the details for a given User
+
+```js
 swagger.definitions.User['x-lucy/view']
+```
 ```html
 <h2>{{ result.name }}</h2>
 <p>{{ result.about }}</p>
 ```
 
 Next let's tell LucyBot to use that view for the /users/{id} endpoint
+
 swagger.paths['/users/{id}'].responses['200']['x-lucy/view']
 ```html
 <lucy include="User"></lucy>
 ```
 
 For the /users endpoint, we only get an array of user IDs. In order to display their details, we'll need to tell LucyBot to call the /users/{id} endpoint. For this example, we assume GET /users/{id} has its operationId set to "getUserById".
+
 swagger.paths['/users'].responses['200']['x-lucy/view']
 ```html
 <lucy for="userID in result">
