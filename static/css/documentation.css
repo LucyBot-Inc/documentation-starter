@@ -173,7 +173,7 @@ span[data-verb="patch"] {
 }
 
 span[data-verb="post"] {
-  color: #27ae60;
+  color: #26C281;
 }
 
 span[data-verb="delete"] {
@@ -207,7 +207,7 @@ span[data-verb="delete"] {
 .open .btn-default[data-verb="post"],
 .btn-default[data-verb="post"],
 .panel-default[data-verb="post"] {
-  border-color: #27ae60;
+  border-color: #26C281;
 }
 .open .btn-default[data-verb="delete"],
 .btn-default[data-verb="delete"],
