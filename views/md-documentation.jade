@@ -34,8 +34,8 @@
   .col-md-9.docs-col
     #README.row(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
       .col-md-12
+        img.logo(ng-if="spec.info['x-logo']" src="{{ spec.info['x-logo'] }}")
         div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description")
-        hr
     .row(ng-controller="Route"
          ng-repeat="route in routesFiltered"
          id="ScrollRoute{{$index}}")
@@ -43,9 +43,11 @@
       .col-md-12
         hr(ng-if="$index !== 0")
         h3.text-regular
-          span
+          span.pull-left
             span.text-uppercase(data-verb="{{ route.method }}") {{ route.method }}
             span &nbsp; {{ route.path }}
+          a.btn.btn-primary.pull-right(ng-click="openConsole(route)") Try it out
+          .clearfix
         p.small {{ route.operation.summary }}
       .col-md-6.docs-request-col
         div(ng-if="route.operation.description" marked="route.operation.description")

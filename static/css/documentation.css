@@ -43,6 +43,16 @@
   right: 0;
 }
 
+#README.row {
+  background-color: #fff;
+  padding-bottom: 20px;
+}
+
+#README.row img.logo {
+  max-height: 150px;
+  margin-bottom: 20px;
+}
+
 .docs-col hr {
   border-color: #333;
 }

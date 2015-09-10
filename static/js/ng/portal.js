@@ -74,5 +74,10 @@ App.controller('Portal', function($scope, spec) {
     $scope.setActiveTag = function(tag) {
       $scope.activeTag = tag;
     }
+
+    $scope.openConsole = function(route) {
+      $('#Console').scope().setActiveRoute(route);
+      $scope.activePage = 'console';
+    }
   })
 });
