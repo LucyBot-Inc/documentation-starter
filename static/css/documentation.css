@@ -59,6 +59,7 @@
 
 .scroll-route:last-of-type {
   min-height: 100%;
+  margin-bottom: 30px;
 }
 
 .route-description {
