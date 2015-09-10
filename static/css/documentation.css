@@ -61,6 +61,10 @@
   min-height: 100%;
 }
 
+.route-description {
+  margin-bottom: 28px;
+}
+
 table.doc-table {
   table-layout: fixed;
 }

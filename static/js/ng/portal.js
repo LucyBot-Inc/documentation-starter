@@ -15,6 +15,10 @@ App.controller('Portal', function($scope, spec) {
       url: SPEC_URL,
     })
   })
+  $scope.stripHtml = function(str) {
+    return str.replace(/<(?:.|\n)*?>/gm, '');
+  }
+
   var VISUAL_TAG = "Has Visual";
   var PARSER_OPTS = {
     strictValidation: false,

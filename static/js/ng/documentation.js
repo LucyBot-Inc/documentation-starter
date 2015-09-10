@@ -3,17 +3,17 @@ App.controller('Docs', function($scope) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
   $scope.scrollTo = function(idx) {
-    if (idx === -1) {
-      $('.docs-col').scrollTop(0);
-    } else {
+    var newTop = 0;
+    if (idx !== -1) {
       if ($('#ScrollRoute0').length === 0) return;
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
-      var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
-      $('.docs-col').animate({
-        scrollTop: routeTop - colTop + curTop - 15,
-      }, 800)
+      var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
+      newTop = routeTop - colTop + curTop - 15;
     }
+    $('.docs-col').animate({
+      scrollTop: newTop
+    }, 800)
   }
 
   $scope.query = '';
