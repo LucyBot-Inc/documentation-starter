@@ -2,6 +2,11 @@ body {
   background-color: #f7f7f7;
 }
 
+.spec-loading {
+  font-size: 50px;
+  padding-top: 50px;
+}
+
 .navbar.navbar-secondary {
   margin-bottom: 0;
   z-index: 100;
