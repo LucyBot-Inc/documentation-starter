@@ -2298,7 +2298,7 @@ App.controller('Portal', function($scope, spec) {
           operation.responses = operation.responses || {};
           var successResponse = operation.responses['200'] = operation.responses['200'] || {};
           if (successResponse.description === 'No response was specified') successResponse.description = '';
-          if (!successResponse.description) successResponse.description = 'Successful';
+          if (!successResponse.description) successResponse.description = 'OK';
           var route = {path: path, method: method, operation: operation};
           route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
           if (route.visual) {
