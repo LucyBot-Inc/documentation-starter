@@ -9,6 +9,12 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
+  $scope.activePage = 'documentation';
+  $scope.$watch('activePage', function(page) {
+    mixpanel.track('set_page_' + page, {
+      url: SPEC_URL,
+    })
+  })
   var VISUAL_TAG = "Has Visual";
   var PARSER_OPTS = {
     strictValidation: false,
@@ -73,6 +79,9 @@ App.controller('Portal', function($scope, spec) {
 
     $scope.setActiveTag = function(tag) {
       $scope.activeTag = tag;
+      if ($scope.activePage === 'documentation') {
+        $('#Docs').scope().scrollTo(0);
+      }
     }
 
     $scope.openConsole = function(route) {
