@@ -1689,6 +1689,8 @@ EXAMPLES.parameterExample = function(param, path) {
     ret = path.replace('{' + param.name + '}', ret);
   } else if (param.in === 'query') {
     ret = '?' + param.name + '=' + ret;
+  } else if (param.in === 'formData') {
+    ret = param.name + '=' + ret;
   } else if (param.in === 'header') {
     ret = param.name + ': ' + ret;
   }
