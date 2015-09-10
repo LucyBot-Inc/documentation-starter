@@ -80,6 +80,7 @@
         div(ng-repeat="(code, response) in route.operation.responses")
           h4 Response {{ code }}
           p(ng-if="response.description && response.description !== 'No response was specified'" marked="response.description")
+          p(ng-if="!response.description && code === '200'") Successful
           .response-schema.hide-code(
                 ng-controller="Schema"
                 ng-if="response.schema"
