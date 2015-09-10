@@ -2,9 +2,13 @@ body {
   background-color: #f7f7f7;
 }
 
+a {
+  cursor: pointer;
+}
+
 .spec-loading {
-  font-size: 50px;
-  padding-top: 50px;
+  font-size: 150px;
+  padding-top: 150px;
 }
 
 .navbar.navbar-secondary {
