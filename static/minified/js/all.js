@@ -2295,6 +2295,10 @@ App.controller('Portal', function($scope, spec) {
           var operation = $scope.spec.paths[path][method];
           operation.parameters = (operation.parameters || []).concat(pathParams);
           operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
+          operation.responses = operation.responses || {};
+          var successResponse = operation.responses['200'] = operation.responses['200'] || {};
+          if (successResponse.description === 'No response was specified') successResponse.description = '';
+          if (!successResponse.description) successResponse.description = 'Successful';
           var route = {path: path, method: method, operation: operation};
           route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
           if (route.visual) {
@@ -2334,7 +2338,7 @@ App.controller('Portal', function($scope, spec) {
       mixpanel.track('get_swagger', {
         host: api.host,
         url: SPEC_URL,
-      })
+      });
       $scope.setSpec(api);
       $scope.$apply();
     })

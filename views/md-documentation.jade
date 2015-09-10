@@ -49,8 +49,8 @@
           a.btn.btn-lg.btn-primary.pull-right(ng-click="openConsole(route)") Try it out!
           .clearfix
           p.small(ng-bind="stripHtml(route.operation.summary)")
-      .col-md-6.docs-request-col
         .route-description(ng-if="route.operation.description" marked="route.operation.description")
+      .col-md-6.docs-request-col
         p(ng-if="route.operation.parameters.length === 0")
           i No Parameters
         h4(ng-if="route.operation.parameters.length > 0") Parameters
@@ -79,8 +79,8 @@
       .col-md-6.docs-response-col
         div(ng-repeat="(code, response) in route.operation.responses")
           h4 Response {{ code }}
-          p(ng-if="response.description && response.description !== 'No response was specified'" marked="response.description")
-          p(ng-if="!response.description && code === '200'") Successful
+          p(ng-if="response.description" marked="response.description")
+          p(ng-if="!response.description && (code === '200' || code === 200)") Successful
           .response-schema.hide-code(
                 ng-controller="Schema"
                 ng-if="response.schema"
