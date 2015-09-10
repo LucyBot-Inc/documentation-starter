@@ -6,6 +6,7 @@ App.controller('Docs', function($scope) {
     if (idx === -1) {
       $('.docs-col').scrollTop(0);
     } else {
+      if ($('#ScrollRoute0').length === 0) return;
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
       var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;

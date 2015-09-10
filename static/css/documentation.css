@@ -43,6 +43,10 @@
   right: 0;
 }
 
+.docs-col hr {
+  border-color: #333;
+}
+
 #README.row {
   background-color: #fff;
   padding-bottom: 20px;
@@ -53,8 +57,8 @@
   margin-bottom: 20px;
 }
 
-.docs-col hr {
-  border-color: #333;
+.scroll-route:last-of-type {
+  min-height: 100%;
 }
 
 table.doc-table {
