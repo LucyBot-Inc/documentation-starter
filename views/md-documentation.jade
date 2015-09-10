@@ -51,7 +51,9 @@
         p.small {{ route.operation.summary }}
       .col-md-6.docs-request-col
         div(ng-if="route.operation.description" marked="route.operation.description")
-        h4 Parameters
+        p(ng-if="route.operation.parameters.length === 0")
+          i No Parameters
+        h4(ng-if="route.operation.parameters.length > 0") Parameters
         div(ng-controller="DocParameter"
             ng-repeat="parameter in route.operation.parameters")
           p

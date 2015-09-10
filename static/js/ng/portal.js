@@ -76,8 +76,18 @@ App.controller('Portal', function($scope, spec) {
     }
 
     $scope.openConsole = function(route) {
-      $('#Console').scope().setActiveRoute(route);
+      if (route) $('#Console').scope().setActiveRoute(route);
       $scope.activePage = 'console';
+    }
+
+    $scope.openDocumentation = function(idx) {
+      $scope.activePage = 'documentation';
+      if (idx || idx === 0) {
+        $('#Docs').scope().routesFiltered = $scope.routes;
+        setTimeout(function() {
+          $('#Docs').scope().scrollTo(idx);
+        }, 800);
+      }
     }
   })
 });

@@ -2334,8 +2334,18 @@ App.controller('Portal', function($scope, spec) {
     }
 
     $scope.openConsole = function(route) {
-      $('#Console').scope().setActiveRoute(route);
+      if (route) $('#Console').scope().setActiveRoute(route);
       $scope.activePage = 'console';
+    }
+
+    $scope.openDocumentation = function(idx) {
+      $scope.activePage = 'documentation';
+      if (idx || idx === 0) {
+        $('#Docs').scope().routesFiltered = $scope.routes;
+        setTimeout(function() {
+          $('#Docs').scope().scrollTo(idx);
+        }, 800);
+      }
     }
   })
 });
@@ -2351,7 +2361,9 @@ App.controller('Docs', function($scope) {
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
       var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
-      $('.docs-col').scrollTop(routeTop - colTop + curTop - 15);
+      $('.docs-col').animate({
+        scrollTop: routeTop - colTop + curTop - 15,
+      }, 800)
     }
   }
 
@@ -2380,12 +2392,7 @@ App.controller('SidebarNav', function($scope) {
   $scope.navLinks = [];
 });
 
-App.controller('Route', function($scope) {
-  $scope.openConsole = function() {
-    $('#Body').scope().activePage = 'console';
-    $('#Consoles').scope().activeConsole = $scope.$index;
-  }
-})
+App.controller('Route', function($scope) {})
 
 App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
@@ -2461,6 +2468,7 @@ App.controller('Console', function($scope) {
       path: route.path,
     })
     $scope.activeRoute = route;
+    $scope.activeRouteIdx = $scope.routes.indexOf(route);
     $scope.onAnswerChanged();
   }
 
@@ -2797,6 +2805,8 @@ var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
 }
+
+var promptedOnce = false;
 App.controller('Keys', function($scope) {
   var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
   $scope.keys = JSON.parse(keys) || {};
@@ -2824,10 +2834,16 @@ App.controller('Keys', function($scope) {
       def = $scope.spec.securityDefinitions[label];
       if (def.type === 'oauth2') {
         $('#OAuth2').scope().setDefinition(def);
-        $('#OAuth2').modal('show');
-        mixpanel.track('prompt_oauth', {
-          host: $scope.spec.host,
-        })
+        $scope.startOAuth = function() {
+          $('#OAuth2').modal('show');
+          mixpanel.track('prompt_oauth', {
+            host: $scope.spec.host,
+          });
+        }
+        if (!promptedOnce) {
+          $scope.startOAuth();
+          promptedOnce = true;
+        }
       }
       $scope.keyInputs.push({
         name: def.type === 'oauth2' ? 'oauth2' : def.name,

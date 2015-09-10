@@ -35,9 +35,10 @@ include ./oauth2-modal.jade
                 span {{ route.path }}
     .row.body-row
       .col-xs-12
-        .row.alert.alert-info.pin-left.pin-right(
-            ng-if="activeRoute.operation.description"
-            marked="activeRoute.operation.description")
+        .row.alert.alert-info.pin-left.pin-right
+          div(ng-if="activeRoute.operation.description"
+              marked="activeRoute.operation.description")
+          a(ng-click="openDocumentation(activeRouteIdx)") Documentation
         #Keys.row(ng-show="keyInputs.length > 0" ng-controller="Keys")
           include ./includes/keys.jade
         #SampleCode.row(ng-controller="SampleCode")

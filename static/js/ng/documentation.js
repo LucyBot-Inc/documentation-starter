@@ -9,7 +9,9 @@ App.controller('Docs', function($scope) {
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
       var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
-      $('.docs-col').scrollTop(routeTop - colTop + curTop - 15);
+      $('.docs-col').animate({
+        scrollTop: routeTop - colTop + curTop - 15,
+      }, 800)
     }
   }
 
@@ -38,12 +40,7 @@ App.controller('SidebarNav', function($scope) {
   $scope.navLinks = [];
 });
 
-App.controller('Route', function($scope) {
-  $scope.openConsole = function() {
-    $('#Body').scope().activePage = 'console';
-    $('#Consoles').scope().activeConsole = $scope.$index;
-  }
-})
+App.controller('Route', function($scope) {})
 
 App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
