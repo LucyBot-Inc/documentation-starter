@@ -1,6 +1,8 @@
 .col-xs-12
   h3.text-regular
-    span Credentials
+    span.pull-left Credentials
+    a.btn.btn-success.pull-right(ng-show="startOAuth" ng-click="startOAuth()") Authorize
+    .clearfix
   #KeyInputs
     .key.form-group(ng-repeat="input in keyInputs")
       label {{ input.label || input.name }}

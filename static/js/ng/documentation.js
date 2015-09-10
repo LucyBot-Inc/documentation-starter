@@ -3,47 +3,44 @@ App.controller('Docs', function($scope) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
   $scope.scrollTo = function(idx) {
-    if (idx === -1) {
-      $('.docs-col').scrollTop(0);
-    } else {
+    var newTop = 0;
+    if (idx !== -1) {
+      if ($('#ScrollRoute0').length === 0) return;
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
-      var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
-      $('.docs-col').scrollTop(routeTop - colTop + curTop - 15);
+      var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
+      newTop = routeTop - colTop + curTop - 15;
     }
+    $('.docs-col').animate({
+      scrollTop: newTop
+    }, 800)
   }
 
-  $scope.routesFiltered = $scope.routes;
-  var filterRoutes = function() {
-    $scope.routesFiltered = $scope.routes
-        .filter($scope.showRoute)
-        .filter(function(r) {
-          return !$scope.activeTag || (r.operation.tags && r.operation.tags.indexOf($scope.activeTag.name) !== -1)
-        })
-  }
-  $scope.$watch('query', filterRoutes);
-  $scope.$watch('activeTag', filterRoutes);
-  $scope.showRoute = function(route) {
+  $scope.query = '';
+  $scope.matchesQuery = function(route) {
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
     var terms = query.split(' ');
     for (var i = 0; i < terms.length; ++i) {
-      if (route.searchText.indexOf(terms[i]) !== -1) return true;
+      if (route.searchText.indexOf(terms[i]) === -1) return false;
     }
-    return false;
+    return true;
   }
+  $scope.matchesTag = function(route) {
+    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
+  }
+  $scope.routesFiltered = $scope.routes;
+  var filterRoutes = function() {
+    $scope.routesFiltered = $scope.routes
+        .filter($scope.matchesQuery)
+        .filter($scope.matchesTag)
+    $scope.scrollTo(0);
+  }
+  $scope.$watch('query', filterRoutes);
+  $scope.$watch('activeTag', filterRoutes);
 });
 
-App.controller('SidebarNav', function($scope) {
-  $scope.navLinks = [];
-});
-
-App.controller('Route', function($scope) {
-  $scope.openConsole = function() {
-    $('#Body').scope().activePage = 'console';
-    $('#Consoles').scope().activeConsole = $scope.$index;
-  }
-})
+App.controller('Route', function($scope) {})
 
 App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {

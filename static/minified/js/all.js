@@ -2267,6 +2267,16 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
+  $scope.activePage = 'documentation';
+  $scope.$watch('activePage', function(page) {
+    mixpanel.track('set_page_' + page, {
+      url: SPEC_URL,
+    })
+  })
+  $scope.stripHtml = function(str) {
+    return str.replace(/<(?:.|\n)*?>/gm, '');
+  }
+
   var VISUAL_TAG = "Has Visual";
   var PARSER_OPTS = {
     strictValidation: false,
@@ -2331,6 +2341,24 @@ App.controller('Portal', function($scope, spec) {
 
     $scope.setActiveTag = function(tag) {
       $scope.activeTag = tag;
+      if ($scope.activePage === 'documentation') {
+        $('#Docs').scope().scrollTo(0);
+      }
+    }
+
+    $scope.openConsole = function(route) {
+      if (route) $('#Console').scope().setActiveRoute(route);
+      $scope.activePage = 'console';
+    }
+
+    $scope.openDocumentation = function(idx) {
+      $scope.activePage = 'documentation';
+      if (idx || idx === 0) {
+        $('#Docs').scope().routesFiltered = $scope.routes;
+        setTimeout(function() {
+          $('#Docs').scope().scrollTo(idx);
+        }, 800);
+      }
     }
   })
 });
@@ -2340,47 +2368,44 @@ App.controller('Docs', function($scope) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
   $scope.scrollTo = function(idx) {
-    if (idx === -1) {
-      $('.docs-col').scrollTop(0);
-    } else {
+    var newTop = 0;
+    if (idx !== -1) {
+      if ($('#ScrollRoute0').length === 0) return;
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
-      var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
-      $('.docs-col').scrollTop(routeTop - colTop + curTop - 15);
+      var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
+      newTop = routeTop - colTop + curTop - 15;
     }
+    $('.docs-col').animate({
+      scrollTop: newTop
+    }, 800)
   }
 
-  $scope.routesFiltered = $scope.routes;
-  var filterRoutes = function() {
-    $scope.routesFiltered = $scope.routes
-        .filter($scope.showRoute)
-        .filter(function(r) {
-          return !$scope.activeTag || (r.operation.tags && r.operation.tags.indexOf($scope.activeTag.name) !== -1)
-        })
-  }
-  $scope.$watch('query', filterRoutes);
-  $scope.$watch('activeTag', filterRoutes);
-  $scope.showRoute = function(route) {
+  $scope.query = '';
+  $scope.matchesQuery = function(route) {
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
     var terms = query.split(' ');
     for (var i = 0; i < terms.length; ++i) {
-      if (route.searchText.indexOf(terms[i]) !== -1) return true;
+      if (route.searchText.indexOf(terms[i]) === -1) return false;
     }
-    return false;
+    return true;
   }
+  $scope.matchesTag = function(route) {
+    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
+  }
+  $scope.routesFiltered = $scope.routes;
+  var filterRoutes = function() {
+    $scope.routesFiltered = $scope.routes
+        .filter($scope.matchesQuery)
+        .filter($scope.matchesTag)
+    $scope.scrollTo(0);
+  }
+  $scope.$watch('query', filterRoutes);
+  $scope.$watch('activeTag', filterRoutes);
 });
 
-App.controller('SidebarNav', function($scope) {
-  $scope.navLinks = [];
-});
-
-App.controller('Route', function($scope) {
-  $scope.openConsole = function() {
-    $('#Body').scope().activePage = 'console';
-    $('#Consoles').scope().activeConsole = $scope.$index;
-  }
-})
+App.controller('Route', function($scope) {})
 
 App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
@@ -2456,6 +2481,7 @@ App.controller('Console', function($scope) {
       path: route.path,
     })
     $scope.activeRoute = route;
+    $scope.activeRouteIdx = $scope.routes.indexOf(route);
     $scope.onAnswerChanged();
   }
 
@@ -2792,6 +2818,8 @@ var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
 }
+
+var promptedOnce = false;
 App.controller('Keys', function($scope) {
   var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
   $scope.keys = JSON.parse(keys) || {};
@@ -2819,10 +2847,16 @@ App.controller('Keys', function($scope) {
       def = $scope.spec.securityDefinitions[label];
       if (def.type === 'oauth2') {
         $('#OAuth2').scope().setDefinition(def);
-        $('#OAuth2').modal('show');
-        mixpanel.track('prompt_oauth', {
-          host: $scope.spec.host,
-        })
+        $scope.startOAuth = function() {
+          $('#OAuth2').modal('show');
+          mixpanel.track('prompt_oauth', {
+            host: $scope.spec.host,
+          });
+        }
+        if (!promptedOnce) {
+          $scope.startOAuth();
+          promptedOnce = true;
+        }
       }
       $scope.keyInputs.push({
         name: def.type === 'oauth2' ? 'oauth2' : def.name,
