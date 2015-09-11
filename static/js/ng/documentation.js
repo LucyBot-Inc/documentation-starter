@@ -3,7 +3,7 @@ App.controller('Docs', function($scope) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
   $scope.getId = function(verb, path) {
-    return verb + '_' + path.replace(/\W/g, '_')
+    return verb + '_' + path.replace(/\W/g, '_');
   }
   var initMenu = function () {
     $scope.menuItems = [];
@@ -172,8 +172,6 @@ App.controller('Docs', function($scope) {
   }
 });
 
-App.controller('Route', function($scope) {})
-
 App.controller('Route', function($scope) {
   $scope.openConsole = function() {
     $('#Body').scope().activePage = 'console';
@@ -181,6 +179,7 @@ App.controller('Route', function($scope) {
   }
 
   $scope.addParameter = function() {
+    console.log('add p');
     $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
   }
 
@@ -197,7 +196,7 @@ App.controller('Route', function($scope) {
   $scope.removeResponse = function(code) {
     delete $scope.route.operation.responses[code];
   }
-})
+});
 
 App.controller('EditMarkdown', function($scope) {})
 
@@ -277,4 +276,5 @@ App.controller('ResponseCode', function($scope) {
     }
     return true;
   }
-})
+});
+

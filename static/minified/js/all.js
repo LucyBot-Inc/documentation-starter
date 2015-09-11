@@ -10473,7 +10473,9 @@ $(function() {
 var EXAMPLES = {};
 EXAMPLES.parameterExample = function(param, path) {
   var ret = '';
-  if (param.format === 'date') {
+  if (param.example) {
+    ret = param.example;
+  } else if (param.format === 'date') {
     ret = '1987-09-23';
   } else if (param.format === 'date-time') {
     ret = '1987-09-23T18:30:00Z';
@@ -11263,8 +11265,14 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
+<<<<<<< HEAD
   $scope.MAX_HIGHLIGHT_LEN = 75000;
   $scope.activePage = 'documentation';
+=======
+  var hash = window.location.hash || '#documentation';
+  $scope.activePage = hash.substring(1);
+  console.log('hash', window.location.hash);
+>>>>>>> work
   $scope.$watch('activePage', function(page) {
     mixpanel.track('set_page_' + page, {
       url: SPEC_URL,
@@ -11415,7 +11423,7 @@ App.controller('Portal', function($scope, spec) {
 
 App.controller('Docs', function($scope) {
   $scope.getId = function(verb, path) {
-    return verb + '_' + path.replace(/\W/g, '_')
+    return verb + '_' + path.replace(/\W/g, '_');
   }
   var initMenu = function () {
     $scope.menuItems = [];
@@ -11475,6 +11483,7 @@ App.controller('Docs', function($scope) {
     })
   }
 
+<<<<<<< HEAD
   $scope.scrollToRoute = function(idx) {
     if (idx === -1) $scope.scrollToTarget('#README');
     else $scope.scrollToTarget('#ScrollRoute' + idx + ' h2');
@@ -11534,6 +11543,13 @@ App.controller('Docs', function($scope) {
   $scope.$watch('routes', filterRoutes);
   $scope.showRoute = function(route) {
 >>>>>>> Full editor
+=======
+  $scope.routesFiltered = $scope.routes;
+  $scope.matchesTag = function(route) {
+    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
+  }
+  $scope.matchesQuery = function(route) {
+>>>>>>> work
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
     var terms = query.split(' ');
@@ -11542,6 +11558,7 @@ App.controller('Docs', function($scope) {
     }
     return true;
   }
+<<<<<<< HEAD
 <<<<<<< HEAD
   var sortByTag = function(r1, r2) {
     if (!$scope.spec.tags) return SORT_ROUTES(r1, r2);
@@ -11573,6 +11590,19 @@ App.controller('Docs', function($scope) {
   }
   $scope.$watch('query', filterRoutes);
 =======
+=======
+  var filterRoutes = function() {
+    $scope.routesFiltered = $scope.routes
+        .filter($scope.matchesQuery)
+        .filter($scope.matchesTag)
+    $scope.scrollTo(0);
+  }
+  $scope.$watch('query', filterRoutes);
+  $scope.$watch('activeTag', filterRoutes);
+  $scope.$watch('routes', filterRoutes);
+  $scope.query = '';
+
+>>>>>>> work
   $scope.editorMode = false;
   $scope.switchMode = function() {
     $scope.editorMode = !$scope.editorMode;
@@ -11612,6 +11642,7 @@ App.controller('Route', function($scope) {
   }
 
   $scope.addParameter = function() {
+    console.log('add p');
     $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
   }
 
@@ -11628,8 +11659,12 @@ App.controller('Route', function($scope) {
   $scope.removeResponse = function(code) {
     delete $scope.route.operation.responses[code];
   }
+<<<<<<< HEAD
 })
 >>>>>>> Full editor
+=======
+});
+>>>>>>> work
 
 App.controller('EditMarkdown', function($scope) {})
 
@@ -11709,7 +11744,8 @@ App.controller('ResponseCode', function($scope) {
     }
     return true;
   }
-})
+});
+
 
 var getSeparatorFromFormat = function(format) {
   if (!format || format === 'csv' || format === 'multi') {

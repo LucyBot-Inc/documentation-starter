@@ -1,8 +1,10 @@
 mixin edit-markdown(name, field)
   div(ng-controller="EditMarkdown")
-    a(ng-show="!clicked" ng-click="clicked = true")
-      span(ng-if="!#{field}") Add&nbsp;
-      span #{name}
+    div(ng-show="!clicked" ng-click="clicked = true")
+      p.editable-click.editable-empty(ng-if="!#{field}")
+        span Add #{name}
+      p.editable-click(ng-if="#{field}")
+        span Edit #{name}
     a.btn.btn-sm.btn-success(ng-show="clicked" ng-click="clicked = false") Done
     i(ng-show="clicked") &nbsp;Tip: you can include&nbsp;
       a(href="https://help.github.com/articles/markdown-basics/" target="_blank") markdown
@@ -22,16 +24,17 @@ mixin edit-schema(name, field)
             ng-if="#{field}"
             hljs source="getString(#{field})")
     div(ng-if="clicked")
-      div(ui-codemirror="{onLoad: codemirrorLoad}" ng-model="schemaString" ng-change="log")
+      div(ui-codemirror="{onLoad: codemirrorLoad}" ng-model="schemaString")
+
 .row.docs-row
   .col-md-3.docs-nav-col
     .form-group
     .form-group
       a.btn.btn-success Save
     ul
-      li.readme-link(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
+      li.readme-link
         a(ng-click="scrollTo(-1)")
-          span README
+          span Info and README
       li.route-link(ng-repeat="route in routesFiltered")
          a(ng-click="scrollTo($index)")
            span.method-text.text-uppercase(
@@ -41,16 +44,32 @@ mixin edit-schema(name, field)
     p
       a.btn.btn-sm.btn-success(ng-click="addOperation()") + New Operation
   .col-md-9.docs-col
-    #README.row(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
+    .api-info
+      h1
+        span(editable-text="spec.info.title" blur="submit") {{ spec.info.title || 'Add title' }}
+      p.editable-full-width
+        span(editable-text="spec.info['x-summary']" blur="submit") {{ spec.info['x-summary'] || 'Add summary' }}
+      p
+        span(ng-if="spec.info['x-logo']") Logo URL:&nbsp;
+        span(editable-text="spec.info['x-logo']" blur="submit") {{ spec.info['x-logo'] || 'Add logo URL' }}
+      p(ng-if="spec.info['x-logo']")
+        img(ng-src="{{ spec.info['x-logo'] }}")
+    .api-details
+      p
+        span Host:&nbsp;
+        span(editable-text="spec.host" blur="submit") {{ spec.host || 'add host (required)' }}
+      p
+        span Base Path:&nbsp;
+        span(editable-text="spec.basePath" blur="submit") {{ spec.basePath || 'add basePath' }}
+    #README.row
       .col-md-12
         +edit-markdown('README', 'spec.info["x-lucy/readme"]')
-        hr
     .row.scroll-route(ng-controller="Route"
          ng-repeat="route in routesFiltered"
          id="ScrollRoute{{$index}}")
       .col-md-12
         hr(ng-if="$index !== 0")
-        h3.text-regular
+        h2.text-regular
           span
             span.text-uppercase(
                 editable-select="route.method"
@@ -59,9 +78,9 @@ mixin edit-schema(name, field)
                 data-verb="{{ route.method }}") {{ route.method }}
             span &nbsp;
             span(editable-text="route.path" blur="submit") {{ route.path }}
-        p.small(editable-text="route.operation.summary" blur="submit") {{ route.operation.summary || 'Add summary' }}
-      .col-md-6.docs-request-col
+        p(editable-text="route.operation.summary" blur="submit") {{ route.operation.summary || 'Add summary' }}
         +edit-markdown('Operation Description', 'route.operation.description')
+      .col-md-6.docs-request-col
         h4 Parameters
         div(ng-controller="DocParameter"
             ng-repeat="parameter in route.operation.parameters")
@@ -69,43 +88,70 @@ mixin edit-schema(name, field)
             strong Name:&nbsp;
             span(editable-text="parameter.name" blur="submit") {{ parameter.name }}
             span &nbsp;&nbsp;
-            a(ng-click="removeParameter($index)")
-              i.text-danger remove
-          p
-            span Type:&nbsp;
-            span(editable-select="parameter.type" blur="submit"
-                e-ng-options="i as i for i in ['string', 'number', 'integer', 'boolean', 'array', 'file']") {{ parameter.type }}
-          p
-            span Required:&nbsp;
-            input(type="checkbox" ng-model="parameter.required")
-          p
-            span In:&nbsp;
-            span(editable-select="parameter.in" blur="submit"
-                 e-ng-options="i as i for i in ['path', 'query', 'header', 'body', 'formData']") {{ parameter.in }}
-          p
-            +edit-markdown('Parameter Description', 'parameter.description')
-          p
-            div(ng-if="parameter.in === 'body'")
-              +edit-schema('Schema', 'parameter.schema')
-          p
-            div(ng-if="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
-            div(ng-if="parameter.enum") Allowed values are:
-            .enum-list
-              ul
-                li(ng-repeat="item in parameter.enum") {{ item }}
-        a(ng-click="addParameter()") + Add Parameter
-      .col-md-6.docs-response-col
-        div(ng-repeat="(code, response) in route.operation.responses" ng-controller="ResponseCode")
-          h4
-            span Response&nbsp;&nbsp;
-            span(editable-text="code" blur="submit" onbeforesave="save($data)") {{ code }}
+            a(ng-if="$index !== 0" ng-click="moveParameter(-1)")
+              i.fa.fa-sort-asc
             span &nbsp;&nbsp;
-            small
-              a(ng-click="removeResponse(code)")
-                i.text-danger remove
+            a(ng-if="$index !== route.operation.parameters.length - 1" ng-click="moveParameter(1)")
+              i.fa.fa-sort-down
+            span &nbsp;&nbsp;
+            a(ng-click="removeParameter($index)")
+              i.text-danger.fa.fa-times
+          .parameter-details
+            p
+              span Type:&nbsp;
+              span(editable-select="parameter.type" blur="submit"
+                  e-ng-options="i as i for i in ['string', 'number', 'integer', 'boolean', 'array', 'file']") {{ parameter.type }}
+            p
+              span Required:&nbsp;
+              input(type="checkbox" ng-model="parameter.required")
+            p
+              span In:&nbsp;
+              span(editable-select="parameter.in" blur="submit"
+                   e-ng-options="i as i for i in ['path', 'query', 'header', 'body', 'formData']") {{ parameter.in }}
+            p
+              span Example:&nbsp;
+              span(editable-text="parameter['x-example']" blur="submit").
+                {{ parameter['x-example'] || 'add example'}}
+            p
+              span Console Default:&nbsp;
+              span(editable-text="parameter['x-consoleDefault']" blur="submit").
+                {{ parameter['x-consoleDefault'] || "add default" }}
+            p
+              div(ng-if="parameter.in === 'body'")
+                +edit-schema('Schema', 'parameter.schema')
+            p
+              span Enum:&nbsp; 
+              input(type="checkbox")
+              div(ng-if="parameter.enum") Allowed values are:
+                .enum-list
+                  ul
+                    li(ng-repeat="item in parameter.enum")
+                      span(editable-text="item" blur="submit") {{ item }}
+                    li
+                      a(ng-click="parameter.enum.push('value')") Add value
+            p
+              +edit-markdown('Parameter Description', 'parameter.description')
+            p(ng-if="parameter.type === 'array'")
+              span Collection Format:&nbsp;
+              span(editable-select="parameter.collectionFormat" blur="submit"
+                   e-ng-options="i as i for i in ['csv', 'ssv', 'tsv', 'pipes', 'multi']")
+        h4
+          a.text-lg(ng-click="addParameter()") Add Parameter
+      .col-md-6.docs-response-col
+        h4 Responses
+        div(ng-repeat="(code, response) in route.operation.responses" ng-controller="ResponseCode")
           p
-            +edit-markdown('Response Description', 'response.description')
-          p
-            +edit-schema('Response Schema', 'response.schema')
+            strong
+              span Response&nbsp;&nbsp;
+              span(editable-text="code" blur="submit" onbeforesave="save($data)") {{ code }}
+              span &nbsp;&nbsp;
+              small
+                a(ng-click="removeResponse(code)")
+                  i.text-danger remove
+          .response-details
+            p
+              +edit-markdown('Response Description', 'response.description')
+            p
+              +edit-schema('Response Schema', 'response.schema')
         h4
           a.text-lg(ng-click="addResponse()") Add Response

@@ -74,10 +74,13 @@
                 ul
                   li(ng-repeat="item in parameter.enum") {{ item }}
       .col-md-6.docs-response-col
+        h4 Responses
         div(ng-repeat="(code, response) in route.operation.responses")
-          h4 Response {{ code }}
-          p(ng-if="response.description" marked="response.description")
-          .response-schema.hide-code(
-                ng-controller="Schema"
-                ng-if="response.schema"
-                hljs source="printSchema(response.schema)")
+          p
+            strong Response {{ code }}
+          .response-details
+            p(ng-if="response.description" marked="response.description")
+            .response-schema.hide-code(
+                  ng-controller="Schema"
+                  ng-if="response.schema"
+                  hljs source="printSchema(response.schema)")

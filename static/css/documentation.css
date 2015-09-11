@@ -75,6 +75,7 @@
   background-color: #333;
 }
 
+<<<<<<< HEAD
 .docs-nav-col > ul.nav > ul > li a:hover,
 .docs-nav-col > ul.nav > li a:hover {
   background-color: #444;
@@ -86,7 +87,7 @@
 }
 
 .docs-nav-col li.menu-readme a {
-  color: #eee;
+  color: #fff;
 }
 
 .docs-nav-col .method-text,
@@ -116,6 +117,15 @@
     width: 48%;
     margin: 1%;
   }
+}
+.editable-full-width .editable-text,
+.editable-full-width .editable-text .editable-controls.form-group,
+.editable-full-width .editable-text input.form-control {
+  width: 100%;
+}
+
+.scroll-route {
+  padding-bottom: 20px;
 }
 
 #README.row {
@@ -184,8 +194,9 @@ table.doc-table td.example {
   z-index: 1;
 }
 
+.response-details,
 .parameter-details {
-  padding-left: 20px;
+  padding-left: 12px;
 }
 
 .response-schema.resizable-y {
