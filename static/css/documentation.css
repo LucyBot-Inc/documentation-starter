@@ -51,6 +51,25 @@
   padding-bottom: 20px;
 }
 
+#README.row {
+  background-color: #fff;
+  padding-bottom: 20px;
+}
+
+#README.row img.logo {
+  max-height: 150px;
+  margin-bottom: 20px;
+}
+
+.scroll-route:last-of-type {
+  min-height: 100%;
+  margin-bottom: 30px;
+}
+
+.route-description {
+  margin-bottom: 28px;
+}
+
 table.doc-table {
   table-layout: fixed;
 }
@@ -158,7 +177,7 @@ span[data-verb="patch"] {
 }
 
 span[data-verb="post"] {
-  color: #27ae60;
+  color: #26C281;
 }
 
 span[data-verb="delete"] {
@@ -192,7 +211,7 @@ span[data-verb="delete"] {
 .open .btn-default[data-verb="post"],
 .btn-default[data-verb="post"],
 .panel-default[data-verb="post"] {
-  border-color: #27ae60;
+  border-color: #26C281;
 }
 .open .btn-default[data-verb="delete"],
 .btn-default[data-verb="delete"],

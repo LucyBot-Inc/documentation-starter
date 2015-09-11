@@ -39,6 +39,7 @@ App.controller('Console', function($scope) {
       path: route.path,
     })
     $scope.activeRoute = route;
+    $scope.activeRouteIdx = $scope.routes.indexOf(route);
     $scope.onAnswerChanged();
   }
 

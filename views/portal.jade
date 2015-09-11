@@ -8,13 +8,13 @@ html
     title API Console
     include ./includes/head.jade
 
-  body(ng-app="App" ng-cloak)
+  body(ng-app="App")
     #Body(ng-controller="Body")
-      #Portal(ng-controller="Portal" ng-init="activePage = 'console'" ng-show="spec")
+      #Portal(ng-controller="Portal")
         #nav.navbar.navbar-secondary.navbar-inverse.square
           .container-fluid
             ul.nav.navbar-nav.nav-pills
-              li
+              li(ng-show="spec")
                 if isAnyAPI
                   a.api-title(href="https://any-api.com" target="_parent")
                     span Any
@@ -30,11 +30,18 @@ html
               ul.nav.navbar-nav.nav-pills.navbar-right
                 +navitem('Documentation')
                 +navitem('Console')
-        .container-fluid(ng-if="spec")
-          .portal-page(ng-if="activePage === 'console'")
-            include ./console.jade
-          .portal-page(ng-if="activePage === 'recipes'")
-            include ./recipes.jade
-          .portal-page(ng-if="activePage === 'documentation'")
-            include ./documentation.jade
+        .container-fluid(ng-if="!spec")
+          .row.spec-loading
+            .col-md-4.col-md-offset-4.text-center
+              i.fa.fa-spin.fa-spinner
+        .container-fluid.ng-cloak(ng-if="spec")
+          #Console.portal-page(ng-controller="Console")
+            div(ng-if="activePage === 'console'")
+              include ./console.jade
+          #Recipes.portal-page
+            div(ng-if="activePage === 'recipes'")
+              include ./recipes.jade
+          #Docs.portal-page(ng-controller="Docs")
+            div(ng-if="activePage === 'documentation'")
+              include ./documentation.jade
 

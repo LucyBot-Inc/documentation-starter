@@ -2,13 +2,13 @@
   .col-xs-12
     .btn-toolbar.btn-toolbar-lg
       .btn-group
-        a.btn.btn-lg.btn-info.text-regular(
+        a.btn.btn-lg.btn-success.text-regular(
               ng-click="refresh()",
               ng-disabled="loadingResponse")
-          i.fa.fa-refresh.spin-fix(ng-class="{'fa-spin': loadingResponse}")
-          span &nbsp;
           span(ng-if="loadingResponse") Sending Request
           span(ng-if="!loadingResponse") View Results
+          span &nbsp;&nbsp;
+          i.fa.fa-refresh.spin-fix(ng-class="{'fa-spin': loadingResponse}")
       .btn-group.output-type-btn-group(ng-if="activeRoute.visual")
         a.btn.btn-lg.btn-width-md.btn-primary(
                 ng-class="{active: outputType === 'visual'}",

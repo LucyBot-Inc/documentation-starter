@@ -3,36 +3,44 @@ App.controller('Docs', function($scope) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
   $scope.scrollTo = function(idx) {
-    if (idx === -1) {
-      $('.docs-col').scrollTop(0);
-    } else {
+    var newTop = 0;
+    if (idx !== -1) {
+      if ($('#ScrollRoute0').length === 0) return;
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
-      var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
-      $('.docs-col').scrollTop(routeTop - colTop + curTop - 15);
+      var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
+      newTop = routeTop - colTop + curTop - 15;
     }
+    $('.docs-col').animate({
+      scrollTop: newTop
+    }, 800)
   }
 
   $scope.routesFiltered = $scope.routes;
+  $scope.matchesTag = function(route) {
+    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
+  }
+  $scope.matchesQuery = function(route) {
+    if (!$scope.query) return true;
+    var query = $scope.query.toLowerCase();
+    var terms = query.split(' ');
+    for (var i = 0; i < terms.length; ++i) {
+      if (route.searchText.indexOf(terms[i]) === -1) return false;
+    }
+    return true;
+  }
   var filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
-        .filter($scope.showRoute)
-        .filter(function(r) {
-          return !$scope.activeTag || (r.operation.tags && r.operation.tags.indexOf($scope.activeTag.name) !== -1)
-        })
+        .filter($scope.matchesQuery)
+        .filter($scope.matchesTag)
+    $scope.scrollTo(0);
   }
   $scope.$watch('query', filterRoutes);
   $scope.$watch('activeTag', filterRoutes);
   $scope.$watch('routes', filterRoutes);
   $scope.showRoute = function(route) {
-    if (!$scope.query) return true;
-    var query = $scope.query.toLowerCase();
-    var terms = query.split(' ');
-    for (var i = 0; i < terms.length; ++i) {
-      if (route.searchText.indexOf(terms[i]) !== -1) return true;
-    }
-    return false;
-  }
+  $scope.query = '';
+
   $scope.editorMode = false;
   $scope.switchMode = function() {
     $scope.editorMode = !$scope.editorMode;
@@ -82,7 +90,9 @@ App.controller('Route', function($scope) {
   $scope.removeResponse = function(code) {
     delete $scope.route.operation.responses[code];
   }
-})
+});
+
+App.controller('Route', function($scope) {})
 
 App.controller('EditMarkdown', function($scope) {})
 

@@ -10512,6 +10512,8 @@ EXAMPLES.parameterExample = function(param, path) {
     ret = path.replace('{' + param.name + '}', ret);
   } else if (param.in === 'query') {
     ret = '?' + param.name + '=' + ret;
+  } else if (param.in === 'formData') {
+    ret = param.name + '=' + ret;
   } else if (param.in === 'header') {
     ret = param.name + ': ' + ret;
   }
@@ -11252,6 +11254,16 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
+  $scope.activePage = 'documentation';
+  $scope.$watch('activePage', function(page) {
+    mixpanel.track('set_page_' + page, {
+      url: SPEC_URL,
+    })
+  })
+  $scope.stripHtml = function(str) {
+    return str.replace(/<(?:.|\n)*?>/gm, '');
+  }
+
   var VISUAL_TAG = "Has Visual";
   var PARSER_OPTS = {
     strictValidation: false,
@@ -11270,6 +11282,10 @@ App.controller('Portal', function($scope, spec) {
           var operation = $scope.spec.paths[path][method];
           operation.parameters = (operation.parameters || []).concat(pathParams);
           operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
+          operation.responses = operation.responses || {};
+          var successResponse = operation.responses['200'] = operation.responses['200'] || {};
+          if (successResponse.description === 'No response was specified') successResponse.description = '';
+          if (!successResponse.description) successResponse.description = 'OK';
           var route = {path: path, method: method, operation: operation};
           route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
           if (route.visual) {
@@ -11305,16 +11321,35 @@ App.controller('Portal', function($scope, spec) {
     }
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
       if (err) console.log(err);
+      api = api || spec.data;
       mixpanel.track('get_swagger', {
         host: api.host,
         url: SPEC_URL,
-      })
-      $scope.setSpec(api || spec.data);
+      });
+      $scope.setSpec(api);
       $scope.$apply();
     })
 
     $scope.setActiveTag = function(tag) {
       $scope.activeTag = tag;
+      if ($scope.activePage === 'documentation') {
+        $('#Docs').scope().scrollTo(0);
+      }
+    }
+
+    $scope.openConsole = function(route) {
+      if (route) $('#Console').scope().setActiveRoute(route);
+      $scope.activePage = 'console';
+    }
+
+    $scope.openDocumentation = function(idx) {
+      $scope.activePage = 'documentation';
+      if (idx || idx === 0) {
+        $('#Docs').scope().routesFiltered = $scope.routes;
+        setTimeout(function() {
+          $('#Docs').scope().scrollTo(idx);
+        }, 800);
+      }
     }
   })
 });
@@ -11324,16 +11359,20 @@ App.controller('Docs', function($scope) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
   $scope.scrollTo = function(idx) {
-    if (idx === -1) {
-      $('.docs-col').scrollTop(0);
-    } else {
+    var newTop = 0;
+    if (idx !== -1) {
+      if ($('#ScrollRoute0').length === 0) return;
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
-      var routeTop = $('#ScrollRoute' + idx + ' h3').offset().top;
-      $('.docs-col').scrollTop(routeTop - colTop + curTop - 15);
+      var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
+      newTop = routeTop - colTop + curTop - 15;
     }
+    $('.docs-col').animate({
+      scrollTop: newTop
+    }, 800)
   }
 
+<<<<<<< HEAD
   $scope.routesFiltered = $scope.routes;
   var filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
@@ -11346,14 +11385,19 @@ App.controller('Docs', function($scope) {
   $scope.$watch('activeTag', filterRoutes);
   $scope.$watch('routes', filterRoutes);
   $scope.showRoute = function(route) {
+=======
+  $scope.query = '';
+  $scope.matchesQuery = function(route) {
+>>>>>>> dev
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
     var terms = query.split(' ');
     for (var i = 0; i < terms.length; ++i) {
-      if (route.searchText.indexOf(terms[i]) !== -1) return true;
+      if (route.searchText.indexOf(terms[i]) === -1) return false;
     }
-    return false;
+    return true;
   }
+<<<<<<< HEAD
   $scope.editorMode = false;
   $scope.switchMode = function() {
     $scope.editorMode = !$scope.editorMode;
@@ -11404,6 +11448,23 @@ App.controller('Route', function($scope) {
     delete $scope.route.operation.responses[code];
   }
 })
+=======
+  $scope.matchesTag = function(route) {
+    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
+  }
+  $scope.routesFiltered = $scope.routes;
+  var filterRoutes = function() {
+    $scope.routesFiltered = $scope.routes
+        .filter($scope.matchesQuery)
+        .filter($scope.matchesTag)
+    $scope.scrollTo(0);
+  }
+  $scope.$watch('query', filterRoutes);
+  $scope.$watch('activeTag', filterRoutes);
+});
+
+App.controller('Route', function($scope) {})
+>>>>>>> dev
 
 App.controller('EditMarkdown', function($scope) {})
 
@@ -11521,6 +11582,7 @@ App.controller('Console', function($scope) {
       path: route.path,
     })
     $scope.activeRoute = route;
+    $scope.activeRouteIdx = $scope.routes.indexOf(route);
     $scope.onAnswerChanged();
   }
 
@@ -11857,6 +11919,8 @@ var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
 }
+
+var promptedOnce = false;
 App.controller('Keys', function($scope) {
   var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
   $scope.keys = JSON.parse(keys) || {};
@@ -11884,10 +11948,16 @@ App.controller('Keys', function($scope) {
       def = $scope.spec.securityDefinitions[label];
       if (def.type === 'oauth2') {
         $('#OAuth2').scope().setDefinition(def);
-        $('#OAuth2').modal('show');
-        mixpanel.track('prompt_oauth', {
-          host: $scope.spec.host,
-        })
+        $scope.startOAuth = function() {
+          $('#OAuth2').modal('show');
+          mixpanel.track('prompt_oauth', {
+            host: $scope.spec.host,
+          });
+        }
+        if (!promptedOnce) {
+          $scope.startOAuth();
+          promptedOnce = true;
+        }
       }
       $scope.keyInputs.push({
         name: def.type === 'oauth2' ? 'oauth2' : def.name,

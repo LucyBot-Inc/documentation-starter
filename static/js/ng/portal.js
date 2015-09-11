@@ -9,6 +9,16 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
+  $scope.activePage = 'documentation';
+  $scope.$watch('activePage', function(page) {
+    mixpanel.track('set_page_' + page, {
+      url: SPEC_URL,
+    })
+  })
+  $scope.stripHtml = function(str) {
+    return str.replace(/<(?:.|\n)*?>/gm, '');
+  }
+
   var VISUAL_TAG = "Has Visual";
   var PARSER_OPTS = {
     strictValidation: false,
@@ -27,6 +37,10 @@ App.controller('Portal', function($scope, spec) {
           var operation = $scope.spec.paths[path][method];
           operation.parameters = (operation.parameters || []).concat(pathParams);
           operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
+          operation.responses = operation.responses || {};
+          var successResponse = operation.responses['200'] = operation.responses['200'] || {};
+          if (successResponse.description === 'No response was specified') successResponse.description = '';
+          if (!successResponse.description) successResponse.description = 'OK';
           var route = {path: path, method: method, operation: operation};
           route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
           if (route.visual) {
@@ -62,16 +76,35 @@ App.controller('Portal', function($scope, spec) {
     }
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
       if (err) console.log(err);
+      api = api || spec.data;
       mixpanel.track('get_swagger', {
         host: api.host,
         url: SPEC_URL,
-      })
-      $scope.setSpec(api || spec.data);
+      });
+      $scope.setSpec(api);
       $scope.$apply();
     })
 
     $scope.setActiveTag = function(tag) {
       $scope.activeTag = tag;
+      if ($scope.activePage === 'documentation') {
+        $('#Docs').scope().scrollTo(0);
+      }
+    }
+
+    $scope.openConsole = function(route) {
+      if (route) $('#Console').scope().setActiveRoute(route);
+      $scope.activePage = 'console';
+    }
+
+    $scope.openDocumentation = function(idx) {
+      $scope.activePage = 'documentation';
+      if (idx || idx === 0) {
+        $('#Docs').scope().routesFiltered = $scope.routes;
+        setTimeout(function() {
+          $('#Docs').scope().scrollTo(idx);
+        }, 800);
+      }
     }
   })
 });
