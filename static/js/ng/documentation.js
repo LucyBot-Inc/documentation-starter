@@ -1,6 +1,6 @@
 App.controller('Docs', function($scope) {
   $scope.getId = function(verb, path) {
-    return verb + '_' + path.replace(/\W/g, '_')
+    return verb + '_' + path.replace(/\W/g, '_');
   }
   $scope.scrollTo = function(idx) {
     var newTop = 0;
@@ -38,7 +38,6 @@ App.controller('Docs', function($scope) {
   $scope.$watch('query', filterRoutes);
   $scope.$watch('activeTag', filterRoutes);
   $scope.$watch('routes', filterRoutes);
-  $scope.showRoute = function(route) {
   $scope.query = '';
 
   $scope.editorMode = false;
@@ -74,6 +73,7 @@ App.controller('Route', function($scope) {
   }
 
   $scope.addParameter = function() {
+    console.log('add p');
     $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
   }
 
@@ -91,8 +91,6 @@ App.controller('Route', function($scope) {
     delete $scope.route.operation.responses[code];
   }
 });
-
-App.controller('Route', function($scope) {})
 
 App.controller('EditMarkdown', function($scope) {})
 
@@ -167,4 +165,5 @@ App.controller('ResponseCode', function($scope) {
     }
     return true;
   }
-})
+});
+

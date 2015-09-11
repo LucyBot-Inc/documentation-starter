@@ -9,7 +9,9 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
-  $scope.activePage = 'documentation';
+  var hash = window.location.hash || '#documentation';
+  $scope.activePage = hash.substring(1);
+  console.log('hash', window.location.hash);
   $scope.$watch('activePage', function(page) {
     mixpanel.track('set_page_' + page, {
       url: SPEC_URL,

@@ -1,7 +1,9 @@
 var EXAMPLES = {};
 EXAMPLES.parameterExample = function(param, path) {
   var ret = '';
-  if (param.format === 'date') {
+  if (param.example) {
+    ret = param.example;
+  } else if (param.format === 'date') {
     ret = '1987-09-23';
   } else if (param.format === 'date-time') {
     ret = '1987-09-23T18:30:00Z';

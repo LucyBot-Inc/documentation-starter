@@ -28,6 +28,7 @@ html
                 include ./includes/spec-link.jade
             .navbar-collapse
               ul.nav.navbar-nav.nav-pills.navbar-right
+                +navitem('Editor')
                 +navitem('Documentation')
                 +navitem('Console')
         .container-fluid(ng-if="!spec")
@@ -44,4 +45,5 @@ html
           #Docs.portal-page(ng-controller="Docs")
             div(ng-if="activePage === 'documentation'")
               include ./documentation.jade
-
+            div(ng-if="activePage === 'editor'")
+              include ./edit-documentation.jade

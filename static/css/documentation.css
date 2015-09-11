@@ -33,6 +33,10 @@
   overflow: hidden;
 }
 
+.docs-nav-col .readme-link {
+  margin-bottom: 5px;
+}
+
 .docs-nav-col li.readme-link a {
   color: #eee;
 }
@@ -45,6 +49,12 @@
 
 .docs-col hr {
   border-color: #333;
+}
+
+.editable-full-width .editable-text,
+.editable-full-width .editable-text .editable-controls.form-group,
+.editable-full-width .editable-text input.form-control {
+  width: 100%;
 }
 
 .scroll-route {
@@ -113,8 +123,9 @@ table.doc-table td.example {
   z-index: 1;
 }
 
+.response-details,
 .parameter-details {
-  padding-left: 20px;
+  padding-left: 12px;
 }
 
 .response-schema.resizable-y {
