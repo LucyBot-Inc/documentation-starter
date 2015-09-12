@@ -4,16 +4,29 @@ mixin fake-editable(name, field)
       span Add #{name}
     p.editable-click(ng-if="#{field}")
       span Edit #{name}
-mixin edit-markdown(name, field)
-  div(ng-controller="EditMarkdown")
+
+mixin edit-code(name, field, type)
+  div(ng-controller="EditCode")
     +fake-editable(name, field)
     a.btn.btn-sm.btn-success(ng-show="clicked" ng-click="clicked = false") Done
-    i(ng-show="clicked") &nbsp;Tip: you can include&nbsp;
-      a(href="https://help.github.com/articles/markdown-basics/" target="_blank") markdown
+    if type === 'markdown'
+      i(ng-show="clicked")
+        span &nbsp;Tip: you can include&nbsp;
+        a(href="https://help.github.com/articles/markdown-basics/" target="_blank") markdown
+        span &nbsp;
+        span and basic HTML/Bootstrap elements
     div(ng-if="!clicked")
-      div(marked="#{field}")
+      if type === 'markdown'
+        div(marked="#{field}")
+      else
+        .hide-code(ng-if="#{field}"
+                   hljs source="#{field}" language="html")
     div(ng-if="clicked")
-      div(ui-codemirror ng-model="#{field}")
+      div(ui-codemirror="{mode: '#{type}'}" ng-model="#{field}")
+
+mixin edit-markdown(name, field)
+  +edit-code(name, field, 'markdown')
+
 mixin edit-schema(name, field)
   div(ng-controller="Schema")
     div(ng-show="!clicked" ng-click="edit(#{field})")
@@ -28,7 +41,7 @@ mixin edit-schema(name, field)
             ng-if="#{field}"
             hljs source="getString(#{field})")
     div(ng-if="clicked")
-      div(ui-codemirror="{onLoad: codemirrorLoad}" ng-model="schemaString")
+      div(ui-codemirror="{onLoad: codemirrorLoad, mode: 'javascript'}" ng-model="schemaString")
 
 .row.docs-row
   .col-md-3.docs-nav-col
@@ -45,8 +58,8 @@ mixin edit-schema(name, field)
                data-verb="{{route.method}}") {{ route.method }}
            span &nbsp;
            span {{ route.path }}
-    p
-      a.btn.btn-sm.btn-success(ng-click="addOperation()") + New Operation
+      li.route-link
+        a(ng-click="addOperation()") Add Operation
   .col-md-9.docs-col
     .api-info
       h1
@@ -161,5 +174,7 @@ mixin edit-schema(name, field)
               +edit-markdown('Response Description', 'response.description')
             p
               +edit-schema('Response Schema', 'response.schema')
+            p
+              +edit-code('Visual HTML', 'response["x-lucy/view"]', 'htmlmixed')
         h4
           a.text-lg(ng-click="addResponse()") Add Response

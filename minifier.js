@@ -14,6 +14,10 @@ var toMinify = [{
     "static/bower/marked/lib/marked.js",
     "static/bower/swagger-parser/dist/swagger-parser.min.js",
     "static/bower/codemirror/lib/codemirror.js",
+    "static/bower/codemirror/mode/xml/xml.js",
+    "static/bower/codemirror/mode/htmlmixed/htmlmixed.js",
+    "static/bower/codemirror/mode/javascript/javascript.js",
+    "static/bower/codemirror/mode/markdown/markdown.js",
     "static/js/smooth-scroll.js",
     "static/js/examples.js",
     "static/js/lucy.js",
@@ -34,10 +38,9 @@ var toMinify = [{
 }, {
   fileIn: [
     "static/less/styles.css",
-    "static/bower/highlightjs/styles/github.css",
-    "static/bower/highlightjs/styles/atelier-forest.light.css",
     "static/bower/angular-xeditable/dist/css/xeditable.css",
     "static/bower/codemirror/lib/codemirror.css",
+    "static/bower/highlightjs/styles/solarized_light.css",
     "static/css/portal.css",
     "static/css/spec-url.css",
     "static/css/verb-colors.css",
