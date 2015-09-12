@@ -21,7 +21,7 @@ var maybeTruncateSummary = function(operation) {
 App.controller('Portal', function($scope, spec) {
   $scope.MAX_HIGHLIGHT_LEN = 10000;
   $scope.activePage = 'documentation';
-  var hash = window.location.hash || '#documentation';
+  var hash = window.location.hash || START_PAGE;
   $scope.activePage = hash.substring(1);
   console.log('hash', window.location.hash);
   $scope.$watch('activePage', function(page) {

@@ -187,6 +187,17 @@ App.controller('Route', function($scope) {
     $scope.route.operation.parameters.splice(idx, 1);
   }
 
+  $scope.moveParameter = function(idx, dir) {
+    var from = idx;
+    var to = idx + dir;
+    console.log('move from ' + from + ' to ' + to); 
+    $scope.route.operation.parameters.splice(
+        idx + dir,
+        0,
+        $scope.route.operation.parameters.splice(idx, 1)[0]
+    );
+  }
+
   $scope.addResponse = function() {
     var code = 200;
     while ($scope.route.operation.responses[String(code)]) ++code;
@@ -258,6 +269,18 @@ App.controller('DocParameter', function($scope) {
       return $scope.printSchema($scope.parameter.schema);
     }
     return EXAMPLES.parameterExample($scope.parameter, $scope.route.path);
+  }
+  $scope.hasEnum = $scope.parameter.enum ? true : false;
+  $scope.toggleEnum = function() {
+    if ($scope.parameter.enum) {
+      $scope.savedEnum = $scope.parameter.enum;
+      delete $scope.parameter.enum;
+    } else {
+      $scope.parameter.enum = $scope.savedEnum || [];
+    }
+  }
+  $scope.removeEnumItem = function(idx) {
+    $scope.parameter.enum.splice(idx, 1);
   }
 })
 
