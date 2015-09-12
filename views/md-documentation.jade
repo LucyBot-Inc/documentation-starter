@@ -26,7 +26,7 @@
       li.readme-link(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
         a(ng-click="scrollTo(-1)")
           span README
-      li(ng-repeat="route in routesFiltered")
+      li.route-link(ng-repeat="route in routesFiltered")
          a(ng-click="scrollTo($index)")
            span.method-text.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
            span &nbsp;
