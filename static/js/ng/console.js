@@ -180,37 +180,17 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     $scope.outputType = type;
   }
 
-  $scope.getDemoUrl = function() {
-    var demoURL = BASE_URL + '/code/build/embed?';
-    demoURL += 'lucy_swaggerURL=' + encodeURIComponent(SPEC_URL);
-    demoURL += '&lucy_method=' + encodeURIComponent($scope.activeRoute.method);
-    demoURL += '&lucy_path=' + encodeURIComponent($scope.activeRoute.path);
-    var keys = $('#Keys').scope().keys;
-    var keysAdded = [];
-    for (key in keys) {
-      if (keys[key] !== undefined && keys[key] !== null && keysAdded.indexOf(key) === -1) {
-        keysAdded.push(key);
-        demoURL += '&' + key + '=' + encodeURIComponent(JSON.stringify(keys[key]));
-      }
-    }
-    for (key in $scope.answers) {
-      if ($scope.answers[key] !== undefined && $scope.answers[key] !== null && keysAdded.indexOf(key) === -1) {
-        keysAdded.push(key);
-        demoURL += '&' + key + '=' + encodeURIComponent(JSON.stringify($scope.answers[key]));
-      }
-    }
-    return demoURL;
-  }
-
   var refreshTimeout = null;
   var refreshTimeoutLength = 350;
   $scope.refresh = function() {
     $scope.loadingResponse = true;
+    console.log('ref1');
     if (refreshTimeout) clearTimeout(refreshTimeout);
     refreshTimeout = setTimeout($scope.refreshInner, refreshTimeoutLength);
   }
 
   $scope.refreshInner = function() {
+    console.log('refresh!', $scope.answers);
     mixpanel.track('refresh_response', {
       visual: $scope.activeRoute.visual,
       method: $scope.activeRoute.method,
@@ -219,10 +199,26 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     })
     $scope.outputType = !$scope.askedForRaw && $scope.activeRoute.visual ? 'visual' : 'raw';
     $scope.response = '';
+    var frameDoc = $('iframe.response-frame')[0].contentWindow.document;
+    frameDoc.body.innerHTML = '<h1 class="text-center"><i class="fa fa-spin fa-spinner"></i></h1>'
     if ($scope.activeRoute.visual) {
-      $scope.frameSrc = $sce.trustAsResourceUrl($scope.getDemoUrl());
-      var frame = $('iframe.response-frame');
-      frame.attr('src', $scope.frameSrc);
+      $.ajax({
+        type: 'POST',
+        url: BASE_URL + '/code/build/embed',
+        contentType : 'application/json',
+        data: JSON.stringify({
+          swagger: $scope.spec,
+          method: $scope.activeRoute.method,
+          path: $scope.activeRoute.path,
+          keys: $("#Keys").scope().keys,
+          answers: $scope.answers,
+        }),
+        success: function(data) {
+          console.log('success', data.length);
+          frameDoc.body.innerHTML = '';
+          frameDoc.write(data);
+        },
+      });
     }
 
     var request = $scope.getRequestParameters();

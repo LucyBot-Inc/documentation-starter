@@ -33,11 +33,14 @@ App.controller('Docs', function($scope) {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
         .filter($scope.matchesTag)
+  }
+  var filterRoutesAndScroll = function() {
+    filterRoutes();
     $scope.scrollTo(0);
   }
-  $scope.$watch('query', filterRoutes);
-  $scope.$watch('activeTag', filterRoutes);
-  $scope.$watch('routes', filterRoutes);
+  $scope.$watch('query', filterRoutesAndScroll);
+  $scope.$watch('activeTag', filterRoutesAndScroll);
+  $scope.$watch('routes', filterRoutesAndScroll);
   $scope.query = '';
 
   $scope.editorMode = false;
@@ -57,8 +60,11 @@ App.controller('Docs', function($scope) {
         }
       }
     };
-    $scope.routes.push({operation: op, method: 'get', path: path})
+    $scope.routes.push({operation: op, method: 'get', path: path});
     filterRoutes();
+    setTimeout(function() {
+      $scope.scrollTo($scope.routes.length - 1);
+    }, 800);
   }
 });
 
@@ -103,7 +109,7 @@ App.controller('Route', function($scope) {
   }
 });
 
-App.controller('EditMarkdown', function($scope) {})
+App.controller('EditCode', function($scope) {})
 
 App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
