@@ -3,6 +3,7 @@ body {
   background-color: #f7f7f7;
 }
 
+.show-cursor,
 a {
   cursor: pointer;
 }

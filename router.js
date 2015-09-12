@@ -48,4 +48,12 @@ var ConsoleRouter = module.exports = function(options) {
     if (!renderOpts.specURL) ext.specURL = req.query.swaggerURL || '';
     res.send(Jade.renderFile(jadeFile, _.extend(ext, renderOpts)));
   });
+
+  self.router.get('/editor', function(req, res) {
+    var ext = {
+      showEditor: true,
+    };
+    if (!renderOpts.specURL) ext.specURL = req.query.swaggerURL || '';
+    res.send(Jade.renderFile(jadeFile, _.extend(ext, renderOpts)));
+  })
 }

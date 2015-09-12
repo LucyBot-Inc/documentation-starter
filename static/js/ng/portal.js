@@ -9,7 +9,7 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
-  var hash = window.location.hash || '#documentation';
+  var hash = window.location.hash || START_PAGE;
   $scope.activePage = hash.substring(1);
   console.log('hash', window.location.hash);
   $scope.$watch('activePage', function(page) {

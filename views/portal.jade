@@ -6,6 +6,8 @@ doctype html
 html
   head
     title API Console
+    script.
+      var START_PAGE = "#{showEditor ? '#editor' : '#documentation'}";
     include ./includes/head.jade
 
   body(ng-app="App")
@@ -28,7 +30,8 @@ html
                 include ./includes/spec-link.jade
             .navbar-collapse
               ul.nav.navbar-nav.nav-pills.navbar-right
-                +navitem('Editor')
+                if showEditor
+                  +navitem('Editor')
                 +navitem('Documentation')
                 +navitem('Console')
         .container-fluid(ng-if="!spec")
@@ -45,5 +48,6 @@ html
           #Docs.portal-page(ng-controller="Docs")
             div(ng-if="activePage === 'documentation'")
               include ./documentation.jade
-            div(ng-if="activePage === 'editor'")
-              include ./edit-documentation.jade
+            if showEditor
+              div(ng-if="activePage === 'editor'")
+                include ./edit-documentation.jade
