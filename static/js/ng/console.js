@@ -19,11 +19,9 @@ var oauthIsImplicit = function(defns) {
 }
 
 App.controller('Console', function($scope) {
-  $scope.callOnChange = [];
   $scope.onAnswerChanged = function() {
-    $scope.callOnChange.forEach(function(fn) {
-      fn();
-    })
+    if ($('#SampleCode').length) $('#SampleCode').scope().refresh();
+    if ($('#Response').length) $('#Response').scope().autorefresh();
   }
 
   $scope.setActiveRoute = function(route) {
@@ -168,7 +166,6 @@ App.controller('SampleCode', function($scope) {
       $scope.$apply();
     });
   }
-  $scope.callOnChange.push($scope.refresh);
 
   Lucy.get('/code/languages', function(err, languages) {
     $scope.languages = languages;
@@ -300,12 +297,11 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
       }
     })
   }
-  var autorefresh = function() {
+  $scope.autorefresh = function() {
     if ($scope.activeRoute.method === 'get') {
       $scope.refresh()
     }
   }
-  autorefresh();
-  $scope.callOnChange.push(autorefresh);
+  $scope.autorefresh();
 }]);
 
