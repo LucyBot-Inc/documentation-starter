@@ -13684,7 +13684,7 @@ App.controller('EditCode', function($scope) {})
 
 App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
-    return JSON.stringify(EXAMPLES.schemaExample($scope.schema), null, 2);
+    return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
   var removeView = function(key, val) {
     if (key === 'x-lucy/view') return undefined;
