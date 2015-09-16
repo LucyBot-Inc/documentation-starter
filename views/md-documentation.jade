@@ -6,39 +6,40 @@
         span.input-group-addon
           i.fa.fa-search
         input.form-control(type="text" ng-model="$parent.query")
-    .form-group
-      .dropdown
-        button.btn.btn-default.btn-sm.dropdown-toggle.width-full.btn-text-left(
-              type="button"
-              data-toggle="dropdown")
-          span.caret
-          span &nbsp;&nbsp;{{ activeTag ? activeTag.name : 'All' }}
-        ul.dropdown-menu(role="menu")
-          li(role="presentation")
-            a(ng-click="setActiveTag(null)")
-              span All
-          li(role="presentation" ng-repeat="tag in spec.tags" ng-show="tag.name !== 'Has Visual'")
-            a(ng-click="setActiveTag(tag)")
-              span.pull-left {{ tag.name }}
-              span.small.pull-right {{ tag.description }}
-              span.clearfix
-    ul
-      li.readme-link(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
-        a(ng-click="scrollTo(-1)")
+    mixin readme-link
+      li.readme-link(ng-if="spec.info['x-lucy/readme'] || spec.info.description"
+                     ng-class="{'scrolled-tag': scrolledTag === null}")
+        a(ng-click="scrollToRoute(-1)")
           span README
-      li(ng-repeat="route in routesFiltered")
-         a(ng-click="scrollTo($index)")
-           span.method-text.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
-           span &nbsp;
-           span {{ route.path }}
+    mixin route-link
+      a(ng-click="scrollToRoute($index)")
+        span.method-text.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
+        span &nbsp;
+        span {{ route.path }}
+    ul.nav.nav-list.no-tag-list(ng-if="query || !spec.tags")
+      +readme-link
+      li(ng-repeat="route in routesFiltered"
+         ng-class="{'scrolled-route': route === scrolledRoute}")
+        +route-link
+    ul.nav.nav-list.tag-list(ng-if="!query && spec.tags")
+      +readme-link
+      li(ng-repeat="tag in spec.tags"
+         ng-class="{'scrolled-tag': tag.name === scrolledTag.name}")
+        a(ng-click="scrollToTag($index)") {{ tag.name }}
+        ul.nav.nav-list.route-list(ng-if="tag.name === scrolledTag.name")
+          li(ng-repeat="route in routesFiltered"
+             ng-if="route.operation.tags && route.operation.tags.indexOf(tag.name) !== -1"
+             ng-class="{'scrolled-route': route === scrolledRoute}")
+            +route-link
   .col-md-9.docs-col
-    #README.row(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
+    #README.row.scroll-target(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
       .col-md-12
         img.logo(ng-if="spec.info['x-logo']" ng-src="{{ spec.info['x-logo'] }}")
         div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description")
-    .row.scroll-route(ng-controller="Route"
-                      ng-repeat="route in routesFiltered"
-                      id="ScrollRoute{{$index}}")
+    .row.scroll-route.scroll-target(
+        ng-controller="Route"
+        ng-repeat="route in routesFiltered"
+        id="ScrollRoute{{$index}}")
       a(name="route{{$index}}")
       .col-md-12
         hr(ng-if="$index !== 0")
@@ -84,3 +85,5 @@
                 ng-controller="Schema"
                 ng-if="response.schema"
                 hljs source="printSchema(response.schema)")
+  script.
+    $('.docs-col').scope().initScroll();
