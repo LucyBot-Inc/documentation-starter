@@ -35,7 +35,7 @@ var toMinify = [{
     "static/bower/highlightjs/styles/atelier-forest.light.css",
     "static/css/portal.css",
     "static/css/spec-url.css",
-    "static/css/verb-colors.css",
+    "static/css/data-colors.css",
     "static/css/documentation.css",
     "static/css/console.css",
     "static/css/markdown.css",
