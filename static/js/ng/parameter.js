@@ -3,7 +3,6 @@ var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
 }
-
 App.controller('Keys', function($scope) {
   var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
   $scope.keys = JSON.parse(keys) || {};
@@ -24,20 +23,10 @@ App.controller('Keys', function($scope) {
       localStorage.setItem(LOCAL_STORAGE_KEY, '{}');
     }
   }
-
   $scope.keyInputs = [];
   if ($scope.spec.securityDefinitions) {
     for (var label in $scope.spec.securityDefinitions) {
       def = $scope.spec.securityDefinitions[label];
-      if (def.type === 'oauth2') {
-        $('#OAuth2').scope().setDefinition(def);
-        $scope.startOAuth = function() {
-          $('#OAuth2').modal('show');
-          mixpanel.track('prompt_oauth', {
-            host: $scope.spec.host,
-          });
-        }
-      }
       $scope.keyInputs.push({
         name: def.type === 'oauth2' ? 'oauth2' : def.name,
         label: label,

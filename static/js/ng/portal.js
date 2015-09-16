@@ -30,6 +30,20 @@ App.controller('Portal', function($scope, spec) {
       $scope.spec = spec;
       var info = $scope.spec.info = $scope.spec.info || {};
       info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
+      if ($scope.spec.securityDefinitions) {
+        for (var label in $scope.spec.securityDefinitions) {
+          def = $scope.spec.securityDefinitions[label];
+          if (def.type === 'oauth2') {
+            $scope.oauthDefinition = def;
+            $scope.startOAuth = function() {
+              $('#OAuth2').modal('show');
+              mixpanel.track('prompt_oauth', {
+                host: $scope.spec.host,
+              });
+            }
+          }
+        }
+      }
       for (path in $scope.spec.paths) {
         var pathParams = $scope.spec.paths[path].parameters || [];
         for (method in $scope.spec.paths[path]) {
@@ -89,11 +103,9 @@ App.controller('Portal', function($scope, spec) {
     $scope.openConsole = function(route) {
       if (route) $('#Console').scope().setActiveRoute(route);
       $scope.activePage = 'console';
-      var startOAuth = $('#Keys').scope().startOAuth;
-      console.log('start oauth?', startOAuth);
-      if (!promptedOAuth && startOAuth) {
+      if (!promptedOAuth && $scope.startOAuth) {
         promptedOAuth = true;
-        startOAuth();
+        $scope.startOAuth();
       }
     }
 
@@ -105,6 +117,11 @@ App.controller('Portal', function($scope, spec) {
           $('#Docs').scope().scrollToRoute(idx);
         }, 800);
       }
+    }
+
+    $scope.openPage = function(page) {
+      if (page === 'console') $scope.openConsole();
+      else if (page === 'documentation') $scope.openDocumentation();
     }
   })
 });

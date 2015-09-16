@@ -5,10 +5,12 @@ meta(content='width=device-width, initial-scale=1, minimum-scale=1.0, user-scala
 link(rel="stylesheet" href="#{basePath}/bower/fontawesome/css/font-awesome.min.css")
 link(rel="stylesheet" href="#{basePath}/minified/css/all.css")
 
-script(src="#{basePath}/js/mixpanel.js")
-if !enableMixpanel
+if enableMixpanel
+  script(src="#{basePath}/js/mixpanel.js")
+else
   script.
-    mixpanel.register({"$ignore":true});
+    window.mixpanel = {};
+    mixpanel.track = function() {}
 
 script.
   SPEC_URL = !{JSON.stringify(specURL)};

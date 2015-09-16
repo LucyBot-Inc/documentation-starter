@@ -1722,9 +1722,7 @@ EXAMPLES.schemaExample = function(schema, readable) {
     return readable ? "xyz" : "string";
   } else if (schema.type === 'boolean') {
     return true;
-  } else {
-    console.log('unknown type:' + schema.type);
-  }
+  } 
 }
 
 EXAMPLES.resolveSchema = function(obj, schema) {
@@ -2290,6 +2288,22 @@ App.controller('Portal', function($scope, spec) {
       $scope.spec = spec;
       var info = $scope.spec.info = $scope.spec.info || {};
       info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
+      if ($scope.spec.securityDefinitions) {
+        for (var label in $scope.spec.securityDefinitions) {
+          def = $scope.spec.securityDefinitions[label];
+          if (def.type === 'oauth2') {
+            console.log('set oauth def');
+            $scope.oauthDefinition = def;
+            $scope.startOAuth = function() {
+              console.log('start oauth');
+              $('#OAuth2').modal('show');
+              mixpanel.track('prompt_oauth', {
+                host: $scope.spec.host,
+              });
+            }
+          }
+        }
+      }
       for (path in $scope.spec.paths) {
         var pathParams = $scope.spec.paths[path].parameters || [];
         for (method in $scope.spec.paths[path]) {
@@ -2347,13 +2361,12 @@ App.controller('Portal', function($scope, spec) {
 
     var promptedOAuth = false;
     $scope.openConsole = function(route) {
+      console.log('open console');
       if (route) $('#Console').scope().setActiveRoute(route);
       $scope.activePage = 'console';
-      var startOAuth = $('#Keys').scope().startOAuth;
-      console.log('start oauth?', startOAuth);
-      if (!promptedOAuth && startOAuth) {
+      if (!promptedOAuth && $scope.startOAuth) {
         promptedOAuth = true;
-        startOAuth();
+        $scope.startOAuth();
       }
     }
 
@@ -2365,6 +2378,11 @@ App.controller('Portal', function($scope, spec) {
           $('#Docs').scope().scrollToRoute(idx);
         }, 800);
       }
+    }
+
+    $scope.openPage = function(page) {
+      if (page === 'console') $scope.openConsole();
+      else if (page === 'documentation') $scope.openDocumentation();
     }
   })
 });
@@ -2425,6 +2443,8 @@ App.controller('Docs', function($scope) {
       })
       if (closest === 0) {
         $scope.scrolledRoute = null;
+        $scope.scrolledTag = null;
+      } else if (!$scope.spec.tags) {
         $scope.scrolledTag = null;
       } else {
         var activeRoute = $scope.routesFiltered[closest - 1];
@@ -2839,13 +2859,11 @@ oauth.onOAuthComplete = function(qs) {
 }
 
 App.controller('OAuth2', function($scope) {
+  console.log('make oauth');
   $scope.alert = {};
   var addedScopes = $scope.addedScopes = {};
-  $scope.setDefinition = function(def) {
-    $scope.definition = def;
-    for (key in $scope.definition.scopes) {
-      addedScopes[key] = true;
-    }
+  for (key in $scope.oauthDefinition.scopes) {
+    addedScopes[key] = true;
   }
 
   $scope.clearScopes = function() {
@@ -2853,14 +2871,14 @@ App.controller('OAuth2', function($scope) {
   }
 
   $scope.authorize = function() {
-    var flow = $scope.definition.flow;
-    var url = $scope.definition.authorizationUrl;
+    var flow = $scope.oauthDefinition.flow;
+    var url = $scope.oauthDefinition.authorizationUrl;
     var clientId = '';
     for (host in CLIENT_IDS) {
       if ($scope.spec.host.indexOf(host) >= 0) clientId = CLIENT_IDS[host];
     }
-    window.oauth.tokenName = $scope.definition.tokenName || 'access_token';
-    window.oauth.tokenUrl = (flow === 'accessCode' ? $scope.definition.tokenUrl : null);
+    window.oauth.tokenName = $scope.oauthDefinition.tokenName || 'access_token';
+    window.oauth.tokenUrl = (flow === 'accessCode' ? $scope.oauthDefinition.tokenUrl : null);
     var scopes = Object.keys(addedScopes).filter(function(name) {return addedScopes[name]});
     var state = Math.random();
     var redirect = OAUTH_CALLBACK;
@@ -2898,7 +2916,6 @@ var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
 }
-
 App.controller('Keys', function($scope) {
   var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
   $scope.keys = JSON.parse(keys) || {};
@@ -2919,20 +2936,10 @@ App.controller('Keys', function($scope) {
       localStorage.setItem(LOCAL_STORAGE_KEY, '{}');
     }
   }
-
   $scope.keyInputs = [];
   if ($scope.spec.securityDefinitions) {
     for (var label in $scope.spec.securityDefinitions) {
       def = $scope.spec.securityDefinitions[label];
-      if (def.type === 'oauth2') {
-        $('#OAuth2').scope().setDefinition(def);
-        $scope.startOAuth = function() {
-          $('#OAuth2').modal('show');
-          mixpanel.track('prompt_oauth', {
-            host: $scope.spec.host,
-          });
-        }
-      }
       $scope.keyInputs.push({
         name: def.type === 'oauth2' ? 'oauth2' : def.name,
         label: label,

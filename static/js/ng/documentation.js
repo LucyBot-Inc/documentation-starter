@@ -55,6 +55,8 @@ App.controller('Docs', function($scope) {
       if (closest === 0) {
         $scope.scrolledRoute = null;
         $scope.scrolledTag = null;
+      } else if (!$scope.spec.tags) {
+        $scope.scrolledTag = null;
       } else {
         var activeRoute = $scope.routesFiltered[closest - 1];
         $scope.scrolledTag = !activeRoute.operation.tags ?
