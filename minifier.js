@@ -38,6 +38,7 @@ var toMinify = [{
     "static/css/verb-colors.css",
     "static/css/documentation.css",
     "static/css/console.css",
+    "static/css/markdown.css",
   ],
   fileOut: 'static/minified/css/all.css',
   processor: function(code) { return new CleanCSS().minify(code).styles }
