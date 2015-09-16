@@ -2292,10 +2292,8 @@ App.controller('Portal', function($scope, spec) {
         for (var label in $scope.spec.securityDefinitions) {
           def = $scope.spec.securityDefinitions[label];
           if (def.type === 'oauth2') {
-            console.log('set oauth def');
             $scope.oauthDefinition = def;
             $scope.startOAuth = function() {
-              console.log('start oauth');
               $('#OAuth2').modal('show');
               mixpanel.track('prompt_oauth', {
                 host: $scope.spec.host,
@@ -2361,7 +2359,6 @@ App.controller('Portal', function($scope, spec) {
 
     var promptedOAuth = false;
     $scope.openConsole = function(route) {
-      console.log('open console');
       if (route) $('#Console').scope().setActiveRoute(route);
       $scope.activePage = 'console';
       if (!promptedOAuth && $scope.startOAuth) {
@@ -2428,7 +2425,8 @@ App.controller('Docs', function($scope) {
   $scope.initScroll = function() {
     $('.docs-col').scroll(function() {
       if ($scope.animatingScroll) return;
-      var visibleHeight = $('.docs-col').height();
+      if ($scope.activePage !== 'documentation') return;
+      var visibleHeight = $('.docs-col').height() - 50;
       var closest = -1;
       var minDist = Infinity;
       $('.scroll-target').each(function(index) {
@@ -2440,11 +2438,12 @@ App.controller('Docs', function($scope) {
           closest = index;
           minDist = thisTop;
         }
-      })
+      });
       if (closest === 0) {
         $scope.scrolledRoute = null;
         $scope.scrolledTag = null;
       } else if (!$scope.spec.tags) {
+        $scope.scrolledRoute = $scope.routes[closest - 1];
         $scope.scrolledTag = null;
       } else {
         var activeRoute = $scope.routesFiltered[closest - 1];
@@ -2499,7 +2498,6 @@ App.controller('Docs', function($scope) {
         .filter($scope.matchesQuery)
         .filter($scope.matchesTag)
         .sort(sortByTag)
-    $scope.scrollToRoute(0);
   }
   $scope.$watch('query', filterRoutes);
   $scope.$watch('activeTag', filterRoutes);
@@ -2859,7 +2857,6 @@ oauth.onOAuthComplete = function(qs) {
 }
 
 App.controller('OAuth2', function($scope) {
-  console.log('make oauth');
   $scope.alert = {};
   var addedScopes = $scope.addedScopes = {};
   for (key in $scope.oauthDefinition.scopes) {

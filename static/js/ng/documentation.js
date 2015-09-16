@@ -39,7 +39,8 @@ App.controller('Docs', function($scope) {
   $scope.initScroll = function() {
     $('.docs-col').scroll(function() {
       if ($scope.animatingScroll) return;
-      var visibleHeight = $('.docs-col').height();
+      if ($scope.activePage !== 'documentation') return;
+      var visibleHeight = $('.docs-col').height() - 50;
       var closest = -1;
       var minDist = Infinity;
       $('.scroll-target').each(function(index) {
@@ -51,11 +52,12 @@ App.controller('Docs', function($scope) {
           closest = index;
           minDist = thisTop;
         }
-      })
+      });
       if (closest === 0) {
         $scope.scrolledRoute = null;
         $scope.scrolledTag = null;
       } else if (!$scope.spec.tags) {
+        $scope.scrolledRoute = $scope.routes[closest - 1];
         $scope.scrolledTag = null;
       } else {
         var activeRoute = $scope.routesFiltered[closest - 1];
@@ -110,7 +112,6 @@ App.controller('Docs', function($scope) {
         .filter($scope.matchesQuery)
         .filter($scope.matchesTag)
         .sort(sortByTag)
-    $scope.scrollToRoute(0);
   }
   $scope.$watch('query', filterRoutes);
   $scope.$watch('activeTag', filterRoutes);

@@ -8,7 +8,7 @@
         input.form-control(type="text" ng-model="$parent.query")
     mixin readme-link
       li.readme-link(ng-if="spec.info['x-lucy/readme'] || spec.info.description"
-                     ng-class="{'scrolled-tag': scrolledTag === null}")
+                     ng-class="{'scrolled-tag': !scrolledRoute}")
         a(ng-click="scrollToRoute(-1)")
           span README
     mixin route-link
