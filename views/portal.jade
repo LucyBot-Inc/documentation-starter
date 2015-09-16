@@ -37,12 +37,12 @@ html
               i.fa.fa-spin.fa-spinner
         .container-fluid.ng-cloak(ng-if="spec")
           #Console.portal-page(ng-controller="Console")
-            div(ng-if="activePage === 'console'")
+            div(ng-show="activePage === 'console'")
               include ./console.jade
           #Recipes.portal-page
-            div(ng-if="activePage === 'recipes'")
+            div(ng-show="activePage === 'recipes'")
               include ./recipes.jade
           #Docs.portal-page(ng-controller="Docs")
-            div(ng-if="activePage === 'documentation'")
+            div(ng-show="activePage === 'documentation'")
               include ./documentation.jade
 

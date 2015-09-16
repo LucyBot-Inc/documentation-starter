@@ -4,7 +4,6 @@ var DEFAULT_KEYS = {
   'api.datumbox.com': ['api_key'],
 }
 
-var promptedOnce = false;
 App.controller('Keys', function($scope) {
   var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
   $scope.keys = JSON.parse(keys) || {};
@@ -37,10 +36,6 @@ App.controller('Keys', function($scope) {
           mixpanel.track('prompt_oauth', {
             host: $scope.spec.host,
           });
-        }
-        if (!promptedOnce) {
-          $scope.startOAuth();
-          promptedOnce = true;
         }
       }
       $scope.keyInputs.push({

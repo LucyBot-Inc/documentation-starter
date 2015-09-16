@@ -16,6 +16,7 @@ App.controller('Portal', function($scope, spec) {
     })
   })
   $scope.stripHtml = function(str) {
+    if (!str) return str;
     return str.replace(/<(?:.|\n)*?>/gm, '');
   }
 
@@ -84,9 +85,16 @@ App.controller('Portal', function($scope, spec) {
       }
     }
 
+    var promptedOAuth = false;
     $scope.openConsole = function(route) {
       if (route) $('#Console').scope().setActiveRoute(route);
       $scope.activePage = 'console';
+      var startOAuth = $('#Keys').scope().startOAuth;
+      console.log('start oauth?', startOAuth);
+      if (!promptedOAuth && startOAuth) {
+        promptedOAuth = true;
+        startOAuth();
+      }
     }
 
     $scope.openDocumentation = function(idx) {
@@ -94,7 +102,7 @@ App.controller('Portal', function($scope, spec) {
       if (idx || idx === 0) {
         $('#Docs').scope().routesFiltered = $scope.routes;
         setTimeout(function() {
-          $('#Docs').scope().scrollTo(idx);
+          $('#Docs').scope().scrollToRoute(idx);
         }, 800);
       }
     }

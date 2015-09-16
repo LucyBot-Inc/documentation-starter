@@ -5,9 +5,13 @@ App.controller('Docs', function($scope) {
   $scope.scrollToRoute = function(idx) {
     var newTop = 0;
     $scope.scrolledRoute = idx >= 0 ? $scope.routesFiltered[idx] : null;
-    console.log('scrolled route is', $scope.scrolledRoute);
     if (idx !== -1) {
-      if ($('#ScrollRoute0').length === 0) return;
+      if ($('.scroll-target').length === 0) {
+        setTimeout(function() {
+          $scope.scrollToRoute(idx);
+        }, 500)
+        return;
+      }
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
       var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
@@ -33,7 +37,6 @@ App.controller('Docs', function($scope) {
     $scope.scrollToRoute(scrollToRoute);
   }
   $scope.initScroll = function() {
-    var lastTop = 0;
     $('.docs-col').scroll(function() {
       if ($scope.animatingScroll) return;
       var visibleHeight = $('.docs-col').height();
@@ -42,7 +45,6 @@ App.controller('Docs', function($scope) {
       $('.scroll-target').each(function(index) {
         var thisTop = $(this).offset().top;
         var thisBottom = thisTop + $(this).height();
-        console.log('scr', index, thisTop, minDist, visibleHeight);
         if (closest === -1 ||
             (minDist < 0 && thisTop < visibleHeight) ||
             (thisTop >= 0 && thisTop < minDist && thisTop < visibleHeight)) {
@@ -65,6 +67,7 @@ App.controller('Docs', function($scope) {
       $scope.$apply();
     })
   }
+  $scope.initScroll();
 
   $scope.query = '';
   $scope.matchesQuery = function(route) {

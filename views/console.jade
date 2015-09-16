@@ -20,7 +20,7 @@ include ./oauth2-modal.jade
                 span.pull-left {{ tag.name }}
                 span.small.pull-right {{ tag.description }}
                 span.clearfix
-      .col-xs-12(ng-class="{'col-sm-9': spec.tags}")
+      .col-xs-12(ng-class="{'col-sm-9': spec.tags || hasVisualRoute}")
         .dropdown.route-dropdown
           button.route-dropdown-btn.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
                 type="button"

@@ -57,13 +57,12 @@
 .docs-nav-col ul.no-tag-list > li.scrolled-route > a {
   background-color: #111;
 }
-
+.docs-nav-col ul.route-list > li > a:hover,
 .docs-nav-col ul.nav > li.scrolled-route > a,
 .docs-nav-col ul.nav > li.scrolled-route > a:hover {
   background-color: #333;
 }
-
-.docs-nav-col .nav > li > a:hover {
+.docs-nav-col ul.tag-list > li > a:hover {
   background-color: #555;
 }
 
