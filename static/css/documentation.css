@@ -91,12 +91,14 @@
   border-color: #333;
 }
 
-.docs-request-col,
-.docs-response-col {
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  width: 48%;
-  margin: 1%;
+@media (min-width: 992px) {
+  .docs-request-col,
+  .docs-response-col {
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    width: 48%;
+    margin: 1%;
+  }
 }
 
 #README.row {
