@@ -49,7 +49,7 @@
 }
 
 .docs-nav-col li.scrolled-tag {
-  max-height: 1000px;
+  max-height: 100000px;
 }
 
 .docs-nav-col ul.nav > li.scrolled-tag > a,

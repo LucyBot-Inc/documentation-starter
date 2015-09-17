@@ -5,7 +5,7 @@
       .input-group.input-group-sm.width-full
         span.input-group-addon
           i.fa.fa-search
-        input.form-control(type="text" ng-model="$parent.query")
+        input.form-control(type="text" ng-model="query")
     mixin readme-link
       li.readme-link(ng-if="spec.info['x-lucy/readme'] || spec.info.description"
                      ng-class="{'scrolled-tag': !scrolledRoute}")

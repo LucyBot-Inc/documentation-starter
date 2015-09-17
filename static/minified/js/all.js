@@ -2302,24 +2302,7 @@ App.controller('Portal', function($scope, spec) {
           }
         }
       }
-/*
-      if (!$scope.spec.tags || $scope.spec.tags.length === 0) {
-        var pathTags = [];
-        for (path in $scope.spec.paths) {
-          var sub = path.indexOf('/') === 0 ? path.substring(1) : path;
-          var pathTag = sub.split('/')[0];
-          console.log('pt', sub, pathTag);
-          if (pathTag.indexOf('{') !== -1) continue;
-          if (pathTags.indexOf(pathTag) === -1) pathTags.push(pathTag);
-          for (method in $scope.spec.paths[path]) {
-            var op = $scope.spec.paths[path][method];
-            op.tags = op.tags || [];
-            op.tags.push(pathTag);
-          }
-        }
-        $scope.spec.tags = pathTags.map(function(t) { return {name: t} });
-      }
-*/
+
       for (path in $scope.spec.paths) {
         var pathParams = $scope.spec.paths[path].parameters || [];
         for (method in $scope.spec.paths[path]) {
