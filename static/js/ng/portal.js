@@ -44,6 +44,7 @@ App.controller('Portal', function($scope, spec) {
           }
         }
       }
+
       for (path in $scope.spec.paths) {
         var pathParams = $scope.spec.paths[path].parameters || [];
         for (method in $scope.spec.paths[path]) {
@@ -80,6 +81,13 @@ App.controller('Portal', function($scope, spec) {
         }
       }
       $scope.routes = $scope.routes.sort(SORT_ROUTES);
+      var uniqueTags = [];
+      $scope.routes.forEach(function(route) {
+        (route.operation.tags || []).forEach(function(t) {
+          if (uniqueTags.indexOf(t) === -1) uniqueTags.push(t);
+        })
+      })
+      $scope.spec.tags = uniqueTags.map(function(t) {return {name: t}});
     }
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
       if (err) console.log(err);

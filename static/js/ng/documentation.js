@@ -104,7 +104,7 @@ App.controller('Docs', function($scope) {
     })
     if (r1Index < r2Index) return -1;
     if (r2Index < r1Index) return 1;
-    return 0;
+    return SORT_ROUTES(r1, r2);
   }
   $scope.routesFiltered = $scope.routes;
   var filterRoutes = function() {

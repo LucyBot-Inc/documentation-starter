@@ -16,12 +16,12 @@
         span.method-text.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
         span &nbsp;
         span {{ route.path }}
-    ul.nav.nav-list.no-tag-list(ng-if="query || !spec.tags")
+    ul.nav.nav-list.no-tag-list(ng-if="query || !spec.tags || !spec.tags.length")
       +readme-link
       li(ng-repeat="route in routesFiltered"
          ng-class="{'scrolled-route': route === scrolledRoute}")
         +route-link
-    ul.nav.nav-list.tag-list(ng-if="!query && spec.tags")
+    ul.nav.nav-list.tag-list(ng-if="!query && spec.tags && spec.tags.length")
       +readme-link
       li(ng-repeat="tag in spec.tags"
          ng-class="{'scrolled-tag': tag.name === scrolledTag.name}")
