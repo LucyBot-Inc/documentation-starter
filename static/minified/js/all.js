@@ -2302,6 +2302,24 @@ App.controller('Portal', function($scope, spec) {
           }
         }
       }
+/*
+      if (!$scope.spec.tags || $scope.spec.tags.length === 0) {
+        var pathTags = [];
+        for (path in $scope.spec.paths) {
+          var sub = path.indexOf('/') === 0 ? path.substring(1) : path;
+          var pathTag = sub.split('/')[0];
+          console.log('pt', sub, pathTag);
+          if (pathTag.indexOf('{') !== -1) continue;
+          if (pathTags.indexOf(pathTag) === -1) pathTags.push(pathTag);
+          for (method in $scope.spec.paths[path]) {
+            var op = $scope.spec.paths[path][method];
+            op.tags = op.tags || [];
+            op.tags.push(pathTag);
+          }
+        }
+        $scope.spec.tags = pathTags.map(function(t) { return {name: t} });
+      }
+*/
       for (path in $scope.spec.paths) {
         var pathParams = $scope.spec.paths[path].parameters || [];
         for (method in $scope.spec.paths[path]) {
@@ -2338,6 +2356,13 @@ App.controller('Portal', function($scope, spec) {
         }
       }
       $scope.routes = $scope.routes.sort(SORT_ROUTES);
+      var uniqueTags = [];
+      $scope.routes.forEach(function(route) {
+        (route.operation.tags || []).forEach(function(t) {
+          if (uniqueTags.indexOf(t) === -1) uniqueTags.push(t);
+        })
+      })
+      $scope.spec.tags = uniqueTags.map(function(t) {return {name: t}});
     }
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
       if (err) console.log(err);
@@ -2490,7 +2515,7 @@ App.controller('Docs', function($scope) {
     })
     if (r1Index < r2Index) return -1;
     if (r2Index < r1Index) return 1;
-    return 0;
+    return SORT_ROUTES(r1, r2);
   }
   $scope.routesFiltered = $scope.routes;
   var filterRoutes = function() {
