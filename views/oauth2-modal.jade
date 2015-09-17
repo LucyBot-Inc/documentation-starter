@@ -14,7 +14,7 @@
           p <b>You may need to authorize the API console to perform certain actions</b>
           p Your information will not be collected or stored.
           p You can choose which scopes you want to enable below. Authorizing with no scopes selected may work for some endpoints.
-        .form-group(ng-repeat="(scope, description) in definition.scopes")
+        .form-group(ng-repeat="(scope, description) in oauthDefinition.scopes")
           label.checkbox-inline 
             input(type="checkbox" ng-model="addedScopes[scope]")
             span {{ scope }}

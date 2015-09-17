@@ -2,19 +2,76 @@ App.controller('Docs', function($scope) {
   $scope.getId = function(verb, path) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
-  $scope.scrollTo = function(idx) {
+  $scope.scrollToRoute = function(idx) {
     var newTop = 0;
+    $scope.scrolledRoute = idx >= 0 ? $scope.routesFiltered[idx] : null;
     if (idx !== -1) {
-      if ($('#ScrollRoute0').length === 0) return;
+      if ($('.scroll-target').length === 0) {
+        setTimeout(function() {
+          $scope.scrollToRoute(idx);
+        }, 500)
+        return;
+      }
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
       var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
       newTop = routeTop - colTop + curTop - 15;
+    } else {
+      $scope.scrolledTag = null;
     }
+    $scope.animatingScroll = true;
     $('.docs-col').animate({
       scrollTop: newTop
-    }, 800)
+    }, 800, function() {
+      $scope.animatingScroll = false;
+    })
   }
+  $scope.scrollToTag = function(idx) {
+    var tag = $scope.scrolledTag = $scope.spec.tags[idx];
+    var scrollToRoute = -1;
+    $scope.routesFiltered.forEach(function(r, routeIdx) {
+      if (r.operation.tags &&
+          scrollToRoute === -1 &&
+          r.operation.tags.indexOf(tag.name) !== -1) scrollToRoute = routeIdx
+    })
+    $scope.scrollToRoute(scrollToRoute);
+  }
+  $scope.initScroll = function() {
+    $('.docs-col').scroll(function() {
+      if ($scope.animatingScroll) return;
+      if ($scope.activePage !== 'documentation') return;
+      var visibleHeight = $('.docs-col').height() - 50;
+      var closest = -1;
+      var minDist = Infinity;
+      $('.scroll-target').each(function(index) {
+        var thisTop = $(this).offset().top;
+        var thisBottom = thisTop + $(this).height();
+        if (closest === -1 ||
+            (minDist < 0 && thisTop < visibleHeight) ||
+            (thisTop >= 0 && thisTop < minDist && thisTop < visibleHeight)) {
+          closest = index;
+          minDist = thisTop;
+        }
+      });
+      if (closest === 0) {
+        $scope.scrolledRoute = null;
+        $scope.scrolledTag = null;
+      } else if (!$scope.spec.tags) {
+        $scope.scrolledRoute = $scope.routes[closest - 1];
+        $scope.scrolledTag = null;
+      } else {
+        var activeRoute = $scope.routesFiltered[closest - 1];
+        $scope.scrolledTag = !activeRoute.operation.tags ?
+          {name: 'Miscellaneous'} :
+          $scope.spec.tags.filter(function(t) {
+            return activeRoute.operation.tags.indexOf(t.name) !== -1;
+          })[0];
+        $scope.scrolledRoute = activeRoute;
+      }
+      $scope.$apply();
+    })
+  }
+  $scope.initScroll();
 
   $scope.query = '';
   $scope.matchesQuery = function(route) {
@@ -29,12 +86,32 @@ App.controller('Docs', function($scope) {
   $scope.matchesTag = function(route) {
     return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
   }
+  var sortByTag = function(r1, r2) {
+    if (!$scope.spec.tags) return SORT_ROUTES(r1, r2);
+    if (r1.operation.tags && !r2.operation.tags) return -1;
+    if (r2.operation.tags && !r1.operation.tags) return 1;
+    var r1Index = -1;
+    var r2Index = -1;
+    $scope.spec.tags.forEach(function(tag, index) {
+      if (r1.operation.tags.indexOf(tag.name) !== -1 &&
+          (r1Index === -1 || r1Index > index)) {
+        r1Index = index;
+      }
+      if (r2.operation.tags.indexOf(tag.name) !== -1 &&
+          (r2Index === -1 || r2Index > index)) {
+        r2Index = index;
+      }
+    })
+    if (r1Index < r2Index) return -1;
+    if (r2Index < r1Index) return 1;
+    return 0;
+  }
   $scope.routesFiltered = $scope.routes;
   var filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
         .filter($scope.matchesTag)
-    $scope.scrollTo(0);
+        .sort(sortByTag)
   }
   $scope.$watch('query', filterRoutes);
   $scope.$watch('activeTag', filterRoutes);

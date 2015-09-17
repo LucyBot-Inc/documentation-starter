@@ -84,9 +84,7 @@ EXAMPLES.schemaExample = function(schema, readable) {
     return readable ? "xyz" : "string";
   } else if (schema.type === 'boolean') {
     return true;
-  } else {
-    console.log('unknown type:' + schema.type);
-  }
+  } 
 }
 
 EXAMPLES.resolveSchema = function(obj, schema) {

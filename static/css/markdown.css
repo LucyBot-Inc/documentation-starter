@@ -1,0 +1,8 @@
+[marked] th,
+[marked] td {
+  padding: 3px;
+}
+
+[marked] table {
+  width: 100%;
+}

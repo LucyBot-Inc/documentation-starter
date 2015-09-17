@@ -18,11 +18,8 @@ oauth.onOAuthComplete = function(qs) {
 App.controller('OAuth2', function($scope) {
   $scope.alert = {};
   var addedScopes = $scope.addedScopes = {};
-  $scope.setDefinition = function(def) {
-    $scope.definition = def;
-    for (key in $scope.definition.scopes) {
-      addedScopes[key] = true;
-    }
+  for (key in $scope.oauthDefinition.scopes) {
+    addedScopes[key] = true;
   }
 
   $scope.clearScopes = function() {
@@ -30,14 +27,14 @@ App.controller('OAuth2', function($scope) {
   }
 
   $scope.authorize = function() {
-    var flow = $scope.definition.flow;
-    var url = $scope.definition.authorizationUrl;
+    var flow = $scope.oauthDefinition.flow;
+    var url = $scope.oauthDefinition.authorizationUrl;
     var clientId = '';
     for (host in CLIENT_IDS) {
       if ($scope.spec.host.indexOf(host) >= 0) clientId = CLIENT_IDS[host];
     }
-    window.oauth.tokenName = $scope.definition.tokenName || 'access_token';
-    window.oauth.tokenUrl = (flow === 'accessCode' ? $scope.definition.tokenUrl : null);
+    window.oauth.tokenName = $scope.oauthDefinition.tokenName || 'access_token';
+    window.oauth.tokenUrl = (flow === 'accessCode' ? $scope.oauthDefinition.tokenUrl : null);
     var scopes = Object.keys(addedScopes).filter(function(name) {return addedScopes[name]});
     var state = Math.random();
     var redirect = OAUTH_CALLBACK;

@@ -1722,9 +1722,7 @@ EXAMPLES.schemaExample = function(schema, readable) {
     return readable ? "xyz" : "string";
   } else if (schema.type === 'boolean') {
     return true;
-  } else {
-    console.log('unknown type:' + schema.type);
-  }
+  } 
 }
 
 EXAMPLES.resolveSchema = function(obj, schema) {
@@ -2276,10 +2274,10 @@ App.controller('Portal', function($scope, spec) {
     })
   })
   $scope.stripHtml = function(str) {
+    if (!str) return str;
     return str.replace(/<(?:.|\n)*?>/gm, '');
   }
 
-  var VISUAL_TAG = "Has Visual";
   var PARSER_OPTS = {
     strictValidation: false,
     validateSchema: false
@@ -2290,6 +2288,20 @@ App.controller('Portal', function($scope, spec) {
       $scope.spec = spec;
       var info = $scope.spec.info = $scope.spec.info || {};
       info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
+      if ($scope.spec.securityDefinitions) {
+        for (var label in $scope.spec.securityDefinitions) {
+          def = $scope.spec.securityDefinitions[label];
+          if (def.type === 'oauth2') {
+            $scope.oauthDefinition = def;
+            $scope.startOAuth = function() {
+              $('#OAuth2').modal('show');
+              mixpanel.track('prompt_oauth', {
+                host: $scope.spec.host,
+              });
+            }
+          }
+        }
+      }
       for (path in $scope.spec.paths) {
         var pathParams = $scope.spec.paths[path].parameters || [];
         for (method in $scope.spec.paths[path]) {
@@ -2303,14 +2315,7 @@ App.controller('Portal', function($scope, spec) {
           if (!successResponse.description) successResponse.description = 'OK';
           var route = {path: path, method: method, operation: operation};
           route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
-          if (route.visual) {
-            route.operation.tags = route.operation.tags || [];
-            route.operation.tags.push(VISUAL_TAG);
-            $scope.spec.tags = $scope.spec.tags || [];
-            if ($scope.spec.tags.length === 0 || $scope.spec.tags[0].name !== VISUAL_TAG) {
-              $scope.spec.tags.unshift({name: VISUAL_TAG});
-            }
-          }
+          if (route.visual) $scope.hasVisualRoute = true;
           var joinSearchFields = function(fields) {
             return fields.filter(function(f) {return f}).join(' ').toLowerCase();
           }
@@ -2352,9 +2357,14 @@ App.controller('Portal', function($scope, spec) {
       }
     }
 
+    var promptedOAuth = false;
     $scope.openConsole = function(route) {
       if (route) $('#Console').scope().setActiveRoute(route);
       $scope.activePage = 'console';
+      if (!promptedOAuth && $scope.startOAuth) {
+        promptedOAuth = true;
+        $scope.startOAuth();
+      }
     }
 
     $scope.openDocumentation = function(idx) {
@@ -2362,9 +2372,14 @@ App.controller('Portal', function($scope, spec) {
       if (idx || idx === 0) {
         $('#Docs').scope().routesFiltered = $scope.routes;
         setTimeout(function() {
-          $('#Docs').scope().scrollTo(idx);
+          $('#Docs').scope().scrollToRoute(idx);
         }, 800);
       }
+    }
+
+    $scope.openPage = function(page) {
+      if (page === 'console') $scope.openConsole();
+      else if (page === 'documentation') $scope.openDocumentation();
     }
   })
 });
@@ -2373,19 +2388,76 @@ App.controller('Docs', function($scope) {
   $scope.getId = function(verb, path) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
-  $scope.scrollTo = function(idx) {
+  $scope.scrollToRoute = function(idx) {
     var newTop = 0;
+    $scope.scrolledRoute = idx >= 0 ? $scope.routesFiltered[idx] : null;
     if (idx !== -1) {
-      if ($('#ScrollRoute0').length === 0) return;
+      if ($('.scroll-target').length === 0) {
+        setTimeout(function() {
+          $scope.scrollToRoute(idx);
+        }, 500)
+        return;
+      }
       var curTop = $('.docs-col').scrollTop();
       var colTop = $('.docs-col').offset().top;
       var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
       newTop = routeTop - colTop + curTop - 15;
+    } else {
+      $scope.scrolledTag = null;
     }
+    $scope.animatingScroll = true;
     $('.docs-col').animate({
       scrollTop: newTop
-    }, 800)
+    }, 800, function() {
+      $scope.animatingScroll = false;
+    })
   }
+  $scope.scrollToTag = function(idx) {
+    var tag = $scope.scrolledTag = $scope.spec.tags[idx];
+    var scrollToRoute = -1;
+    $scope.routesFiltered.forEach(function(r, routeIdx) {
+      if (r.operation.tags &&
+          scrollToRoute === -1 &&
+          r.operation.tags.indexOf(tag.name) !== -1) scrollToRoute = routeIdx
+    })
+    $scope.scrollToRoute(scrollToRoute);
+  }
+  $scope.initScroll = function() {
+    $('.docs-col').scroll(function() {
+      if ($scope.animatingScroll) return;
+      if ($scope.activePage !== 'documentation') return;
+      var visibleHeight = $('.docs-col').height() - 50;
+      var closest = -1;
+      var minDist = Infinity;
+      $('.scroll-target').each(function(index) {
+        var thisTop = $(this).offset().top;
+        var thisBottom = thisTop + $(this).height();
+        if (closest === -1 ||
+            (minDist < 0 && thisTop < visibleHeight) ||
+            (thisTop >= 0 && thisTop < minDist && thisTop < visibleHeight)) {
+          closest = index;
+          minDist = thisTop;
+        }
+      });
+      if (closest === 0) {
+        $scope.scrolledRoute = null;
+        $scope.scrolledTag = null;
+      } else if (!$scope.spec.tags) {
+        $scope.scrolledRoute = $scope.routes[closest - 1];
+        $scope.scrolledTag = null;
+      } else {
+        var activeRoute = $scope.routesFiltered[closest - 1];
+        $scope.scrolledTag = !activeRoute.operation.tags ?
+          {name: 'Miscellaneous'} :
+          $scope.spec.tags.filter(function(t) {
+            return activeRoute.operation.tags.indexOf(t.name) !== -1;
+          })[0];
+        $scope.scrolledRoute = activeRoute;
+      }
+      $scope.$apply();
+    })
+  }
+  $scope.initScroll();
 
   $scope.query = '';
   $scope.matchesQuery = function(route) {
@@ -2400,12 +2472,32 @@ App.controller('Docs', function($scope) {
   $scope.matchesTag = function(route) {
     return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
   }
+  var sortByTag = function(r1, r2) {
+    if (!$scope.spec.tags) return SORT_ROUTES(r1, r2);
+    if (r1.operation.tags && !r2.operation.tags) return -1;
+    if (r2.operation.tags && !r1.operation.tags) return 1;
+    var r1Index = -1;
+    var r2Index = -1;
+    $scope.spec.tags.forEach(function(tag, index) {
+      if (r1.operation.tags.indexOf(tag.name) !== -1 &&
+          (r1Index === -1 || r1Index > index)) {
+        r1Index = index;
+      }
+      if (r2.operation.tags.indexOf(tag.name) !== -1 &&
+          (r2Index === -1 || r2Index > index)) {
+        r2Index = index;
+      }
+    })
+    if (r1Index < r2Index) return -1;
+    if (r2Index < r1Index) return 1;
+    return 0;
+  }
   $scope.routesFiltered = $scope.routes;
   var filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
         .filter($scope.matchesTag)
-    $scope.scrollTo(0);
+        .sort(sortByTag)
   }
   $scope.$watch('query', filterRoutes);
   $scope.$watch('activeTag', filterRoutes);
@@ -2767,11 +2859,8 @@ oauth.onOAuthComplete = function(qs) {
 App.controller('OAuth2', function($scope) {
   $scope.alert = {};
   var addedScopes = $scope.addedScopes = {};
-  $scope.setDefinition = function(def) {
-    $scope.definition = def;
-    for (key in $scope.definition.scopes) {
-      addedScopes[key] = true;
-    }
+  for (key in $scope.oauthDefinition.scopes) {
+    addedScopes[key] = true;
   }
 
   $scope.clearScopes = function() {
@@ -2779,14 +2868,14 @@ App.controller('OAuth2', function($scope) {
   }
 
   $scope.authorize = function() {
-    var flow = $scope.definition.flow;
-    var url = $scope.definition.authorizationUrl;
+    var flow = $scope.oauthDefinition.flow;
+    var url = $scope.oauthDefinition.authorizationUrl;
     var clientId = '';
     for (host in CLIENT_IDS) {
       if ($scope.spec.host.indexOf(host) >= 0) clientId = CLIENT_IDS[host];
     }
-    window.oauth.tokenName = $scope.definition.tokenName || 'access_token';
-    window.oauth.tokenUrl = (flow === 'accessCode' ? $scope.definition.tokenUrl : null);
+    window.oauth.tokenName = $scope.oauthDefinition.tokenName || 'access_token';
+    window.oauth.tokenUrl = (flow === 'accessCode' ? $scope.oauthDefinition.tokenUrl : null);
     var scopes = Object.keys(addedScopes).filter(function(name) {return addedScopes[name]});
     var state = Math.random();
     var redirect = OAUTH_CALLBACK;
@@ -2824,8 +2913,6 @@ var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
 }
-
-var promptedOnce = false;
 App.controller('Keys', function($scope) {
   var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
   $scope.keys = JSON.parse(keys) || {};
@@ -2846,24 +2933,10 @@ App.controller('Keys', function($scope) {
       localStorage.setItem(LOCAL_STORAGE_KEY, '{}');
     }
   }
-
   $scope.keyInputs = [];
   if ($scope.spec.securityDefinitions) {
     for (var label in $scope.spec.securityDefinitions) {
       def = $scope.spec.securityDefinitions[label];
-      if (def.type === 'oauth2') {
-        $('#OAuth2').scope().setDefinition(def);
-        $scope.startOAuth = function() {
-          $('#OAuth2').modal('show');
-          mixpanel.track('prompt_oauth', {
-            host: $scope.spec.host,
-          });
-        }
-        if (!promptedOnce) {
-          $scope.startOAuth();
-          promptedOnce = true;
-        }
-      }
       $scope.keyInputs.push({
         name: def.type === 'oauth2' ? 'oauth2' : def.name,
         label: label,

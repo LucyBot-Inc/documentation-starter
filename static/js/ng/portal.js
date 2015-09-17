@@ -16,10 +16,10 @@ App.controller('Portal', function($scope, spec) {
     })
   })
   $scope.stripHtml = function(str) {
+    if (!str) return str;
     return str.replace(/<(?:.|\n)*?>/gm, '');
   }
 
-  var VISUAL_TAG = "Has Visual";
   var PARSER_OPTS = {
     strictValidation: false,
     validateSchema: false
@@ -30,6 +30,20 @@ App.controller('Portal', function($scope, spec) {
       $scope.spec = spec;
       var info = $scope.spec.info = $scope.spec.info || {};
       info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
+      if ($scope.spec.securityDefinitions) {
+        for (var label in $scope.spec.securityDefinitions) {
+          def = $scope.spec.securityDefinitions[label];
+          if (def.type === 'oauth2') {
+            $scope.oauthDefinition = def;
+            $scope.startOAuth = function() {
+              $('#OAuth2').modal('show');
+              mixpanel.track('prompt_oauth', {
+                host: $scope.spec.host,
+              });
+            }
+          }
+        }
+      }
       for (path in $scope.spec.paths) {
         var pathParams = $scope.spec.paths[path].parameters || [];
         for (method in $scope.spec.paths[path]) {
@@ -43,14 +57,7 @@ App.controller('Portal', function($scope, spec) {
           if (!successResponse.description) successResponse.description = 'OK';
           var route = {path: path, method: method, operation: operation};
           route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
-          if (route.visual) {
-            route.operation.tags = route.operation.tags || [];
-            route.operation.tags.push(VISUAL_TAG);
-            $scope.spec.tags = $scope.spec.tags || [];
-            if ($scope.spec.tags.length === 0 || $scope.spec.tags[0].name !== VISUAL_TAG) {
-              $scope.spec.tags.unshift({name: VISUAL_TAG});
-            }
-          }
+          if (route.visual) $scope.hasVisualRoute = true;
           var joinSearchFields = function(fields) {
             return fields.filter(function(f) {return f}).join(' ').toLowerCase();
           }
@@ -92,9 +99,14 @@ App.controller('Portal', function($scope, spec) {
       }
     }
 
+    var promptedOAuth = false;
     $scope.openConsole = function(route) {
       if (route) $('#Console').scope().setActiveRoute(route);
       $scope.activePage = 'console';
+      if (!promptedOAuth && $scope.startOAuth) {
+        promptedOAuth = true;
+        $scope.startOAuth();
+      }
     }
 
     $scope.openDocumentation = function(idx) {
@@ -102,9 +114,14 @@ App.controller('Portal', function($scope, spec) {
       if (idx || idx === 0) {
         $('#Docs').scope().routesFiltered = $scope.routes;
         setTimeout(function() {
-          $('#Docs').scope().scrollTo(idx);
+          $('#Docs').scope().scrollToRoute(idx);
         }, 800);
       }
+    }
+
+    $scope.openPage = function(page) {
+      if (page === 'console') $scope.openConsole();
+      else if (page === 'documentation') $scope.openDocumentation();
     }
   })
 });
