@@ -87,7 +87,7 @@ App.controller('Docs', function($scope) {
     return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
   }
   var sortByTag = function(r1, r2) {
-    if (!$scope.spec.tags) return 0;
+    if (!$scope.spec.tags) return SORT_ROUTES(r1, r2);
     if (r1.operation.tags && !r2.operation.tags) return -1;
     if (r2.operation.tags && !r1.operation.tags) return 1;
     var r1Index = -1;
