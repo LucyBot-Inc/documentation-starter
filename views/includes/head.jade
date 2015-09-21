@@ -15,7 +15,7 @@ else
 script.
   SPEC_URL = !{JSON.stringify(specURL)};
   BASE_URL = '#{basePath}';
-  PROXY_HOST = '#{proxyHost}';
+  PROXY_HOST = !{JSON.stringify(proxyHost || '')};
   CLIENT_IDS = !{JSON.stringify(client_ids)};
   OAUTH_CALLBACK = !{JSON.stringify(oauth_callback)};
 
