@@ -41,15 +41,15 @@
   white-space: nowrap;
   overflow: hidden;
   max-height: 40px;
-  -webkit-transition: max-height .8s; 
-  -moz-transition: max-height .8s; 
-  -ms-transition: max-height .8s; 
-  -o-transition: max-height .8s; 
-  transition: max-height .8s; 
+  -webkit-transition: max-height 1s ease-in;
+  -moz-transition: max-height 1s ease-in;
+  -ms-transition: max-height 1s ease-in;
+  -o-transition: max-height 1s ease-in;
+  transition: max-height 1s ease-in;
 }
 
 .docs-nav-col li.scrolled-tag {
-  max-height: 100000px;
+  max-height: 10000px;
 }
 
 .docs-nav-col ul.nav > li.scrolled-tag > a,

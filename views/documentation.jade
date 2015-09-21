@@ -34,7 +34,9 @@
   .col-xs-12.col-md-9.docs-col
     #README.row.scroll-target(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
       .col-xs-12
-        img.logo(ng-if="spec.info['x-logo']" ng-src="{{ spec.info['x-logo'].url || spec.info['x-logo'] }}")
+        img.logo(ng-if="spec.info['x-logo']"
+                 ng-src="{{ spec.info['x-logo'].url || spec.info['x-logo'] }}"
+                 style="padding: 5px; background-color: {{ spec.info['x-logo'].backgroundColor || '#fff' }}")
         div.markdown-container(marked="spec.info['x-lucy/readme'] || spec.info.description")
     .row.scroll-route.scroll-target(
         ng-controller="Route"
