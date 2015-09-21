@@ -229,10 +229,16 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     if (PROXY_HOST) {
       request.path = 'proxy/' + request.protocol + '/' + request.domain
           + (request.port ? ':' + request.port : '') + request.path;
-      var parts = PROXY_HOST.split(':');
-      request.protocol = parts[0];
-      request.domain = parts[1].substring(2);
-      if (parts[2]) request.port = parts[2];
+      if (PROXY_HOST === true) {
+        request.protocol = '';
+        request.domain = '';
+        request.relative = true;
+      } else {
+        var parts = PROXY_HOST.split(':');
+        request.protocol = parts[0];
+        request.domain = parts[1].substring(2);
+        if (parts[2]) request.port = parts[2];
+      }
     }
     Lucy.post('/code/build/request', {
       request: request, 
