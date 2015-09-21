@@ -53,6 +53,7 @@ App.controller('Docs', function($scope) {
           minDist = thisTop;
         }
       });
+      if (!$scope.spec.info['x-lucy/readme'] && !$scope.spec.info.description) closest += 1;
       if (closest === 0) {
         $scope.scrolledRoute = null;
         $scope.scrolledTag = null;
