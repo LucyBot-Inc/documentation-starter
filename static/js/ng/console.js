@@ -171,7 +171,6 @@ App.controller('SampleCode', function($scope) {
 });
 
 App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
-  $scope.MAX_HIGHLIGHT_LEN = 75000;
   $scope.frameSrc = "";
   $scope.outputType = $scope.activeRoute.visual ? 'visual' : 'raw';
   $scope.askedForRaw = false;

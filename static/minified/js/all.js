@@ -2267,6 +2267,7 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
+  $scope.MAX_HIGHLIGHT_LEN = 75000;
   $scope.activePage = 'documentation';
   $scope.$watch('activePage', function(page) {
     mixpanel.track('set_page_' + page, {
@@ -2518,9 +2519,11 @@ App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
+  $scope.schemaExample = $scope.printSchema($scope.schema);
 })
 
 App.controller('DocParameter', function($scope) {
+  $scope.schema = $scope.parameter.schema;
   $scope.getCollectionFormatMessage = function() {
     var param = $scope.parameter;
     if (param.collectionFormat === 'multi') {
@@ -2546,6 +2549,9 @@ App.controller('DocParameter', function($scope) {
   }
 })
 
+App.controller('DocResponse', function($scope) {
+  $scope.schema = $scope.response.schema;
+})
 
 var getSeparatorFromFormat = function(format) {
   if (!format || format === 'csv' || format === 'multi') {
@@ -2720,7 +2726,6 @@ App.controller('SampleCode', function($scope) {
 });
 
 App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
-  $scope.MAX_HIGHLIGHT_LEN = 75000;
   $scope.frameSrc = "";
   $scope.outputType = $scope.activeRoute.visual ? 'visual' : 'raw';
   $scope.askedForRaw = false;

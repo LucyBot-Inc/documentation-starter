@@ -124,9 +124,11 @@ App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
+  $scope.schemaExample = $scope.printSchema($scope.schema);
 })
 
 App.controller('DocParameter', function($scope) {
+  $scope.schema = $scope.parameter.schema;
   $scope.getCollectionFormatMessage = function() {
     var param = $scope.parameter;
     if (param.collectionFormat === 'multi') {
@@ -152,3 +154,6 @@ App.controller('DocParameter', function($scope) {
   }
 })
 
+App.controller('DocResponse', function($scope) {
+  $scope.schema = $scope.response.schema;
+})

@@ -176,7 +176,7 @@ table.doc-table td.example {
   max-height: 318px;
 }
 
-.hide-code[hljs] > pre {
+.hide-code pre {
   padding: 0px;
   background: none;
   border: none;

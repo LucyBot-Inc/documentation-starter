@@ -9,6 +9,7 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
+  $scope.MAX_HIGHLIGHT_LEN = 75000;
   $scope.activePage = 'documentation';
   $scope.$watch('activePage', function(page) {
     mixpanel.track('set_page_' + page, {

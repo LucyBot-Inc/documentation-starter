@@ -1,3 +1,10 @@
+mixin schema-example
+  div(ng-if="schemaExample.length < MAX_HIGHLIGHT_LEN"
+      hljs source="schemaExample")
+  div(ng-if="schemaExample.length >= MAX_HIGHLIGHT_LEN")
+    pre
+      code {{ schemaExample }}
+
 .row.docs-row
   .hidden-xs.hidden-sm.col-md-3.docs-nav-col
     .form-group
@@ -78,8 +85,8 @@
               span(ng-if="parameter.description" marked="parameter.description")
             p
               .request-schema.hide-code(ng-if="parameter.schema"
-                                        ng-controller="Schema"
-                                        hljs source="printSchema(parameter.schema)")
+                                        ng-controller="Schema")
+                +schema-example
               div(ng-if="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
               div(ng-if="parameter.enum") Allowed values are:
                 .enum-list
@@ -87,12 +94,12 @@
                     li(ng-repeat="item in parameter.enum") {{ item }}
       .col-xs-12.col-md-6.docs-response-col
         h4 Responses
-        div(ng-repeat="(code, response) in route.operation.responses")
+        div(ng-repeat="(code, response) in route.operation.responses" ng-controller="DocResponse")
           p
             strong
               span(data-response-code="{{code}}") {{ code }}
           p(ng-if="response.description" marked="response.description")
           .response-schema.hide-code(
                 ng-controller="Schema"
-                ng-if="response.schema"
-                hljs source="printSchema(response.schema)")
+                ng-if="response.schema")
+            +schema-example
