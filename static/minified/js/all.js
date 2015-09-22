@@ -2267,6 +2267,7 @@ var maybeAddExternalDocs = function(description, externalDocs) {
 }
 
 App.controller('Portal', function($scope, spec) {
+  $scope.MAX_HIGHLIGHT_LEN = 75000;
   $scope.activePage = 'documentation';
   $scope.$watch('activePage', function(page) {
     mixpanel.track('set_page_' + page, {
@@ -2344,8 +2345,20 @@ App.controller('Portal', function($scope, spec) {
         (route.operation.tags || []).forEach(function(t) {
           if (uniqueTags.indexOf(t) === -1) uniqueTags.push(t);
         })
+      });
+      $scope.spec.tags = $scope.spec.tags || [];
+      uniqueTags.forEach(function(tag) {
+        var needToAdd = true;
+        $scope.spec.tags.forEach(function(existingTag) {
+          if (tag === existingTag.name) needToAdd = false;
+        })
+        if (needToAdd) $scope.spec.tags.push({name: tag});
       })
-      $scope.spec.tags = uniqueTags.map(function(t) {return {name: t}});
+      if ($scope.spec.tags.length) {
+        $scope.routes.forEach(function(r) {
+          r.operation.tags = r.operation.tags || ['default'];
+        })
+      }
     }
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
       if (err) console.log(err);
@@ -2485,6 +2498,7 @@ App.controller('Docs', function($scope) {
     if (!$scope.spec.tags) return SORT_ROUTES(r1, r2);
     if (r1.operation.tags && !r2.operation.tags) return -1;
     if (r2.operation.tags && !r1.operation.tags) return 1;
+    if (!r1.operation.tags && !r2.operation.tags) return SORT_ROUTES(r1, r2);
     var r1Index = -1;
     var r2Index = -1;
     $scope.spec.tags.forEach(function(tag, index) {
@@ -2518,9 +2532,11 @@ App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
+  $scope.schemaExample = $scope.printSchema($scope.schema);
 })
 
 App.controller('DocParameter', function($scope) {
+  $scope.schema = $scope.parameter.schema;
   $scope.getCollectionFormatMessage = function() {
     var param = $scope.parameter;
     if (param.collectionFormat === 'multi') {
@@ -2546,6 +2562,9 @@ App.controller('DocParameter', function($scope) {
   }
 })
 
+App.controller('DocResponse', function($scope) {
+  $scope.schema = $scope.response.schema;
+})
 
 var getSeparatorFromFormat = function(format) {
   if (!format || format === 'csv' || format === 'multi') {
@@ -2720,7 +2739,6 @@ App.controller('SampleCode', function($scope) {
 });
 
 App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
-  $scope.MAX_HIGHLIGHT_LEN = 75000;
   $scope.frameSrc = "";
   $scope.outputType = $scope.activeRoute.visual ? 'visual' : 'raw';
   $scope.askedForRaw = false;

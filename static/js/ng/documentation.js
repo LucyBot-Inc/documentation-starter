@@ -91,6 +91,7 @@ App.controller('Docs', function($scope) {
     if (!$scope.spec.tags) return SORT_ROUTES(r1, r2);
     if (r1.operation.tags && !r2.operation.tags) return -1;
     if (r2.operation.tags && !r1.operation.tags) return 1;
+    if (!r1.operation.tags && !r2.operation.tags) return SORT_ROUTES(r1, r2);
     var r1Index = -1;
     var r2Index = -1;
     $scope.spec.tags.forEach(function(tag, index) {
@@ -124,9 +125,11 @@ App.controller('Schema', function($scope) {
   $scope.printSchema = function(schema) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
+  $scope.schemaExample = $scope.printSchema($scope.schema);
 })
 
 App.controller('DocParameter', function($scope) {
+  $scope.schema = $scope.parameter.schema;
   $scope.getCollectionFormatMessage = function() {
     var param = $scope.parameter;
     if (param.collectionFormat === 'multi') {
@@ -152,3 +155,6 @@ App.controller('DocParameter', function($scope) {
   }
 })
 
+App.controller('DocResponse', function($scope) {
+  $scope.schema = $scope.response.schema;
+})
