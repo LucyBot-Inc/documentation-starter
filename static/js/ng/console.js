@@ -67,34 +67,7 @@ App.controller('Console', function($scope) {
       basePath = basePath.substring(0, basePath.length - 1);
     }
     params.path = basePath + $scope.activeRoute.path;
-    var keys = $('#Keys').scope().keys;
-    for (key in keys) {
-      if (key === 'oauth2' && keys[key]) {
-        if (oauthIsImplicit($scope.spec.securityDefinitions)) {
-          params.query = {'access_token': keys[key]};
-        } else {
-          params.headers = {'Authorization': 'Bearer ' + keys[key]};
-        }
-      } else if (!$scope.answers[key]){
-        $scope.answers[key] = keys[key];
-      }
-    }
-    $scope.activeRoute.operation.parameters.forEach(function(parameter) {
-      if (typeof $scope.answers[parameter.name] === 'undefined' || $scope.answers[parameter.name] === '') {
-        if (parameter.in === 'path') {
-          $scope.answers[parameter.name] = '';
-        } else {
-          return;
-        }
-      }
-      var answer = '';
-      if (parameter.type === 'array') {
-        answer = $scope.answers[parameter.name] || [];
-        var sep = getSeparatorFromFormat(parameter.collectionFormat);
-        if (sep) answer = answer.join(sep);
-      } else {
-        answer = $scope.answers[parameter.name];
-      }
+    var addParam = function(parameter, answer) {
       if (parameter.in === 'path') {
         params.path = params.path.replace('{' + parameter.name + '}', answer);
       } else if (parameter.in === 'header') {
@@ -115,6 +88,37 @@ App.controller('Console', function($scope) {
           return;
         }
       }
+    }
+    var keys = $('#Keys').scope().keys;
+    for (var sec in $scope.spec.securityDefinitions) {
+      sec = $scope.spec.securityDefinitions[sec];
+      if (sec.type === 'apiKey') {
+        console.log('api key', sec, keys[sec.name]);
+        if (keys[sec.name]) addParam(sec, keys[sec.name]);
+      } else if (sec.type === 'oauth2' && keys.oauth2) {
+        if (sec.flow === 'implicit') params.query = {access_token: keys.oauth2};
+        else params.headers = {'Authorization': keys.oauth2}
+      } else if (sec.type === 'basic' && keys.username && keys.password) {
+        params.headers = {'Authorization': 'Basic ' + btoa(keys.username + ':' + keys.password)};
+      }
+    }
+    $scope.activeRoute.operation.parameters.forEach(function(parameter) {
+      if (typeof $scope.answers[parameter.name] === 'undefined' || $scope.answers[parameter.name] === '') {
+        if (parameter.in === 'path') {
+          $scope.answers[parameter.name] = '';
+        } else {
+          return;
+        }
+      }
+      var answer = '';
+      if (parameter.type === 'array') {
+        answer = $scope.answers[parameter.name] || [];
+        var sep = getSeparatorFromFormat(parameter.collectionFormat);
+        if (sep) answer = answer.join(sep);
+      } else {
+        answer = $scope.answers[parameter.name];
+      }
+      addParam(parameter, answer);
     });
     params.path = params.path.replace('{format}', 'json', 'g');
     return params;
