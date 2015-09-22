@@ -27,11 +27,26 @@ App.controller('Keys', function($scope) {
   if ($scope.spec.securityDefinitions) {
     for (var label in $scope.spec.securityDefinitions) {
       def = $scope.spec.securityDefinitions[label];
-      $scope.keyInputs.push({
-        name: def.type === 'oauth2' ? 'oauth2' : def.name,
-        label: label,
-      });
-      $scope.keys[name] = $scope.keys[name] || undefined;
+      if (def.type === 'apiKey') {
+        $scope.keyInputs.push({
+          name: def.name,
+          label: label,
+        });
+      } else if (def.type === 'oauth2') {
+        $scope.keyInputs.push({
+          name: 'oauth2',
+          label: 'OAuth2 Token',
+        });
+      } else if (def.type === 'basic') {
+        $scope.keyInputs.push({
+          name: 'username',
+          label: 'Username',
+        });
+        $scope.keyInputs.push({
+          name: 'password',
+          label: 'Password',
+        });
+      }
     }
   }
   var defaultKeys = DEFAULT_KEYS[$scope.spec.host];
