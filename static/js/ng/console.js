@@ -90,16 +90,22 @@ App.controller('Console', function($scope) {
       }
     }
     var keys = $('#Keys').scope().keys;
-    for (var sec in $scope.spec.securityDefinitions) {
-      sec = $scope.spec.securityDefinitions[sec];
-      if (sec.type === 'apiKey') {
-        console.log('api key', sec, keys[sec.name]);
-        if (keys[sec.name]) addParam(sec, keys[sec.name]);
-      } else if (sec.type === 'oauth2' && keys.oauth2) {
-        if (sec.flow === 'implicit') params.query = {access_token: keys.oauth2};
-        else params.headers = {'Authorization': keys.oauth2}
-      } else if (sec.type === 'basic' && keys.username && keys.password) {
-        params.headers = {'Authorization': 'Basic ' + btoa(keys.username + ':' + keys.password)};
+    if ($scope.spec.securityDefinitions) {
+      for (var sec in $scope.spec.securityDefinitions) {
+        sec = $scope.spec.securityDefinitions[sec];
+        if (sec.type === 'apiKey') {
+          console.log('api key', sec, keys[sec.name]);
+          if (keys[sec.name]) addParam(sec, keys[sec.name]);
+        } else if (sec.type === 'oauth2' && keys.oauth2) {
+          if (sec.flow === 'implicit') params.query = {access_token: keys.oauth2};
+          else params.headers = {'Authorization': keys.oauth2}
+        } else if (sec.type === 'basic' && keys.username && keys.password) {
+          params.headers = {'Authorization': 'Basic ' + btoa(keys.username + ':' + keys.password)};
+        }
+      }
+    } else {
+      for (key in keys) {
+        if (keys[key]) $scope.answers[key] = $scope.answers[key] || keys[key];
       }
     }
     $scope.activeRoute.operation.parameters.forEach(function(parameter) {

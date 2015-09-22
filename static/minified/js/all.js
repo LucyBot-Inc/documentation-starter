@@ -2291,82 +2291,94 @@ App.controller('Portal', function($scope, spec) {
     strictValidation: false,
     validateSchema: false
   }
+
+  var initSecurity = function() {
+    if ($scope.spec.securityDefinitions) {
+      for (var label in $scope.spec.securityDefinitions) {
+        def = $scope.spec.securityDefinitions[label];
+        if (def.type === 'oauth2') {
+          $scope.oauthDefinition = def;
+          $scope.startOAuth = function() {
+            $('#OAuth2').modal('show');
+            mixpanel.track('prompt_oauth', {
+              host: $scope.spec.host,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  var initRoutes = function() {
+    for (path in $scope.spec.paths) {
+      var pathParams = $scope.spec.paths[path].parameters || [];
+      for (method in $scope.spec.paths[path]) {
+        if (method === 'parameters') continue;
+        var operation = $scope.spec.paths[path][method];
+        operation.parameters = (operation.parameters || []).concat(pathParams);
+        operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
+        operation.responses = operation.responses || {};
+        var successResponse = operation.responses['200'] = operation.responses['200'] || {};
+        if (successResponse.description === 'No response was specified') successResponse.description = '';
+        if (!successResponse.description) successResponse.description = 'OK';
+        var route = {path: path, method: method, operation: operation};
+        route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
+        if (route.visual) $scope.hasVisualRoute = true;
+        var joinSearchFields = function(fields) {
+          return fields.filter(function(f) {return f}).join(' ').toLowerCase();
+        }
+        var searchFields = [
+          route.path,
+          route.method,
+          route.operation.description,
+          route.operation.summary,
+        ];
+        searchFields = searchFields.concat(route.operation.parameters.map(function(p) {
+          var paramFields = [
+            p.in,
+            p.name,
+            p.description,
+          ];
+          return joinSearchFields(paramFields);
+        }));
+        route.searchText = joinSearchFields(searchFields);
+        $scope.routes.push(route);
+      }
+    }
+    $scope.routes = $scope.routes.sort(SORT_ROUTES);
+  }
+
+  var initTags = function() {
+    var uniqueTags = [];
+    $scope.routes.forEach(function(route) {
+      (route.operation.tags || []).forEach(function(t) {
+        if (uniqueTags.indexOf(t) === -1) uniqueTags.push(t);
+      })
+    });
+    $scope.spec.tags = $scope.spec.tags || [];
+    uniqueTags.forEach(function(tag) {
+      var needToAdd = true;
+      $scope.spec.tags.forEach(function(existingTag) {
+        if (tag === existingTag.name) needToAdd = false;
+      })
+      if (needToAdd) $scope.spec.tags.push({name: tag});
+    })
+    if ($scope.spec.tags.length) {
+      $scope.routes.forEach(function(r) {
+        r.operation.tags = r.operation.tags || ['default'];
+      })
+    }
+  }
+
   spec.then(function(spec) {
     $scope.routes = [];
     $scope.setSpec = function(spec) {
       $scope.spec = spec;
       var info = $scope.spec.info = $scope.spec.info || {};
       info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
-      if ($scope.spec.securityDefinitions) {
-        for (var label in $scope.spec.securityDefinitions) {
-          def = $scope.spec.securityDefinitions[label];
-          if (def.type === 'oauth2') {
-            $scope.oauthDefinition = def;
-            $scope.startOAuth = function() {
-              $('#OAuth2').modal('show');
-              mixpanel.track('prompt_oauth', {
-                host: $scope.spec.host,
-              });
-            }
-          }
-        }
-      }
-
-      for (path in $scope.spec.paths) {
-        var pathParams = $scope.spec.paths[path].parameters || [];
-        for (method in $scope.spec.paths[path]) {
-          if (method === 'parameters') continue;
-          var operation = $scope.spec.paths[path][method];
-          operation.parameters = (operation.parameters || []).concat(pathParams);
-          operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
-          operation.responses = operation.responses || {};
-          var successResponse = operation.responses['200'] = operation.responses['200'] || {};
-          if (successResponse.description === 'No response was specified') successResponse.description = '';
-          if (!successResponse.description) successResponse.description = 'OK';
-          var route = {path: path, method: method, operation: operation};
-          route.visual = operation.responses['200'] && operation.responses['200']['x-lucy/view'];
-          if (route.visual) $scope.hasVisualRoute = true;
-          var joinSearchFields = function(fields) {
-            return fields.filter(function(f) {return f}).join(' ').toLowerCase();
-          }
-          var searchFields = [
-            route.path,
-            route.method,
-            route.operation.description,
-            route.operation.summary,
-          ];
-          searchFields = searchFields.concat(route.operation.parameters.map(function(p) {
-            var paramFields = [
-              p.in,
-              p.name,
-              p.description,
-            ];
-            return joinSearchFields(paramFields);
-          }));
-          route.searchText = joinSearchFields(searchFields);
-          $scope.routes.push(route);
-        }
-      }
-      $scope.routes = $scope.routes.sort(SORT_ROUTES);
-      var uniqueTags = [];
-      $scope.routes.forEach(function(route) {
-        (route.operation.tags || []).forEach(function(t) {
-          if (uniqueTags.indexOf(t) === -1) uniqueTags.push(t);
-        })
-      });
-      $scope.spec.tags = $scope.spec.tags || [];
-      uniqueTags.forEach(function(tag) {
-        var needToAdd = true;
-        $scope.spec.tags.forEach(function(existingTag) {
-          if (tag === existingTag.name) needToAdd = false;
-        })
-        if (needToAdd) $scope.spec.tags.push({name: tag});
-      })
-      if ($scope.spec.tags.length) {
-        $scope.routes.forEach(function(r) {
-          r.operation.tags = r.operation.tags || ['default'];
-        })
-      }
+      initRoutes();
+      initTags();
+      initSecurity();
     }
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
       if (err) console.log(err);
@@ -2666,16 +2678,22 @@ App.controller('Console', function($scope) {
       }
     }
     var keys = $('#Keys').scope().keys;
-    for (var sec in $scope.spec.securityDefinitions) {
-      sec = $scope.spec.securityDefinitions[sec];
-      if (sec.type === 'apiKey') {
-        console.log('api key', sec, keys[sec.name]);
-        if (keys[sec.name]) addParam(sec, keys[sec.name]);
-      } else if (sec.type === 'oauth2' && keys.oauth2) {
-        if (sec.flow === 'implicit') params.query = {access_token: keys.oauth2};
-        else params.headers = {'Authorization': keys.oauth2}
-      } else if (sec.type === 'basic' && keys.username && keys.password) {
-        params.headers = {'Authorization': 'Basic ' + btoa(keys.username + ':' + keys.password)};
+    if ($scope.spec.securityDefinitions) {
+      for (var sec in $scope.spec.securityDefinitions) {
+        sec = $scope.spec.securityDefinitions[sec];
+        if (sec.type === 'apiKey') {
+          console.log('api key', sec, keys[sec.name]);
+          if (keys[sec.name]) addParam(sec, keys[sec.name]);
+        } else if (sec.type === 'oauth2' && keys.oauth2) {
+          if (sec.flow === 'implicit') params.query = {access_token: keys.oauth2};
+          else params.headers = {'Authorization': keys.oauth2}
+        } else if (sec.type === 'basic' && keys.username && keys.password) {
+          params.headers = {'Authorization': 'Basic ' + btoa(keys.username + ':' + keys.password)};
+        }
+      }
+    } else {
+      for (key in keys) {
+        $scope.answers[key] = $scope.answers[key] || keys[key];
       }
     }
     $scope.activeRoute.operation.parameters.forEach(function(parameter) {
@@ -2957,6 +2975,7 @@ var LOCAL_STORAGE_KEY = 'API_KEYS:' + window.location.href;
 var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
+  'netlicensing.labs64.com': [{username: 'demo', password: 'demo'}]
 }
 App.controller('Keys', function($scope) {
   var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
@@ -3006,7 +3025,13 @@ App.controller('Keys', function($scope) {
   }
   var defaultKeys = DEFAULT_KEYS[$scope.spec.host];
   (defaultKeys || []).forEach(function(def) {
-    $scope.keys[def] = $scope.keys[def] || 'lucybot-key';
+    if (typeof def === 'string') {
+      $scope.keys[def] = $scope.keys[def] || 'lucybot-key';
+    } else {
+      for (keyName in def) {
+        $scope.keys[keyName] = $scope.keys[keyName] || def[keyName];
+      }
+    }
   })
 });
 

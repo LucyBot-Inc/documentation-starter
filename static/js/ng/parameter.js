@@ -2,6 +2,7 @@ var LOCAL_STORAGE_KEY = 'API_KEYS:' + window.location.href;
 var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
+  'netlicensing.labs64.com': [{username: 'demo', password: 'demo'}]
 }
 App.controller('Keys', function($scope) {
   var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
@@ -51,7 +52,13 @@ App.controller('Keys', function($scope) {
   }
   var defaultKeys = DEFAULT_KEYS[$scope.spec.host];
   (defaultKeys || []).forEach(function(def) {
-    $scope.keys[def] = $scope.keys[def] || 'lucybot-key';
+    if (typeof def === 'string') {
+      $scope.keys[def] = $scope.keys[def] || 'lucybot-key';
+    } else {
+      for (keyName in def) {
+        $scope.keys[keyName] = $scope.keys[keyName] || def[keyName];
+      }
+    }
   })
 });
 
