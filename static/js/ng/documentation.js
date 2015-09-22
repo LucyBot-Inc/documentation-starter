@@ -91,6 +91,7 @@ App.controller('Docs', function($scope) {
     if (!$scope.spec.tags) return SORT_ROUTES(r1, r2);
     if (r1.operation.tags && !r2.operation.tags) return -1;
     if (r2.operation.tags && !r1.operation.tags) return 1;
+    if (!r1.operation.tags && !r2.operation.tags) return SORT_ROUTES(r1, r2);
     var r1Index = -1;
     var r2Index = -1;
     $scope.spec.tags.forEach(function(tag, index) {

@@ -2345,8 +2345,20 @@ App.controller('Portal', function($scope, spec) {
         (route.operation.tags || []).forEach(function(t) {
           if (uniqueTags.indexOf(t) === -1) uniqueTags.push(t);
         })
+      });
+      $scope.spec.tags = $scope.spec.tags || [];
+      uniqueTags.forEach(function(tag) {
+        var needToAdd = true;
+        $scope.spec.tags.forEach(function(existingTag) {
+          if (tag === existingTag.name) needToAdd = false;
+        })
+        if (needToAdd) $scope.spec.tags.push({name: tag});
       })
-      $scope.spec.tags = uniqueTags.map(function(t) {return {name: t}});
+      if ($scope.spec.tags.length) {
+        $scope.routes.forEach(function(r) {
+          r.operation.tags = r.operation.tags || ['default'];
+        })
+      }
     }
     swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
       if (err) console.log(err);
@@ -2486,6 +2498,7 @@ App.controller('Docs', function($scope) {
     if (!$scope.spec.tags) return SORT_ROUTES(r1, r2);
     if (r1.operation.tags && !r2.operation.tags) return -1;
     if (r2.operation.tags && !r1.operation.tags) return 1;
+    if (!r1.operation.tags && !r2.operation.tags) return SORT_ROUTES(r1, r2);
     var r1Index = -1;
     var r2Index = -1;
     $scope.spec.tags.forEach(function(tag, index) {
