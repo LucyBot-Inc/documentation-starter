@@ -20,18 +20,17 @@
 
 .docs-nav-col ul {
   list-style-type: none;
-  padding-left: 10px;
 }
 
-.docs-nav-col ul.route-list {
+.docs-nav-col > ul > li > ul {
+  padding-left: 10px;
   padding-bottom: 10px;
 }
 
-.docs-nav-col ul.no-tag-list > li,
-.docs-nav-col ul.tag-list > li {
+.docs-nav-col > ul > li {
   border-radius: 4px;
 }
-.docs-nav-col ul.route-list > li {
+.docs-nav-col  > ul > li > ul > li {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
@@ -48,24 +47,33 @@
   transition: max-height 1s ease-in;
 }
 
-.docs-nav-col li.scrolled-tag {
+.docs-nav-col li.scrolled-parent {
   max-height: 10000px;
 }
 
-.docs-nav-col ul.nav > li.scrolled-tag > a,
-.docs-nav-col ul.nav > li.scrolled-tag > a:hover,
-.docs-nav-col ul.nav > li.scrolled-tag > ul,
-.docs-nav-col ul.no-tag-list > li > a:hover,
-.docs-nav-col ul.no-tag-list > li.scrolled-route > a {
-  background-color: #111;
-}
-.docs-nav-col ul.route-list > li > a:hover,
-.docs-nav-col ul.route-list > li.scrolled-route > a,
-.docs-nav-col ul.route-list > li.scrolled-route > a:hover {
+.docs-nav-col > ul > li {
   background-color: #333;
 }
-.docs-nav-col ul.tag-list > li > a:hover {
-  background-color: #555;
+
+.docs-nav-col > ul.nav > li.scrolled-parent > a:hover,
+.docs-nav-col > ul.nav > li.scrolled-item > a:hover,
+.docs-nav-col > ul.nav > li.scrolled-parent,
+.docs-nav-col > ul.nav > li.scrolled-item {
+  background-color: #111;
+}
+
+.docs-nav-col > ul > li > ul > li {
+  background-color: #111;
+}
+
+.docs-nav-col > ul > li > ul > li.scrolled-item > a:hover,
+.docs-nav-col > ul > li > ul > li.scrolled-item {
+  background-color: #333;
+}
+
+.docs-nav-col > ul.nav > ul > li a:hover,
+.docs-nav-col > ul.nav > li a:hover {
+  background-color: #444;
 }
 
 .docs-nav-col a {
@@ -73,12 +81,12 @@
   font-weight: 200;
 }
 
-.docs-nav-col li.readme-link a {
+.docs-nav-col li.menu-readme a {
   color: #eee;
 }
 
 .docs-nav-col .method-text,
-.docs-nav-col .readme-link a {
+.docs-nav-col .menu-readme a {
   font-weight: 500;
 }
 
@@ -86,6 +94,10 @@
   overflow-y: scroll;
   background-color: #eee;
   right: 0;
+}
+
+.scroll-route {
+  background-color: #eee;
 }
 
 .docs-col hr {

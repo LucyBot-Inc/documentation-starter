@@ -2429,29 +2429,64 @@ App.controller('Docs', function($scope) {
   $scope.getId = function(verb, path) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
-  $scope.scrollToRoute = function(idx) {
-    var newTop = 0;
-    $scope.scrolledRoute = idx >= 0 ? $scope.routesFiltered[idx] : null;
-    if (idx !== -1) {
-      if ($('.scroll-target').length === 0) {
-        setTimeout(function() {
-          $scope.scrollToRoute(idx);
-        }, 500)
-        return;
-      }
-      var curTop = $('.docs-col').scrollTop();
-      var colTop = $('.docs-col').offset().top;
-      var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
-      newTop = routeTop - colTop + curTop - 15;
-    } else {
-      $scope.scrolledTag = null;
+  var initMenu = function () {
+    $scope.menuItems = [];
+    if ($scope.spec.info['x-lucy/readme'] || $scope.spec.info.description) {
+      $scope.menuItems.push({
+        title: 'README',
+        class: 'readme',
+        target: '#README',
+      });
     }
+    if ($scope.spec.tags && $scope.spec.tags.length) {
+      $scope.menuItems = $scope.menuItems.concat($scope.spec.tags.map(function(tag) {
+        var children = $scope.routesFiltered.filter(function(r) {
+          return r.operation.tags && r.operation.tags.indexOf(tag.name) !== -1;
+        }).map(function(route) {
+          var index = $scope.routesFiltered.indexOf(route);
+          return {
+            method: route.method,
+            title: route.path,
+            class: 'route',
+            target: '#ScrollRoute' + index + ' h2',
+          }
+        })
+        if (!children.length) return null;
+        return {
+          title: tag.name,
+          class: 'tag',
+          children: children,
+        }
+      }).filter(function(item) {return item}));
+    } else {
+      $scope.menuItems = $scope.menuItems.concat($scope.routesFiltered.map(function(route, index) {
+        return {
+          method: route.method,
+          title: route.path,
+          class: 'route',
+          target: '#ScrollRoute' + index + ' h2',
+        }
+      }))
+    }
+  }
+
+  $scope.scrollToTarget = function(target) {
+    var curTop = $('.docs-col').scrollTop();
+    var colTop = $('.docs-col').offset().top;
+    var targetTop = $(target).offset().top;
+    newTop = targetTop - colTop + curTop - 15;
+    
     $scope.animatingScroll = true;
     $('.docs-col').animate({
       scrollTop: newTop
     }, 800, function() {
       $scope.animatingScroll = false;
     })
+  }
+
+  $scope.scrollToRoute = function(idx) {
+    if (idx === -1) $scope.scrollToTarget('#README');
+    else $scope.scrollToTarget('#ScrollRoute' + idx);
   }
   $scope.scrollToTag = function(idx) {
     var tag = $scope.scrolledTag = $scope.spec.tags[idx];
@@ -2463,43 +2498,40 @@ App.controller('Docs', function($scope) {
     })
     $scope.scrollToRoute(scrollToRoute);
   }
-  $scope.initScroll = function() {
-    $('.docs-col').scroll(function() {
-      if ($scope.animatingScroll) return;
-      if ($scope.activePage !== 'documentation') return;
-      var visibleHeight = $('.docs-col').height() - 50;
-      var closest = -1;
-      var minDist = Infinity;
-      $('.scroll-target').each(function(index) {
-        var thisTop = $(this).offset().top;
-        var thisBottom = thisTop + $(this).height();
-        if (closest === -1 ||
-            (minDist < 0 && thisTop < visibleHeight) ||
-            (thisTop >= 0 && thisTop < minDist && thisTop < visibleHeight)) {
-          closest = index;
-          minDist = thisTop;
-        }
-      });
-      if (!$scope.spec.info['x-lucy/readme'] && !$scope.spec.info.description) closest += 1;
-      if (closest === 0) {
-        $scope.scrolledRoute = null;
-        $scope.scrolledTag = null;
-      } else if (!$scope.spec.tags) {
-        $scope.scrolledRoute = $scope.routes[closest - 1];
-        $scope.scrolledTag = null;
-      } else {
-        var activeRoute = $scope.routesFiltered[closest - 1];
-        $scope.scrolledTag = !activeRoute.operation.tags ?
-          {name: 'Miscellaneous'} :
-          $scope.spec.tags.filter(function(t) {
-            return activeRoute.operation.tags.indexOf(t.name) !== -1;
-          })[0];
-        $scope.scrolledRoute = activeRoute;
+  $scope.onScroll= function() {
+    if ($scope.animatingScroll) return;
+    if ($scope.activePage !== 'documentation') return;
+    var visibleHeight = $('.docs-col').height() - 50;
+    var closest = null;
+    var minDist = Infinity;
+    $('.scroll-target').each(function(index) {
+      var thisTop = $(this).offset().top;
+      var thisBottom = thisTop + $(this).height();
+      if (closest === null ||
+          (minDist < 0 && thisTop < visibleHeight) ||
+          (thisTop >= 0 && thisTop < minDist && thisTop < visibleHeight)) {
+        closest = $(this);
+        minDist = thisTop;
       }
-      $scope.$apply();
+    });
+    var id = closest.attr('id');
+    $scope.menuItems.active = null;
+    var isActive = function(item) {
+      return !$scope.menuItems.active && item.target && item.target.indexOf('#' + id) !== -1;
+    }
+    $scope.menuItems.forEach(function(item) {
+      if (isActive(item)) $scope.menuItems.active = item;
+      else if (item.children) {
+        item.children.forEach(function(child) {
+          if (isActive(child)) $scope.menuItems.active = child;
+        })
+      }
     })
   }
-  $scope.initScroll();
+  $('.docs-col').scroll(function() {
+    $scope.onScroll();
+    $scope.$apply();
+  })
 
   $scope.query = '';
   $scope.matchesQuery = function(route) {
@@ -2541,6 +2573,7 @@ App.controller('Docs', function($scope) {
         .filter($scope.matchesQuery)
         .filter($scope.matchesTag)
         .sort(sortByTag)
+    initMenu();
   }
   $scope.$watch('query', filterRoutes);
   $scope.$watch('activeTag', filterRoutes);
@@ -2693,7 +2726,7 @@ App.controller('Console', function($scope) {
       }
     } else {
       for (key in keys) {
-        $scope.answers[key] = $scope.answers[key] || keys[key];
+        if (keys[key]) $scope.answers[key] = $scope.answers[key] || keys[key];
       }
     }
     $scope.activeRoute.operation.parameters.forEach(function(parameter) {
