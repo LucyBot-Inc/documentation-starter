@@ -2486,7 +2486,7 @@ App.controller('Docs', function($scope) {
 
   $scope.scrollToRoute = function(idx) {
     if (idx === -1) $scope.scrollToTarget('#README');
-    else $scope.scrollToTarget('#ScrollRoute' + idx);
+    else $scope.scrollToTarget('#ScrollRoute' + idx + ' h2');
   }
   $scope.scrollToTag = function(idx) {
     var tag = $scope.scrolledTag = $scope.spec.tags[idx];
