@@ -13,31 +13,44 @@ mixin schema-example
         span.input-group-addon
           i.fa.fa-search
         input.form-control(type="text" ng-model="query")
-    mixin readme-link
-      li.readme-link(ng-show="spec.info['x-lucy/readme'] || spec.info.description"
-                     ng-class="{'scrolled-tag': !scrolledRoute}")
-        a(ng-click="scrollToRoute(-1)")
-          span README
-    mixin route-link
-      a(ng-click="scrollToRoute($index)")
-        span.method-text.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
-        span &nbsp;
-        span {{ route.path }}
-    ul.nav.nav-list.no-tag-list(ng-if="query || !spec.tags || !spec.tags.length")
-      +readme-link
-      li(ng-repeat="route in routesFiltered"
-         ng-class="{'scrolled-route': route === scrolledRoute}")
-        +route-link
-    ul.nav.nav-list.tag-list(ng-if="!query && spec.tags && spec.tags.length")
-      +readme-link
-      li(ng-repeat="tag in spec.tags"
-         ng-class="{'scrolled-tag': tag.name === scrolledTag.name}")
-        a(ng-click="scrollToTag($index)") {{ tag.name }}
-        ul.nav.nav-list.route-list(ng-if="tag.name === scrolledTag.name")
-          li(ng-repeat="route in routesFiltered"
-             ng-if="route.operation.tags && route.operation.tags.indexOf(tag.name) !== -1"
-             ng-class="{'scrolled-route': route === scrolledRoute}")
-            +route-link
+    mixin menuItem(name)
+      a(ng-click="menuItems.active = #{name}.children ? #{name}.children[0] : #{name}; scrollToTarget(#{name}.target || #{name}.children[0].target)")
+        span.method-text.text-uppercase(ng-if="#{name}.method" data-verb="{{#{name}.method}}") {{ #{name}.method }}
+        span {{ #{name}.title }}
+    ul.nav.nav-list
+      li(ng-repeat="item in menuItems"
+         ng-class="{'scrolled-parent': item.children && item.children.indexOf(menuItems.active) !== -1, 'scrolled-item': item === menuItems.active}"
+         class="menu-{{ item.class }}")
+        +menuItem('item')
+        ul.nav.nav-list(ng-if="item.children && item.children.indexOf(menuItems.active) !== -1")
+          li(ng-repeat="child in item.children" ng-class="{'scrolled-item': child === menuItems.active}")
+            +menuItem('child')
+    div(ng-if="!menuItems")
+      mixin readme-link
+        li.readme-link(ng-show="spec.info['x-lucy/readme'] || spec.info.description"
+                       ng-class="{'scrolled-tag': !scrolledRoute}")
+          a(ng-click="scrollToRoute(-1)")
+            span README
+      mixin route-link
+        a(ng-click="scrollToRoute($index)")
+          span.method-text.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
+          span &nbsp;
+          span {{ route.path }}
+      ul.nav.nav-list.no-tag-list(ng-if="query || !spec.tags || !spec.tags.length")
+        +readme-link
+        li(ng-repeat="route in routesFiltered"
+           ng-class="{'scrolled-route': route === scrolledRoute}")
+          +route-link
+      ul.nav.nav-list.tag-list(ng-if="!query && spec.tags && spec.tags.length")
+        +readme-link
+        li(ng-repeat="tag in spec.tags"
+           ng-class="{'scrolled-tag': tag.name === scrolledTag.name}")
+          a(ng-click="scrollToTag($index)") {{ tag.name }}
+          ul.nav.nav-list.route-list(ng-if="tag.name === scrolledTag.name")
+            li(ng-repeat="route in routesFiltered"
+               ng-if="route.operation.tags && route.operation.tags.indexOf(tag.name) !== -1"
+               ng-class="{'scrolled-route': route === scrolledRoute}")
+              +route-link
   .col-xs-12.col-md-9.docs-col
     #README.row.scroll-target(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
       .col-xs-12
