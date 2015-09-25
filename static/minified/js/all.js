@@ -2543,9 +2543,6 @@ App.controller('Docs', function($scope) {
     }
     return true;
   }
-  $scope.matchesTag = function(route) {
-    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
-  }
   var sortByTag = function(r1, r2) {
     if (!$scope.spec.tags) return SORT_ROUTES(r1, r2);
     if (r1.operation.tags && !r2.operation.tags) return -1;
@@ -2571,12 +2568,10 @@ App.controller('Docs', function($scope) {
   var filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
-        .filter($scope.matchesTag)
         .sort(sortByTag)
     initMenu();
   }
   $scope.$watch('query', filterRoutes);
-  $scope.$watch('activeTag', filterRoutes);
 });
 
 App.controller('Route', function($scope) {})
