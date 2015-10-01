@@ -1,4 +1,7 @@
 App.controller('Docs', function($scope) {
+  $scope.printSchema = function(schema) {
+    return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
+  }
   $scope.getId = function(verb, path) {
     return verb + '_' + path.replace(/\W/g, '_')
   }
@@ -154,9 +157,6 @@ App.controller('Docs', function($scope) {
 App.controller('Route', function($scope) {})
 
 App.controller('Schema', function($scope) {
-  $scope.printSchema = function(schema) {
-    return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
-  }
   $scope.schemaExample = $scope.printSchema($scope.schema);
 })
 
