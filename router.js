@@ -12,7 +12,6 @@ var ConsoleRouter = module.exports = function(options) {
 
   self.router = Express.Router();
   self.router.use(require('compression')());
-  self.router.use(require('./minifier.js'));
   if (self.options.cache) {
     self.router.use(Express.static(__dirname + '/static', {maxAge: self.options.cache}));
   } else {
@@ -25,6 +24,10 @@ var ConsoleRouter = module.exports = function(options) {
   self.router.use('/code', codeRouter);
   codeRouter.proxy = self.options.proxy;
 
+  var assetManager = require('./asset-manager')({
+    basePath: self.options.basePath,
+  })
+
   var renderOpts = {
     enableMixpanel: self.options.mixpanel,
     isAnyAPI: self.options.any_api,
@@ -32,6 +35,7 @@ var ConsoleRouter = module.exports = function(options) {
     client_ids: self.options.client_ids || {},
     oauth_callback: self.options.oauth_callback,
     basePath: self.options.basePath,
+    assetManager: require('./asset-manager.js'),
   }
   if (self.options.swagger) {
     renderOpts.specURL = self.options.basePath + '/swagger.json',

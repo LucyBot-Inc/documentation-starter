@@ -35,16 +35,16 @@ html
           .row.spec-loading
             .col-md-4.col-md-offset-4.text-center
               i.fa.fa-spin.fa-spinner
-        .container-fluid.ng-cloak(ng-if="spec")
+        .container-fluid.ng-cloak(ng-if="spec" ng-cloak)
           div(ng-if="oauthDefinition")
             include ./oauth2-modal.jade
           #Console.portal-page(ng-controller="Console")
-            div(ng-if="activePage === 'console'")
+            div(ng-if="activePage === 'console'" ng-cloak)
               include ./console.jade
           #Recipes.portal-page
             div(ng-show="activePage === 'recipes'")
               include ./recipes.jade
           #Docs.portal-page(ng-controller="Docs")
-            div(ng-show="activePage === 'documentation'")
+            div(ng-show="activePage === 'documentation'" ng-cloak)
               include ./documentation.jade
 
