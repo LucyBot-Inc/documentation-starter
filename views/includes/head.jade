@@ -3,7 +3,7 @@ meta(content='IE=edge', http-equiv='X-UA-Compatible')
 meta(content='width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no', name='viewport')
 
 link(rel="stylesheet" href="#{basePath}/bower/fontawesome/css/font-awesome.min.css")
-!{assetManager.renderCSS('console')}
+| !{assetManager.renderCSS('console')}
 
 if enableMixpanel
   script(src="#{basePath}/js/mixpanel.js")
@@ -19,4 +19,4 @@ script.
   CLIENT_IDS = !{JSON.stringify(client_ids)};
   OAUTH_CALLBACK = !{JSON.stringify(oauth_callback)};
 
-!{assetManager.renderJS('console')}
+| !{assetManager.renderJS('console')}
