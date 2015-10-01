@@ -15,44 +15,18 @@ mixin schema-example
         input.form-control(type="text" ng-model="query")
     mixin menuItem(name)
       a(ng-click="menuItems.active = #{name}.children ? #{name}.children[0] : #{name}; scrollToTarget(#{name}.target || #{name}.children[0].target)")
-        span.method-text.text-uppercase(ng-if="#{name}.method" data-verb="{{#{name}.method}}") {{ #{name}.method }}
+        span.method-text.text-uppercase(ng-show="#{name}.method" data-verb="{{#{name}.method}}") {{ #{name}.method }}
         span {{ #{name}.title }}
     ul.nav.nav-list
       li(ng-repeat="item in menuItems"
          ng-class="{'scrolled-parent': item.children && item.children.indexOf(menuItems.active) !== -1, 'scrolled-item': item === menuItems.active}"
          class="menu-{{ item.class }}")
         +menuItem('item')
-        ul.nav.nav-list(ng-if="item.children && item.children.indexOf(menuItems.active) !== -1")
+        ul.nav.nav-list(ng-show="item.children && item.children.indexOf(menuItems.active) !== -1")
           li(ng-repeat="child in item.children" ng-class="{'scrolled-item': child === menuItems.active}")
             +menuItem('child')
-    div(ng-if="!menuItems")
-      mixin readme-link
-        li.readme-link(ng-show="spec.info['x-lucy/readme'] || spec.info.description"
-                       ng-class="{'scrolled-tag': !scrolledRoute}")
-          a(ng-click="scrollToRoute(-1)")
-            span README
-      mixin route-link
-        a(ng-click="scrollToRoute($index)")
-          span.method-text.text-uppercase(data-verb="{{route.method}}") {{ route.method }}
-          span &nbsp;
-          span {{ route.path }}
-      ul.nav.nav-list.no-tag-list(ng-if="query || !spec.tags || !spec.tags.length")
-        +readme-link
-        li(ng-repeat="route in routesFiltered"
-           ng-class="{'scrolled-route': route === scrolledRoute}")
-          +route-link
-      ul.nav.nav-list.tag-list(ng-if="!query && spec.tags && spec.tags.length")
-        +readme-link
-        li(ng-repeat="tag in spec.tags"
-           ng-class="{'scrolled-tag': tag.name === scrolledTag.name}")
-          a(ng-click="scrollToTag($index)") {{ tag.name }}
-          ul.nav.nav-list.route-list(ng-if="tag.name === scrolledTag.name")
-            li(ng-repeat="route in routesFiltered"
-               ng-if="route.operation.tags && route.operation.tags.indexOf(tag.name) !== -1"
-               ng-class="{'scrolled-route': route === scrolledRoute}")
-              +route-link
   .col-xs-12.col-md-9.docs-col
-    #README.row.scroll-target(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
+    #README.row.scroll-target(ng-show="spec.info['x-lucy/readme'] || spec.info.description")
       .col-xs-12
         img.logo(ng-show="spec.info['x-logo']"
                  ng-src="{{ spec.info['x-logo'].url || spec.info['x-logo'] }}"
@@ -64,7 +38,7 @@ mixin schema-example
         id="ScrollRoute{{$index}}")
       a(name="route{{$index}}")
       .col-xs-12
-        hr(ng-if="$index !== 0")
+        hr(ng-show="$index !== 0")
         h2.text-regular
           span.pull-left
             span.text-uppercase(data-verb="{{ route.method }}") {{ route.method }}
@@ -72,11 +46,11 @@ mixin schema-example
           a.btn.btn-lg.btn-primary.pull-right(ng-click="openConsole(route)") Try it out!
           .clearfix
           p.small(ng-bind="stripHtml(route.operation.summary)")
-        .route-description(ng-if="route.operation.description" marked="route.operation.description")
+        .route-description(ng-show="route.operation.description" marked="route.operation.description")
       .col-xs-12.col-md-6.docs-request-col
         h4
           span Parameters
-        p(ng-if="route.operation.parameters.length === 0")
+        p(ng-show="route.operation.parameters.length === 0")
           i No Parameters
         div(ng-controller="DocParameter"
             ng-repeat="parameter in route.operation.parameters")
@@ -86,22 +60,22 @@ mixin schema-example
             span &nbsp;&nbsp;
             span(data-parameter-type="{{ parameter.schema ? 'object' : parameter.format || parameter.type }}")
               span {{ parameter.schema ? 'object' : parameter.format || parameter.type }}
-            i(ng-if="parameter.required") &nbsp;&nbsp;required
+            i(ng-show="parameter.required") &nbsp;&nbsp;required
           .parameter-details
-            p(ng-if="parameter.in !== 'body'")
+            p(ng-show="parameter.in !== 'body'")
               span Location:
               span &nbsp;
               span(data-parameter-in="{{parameter.in}}") {{ parameter.in }}
               span &nbsp;
-              span.wrap-break-word(ng-if="!parameter.schema") <code>{{ getExample() }}</code>
+              span.wrap-break-word(ng-show="!parameter.schema") <code>{{ getExample() }}</code>
             p
-              span(ng-if="parameter.description" marked="parameter.description")
+              span(ng-show="parameter.description" marked="parameter.description")
             p
-              .request-schema.hide-code(ng-if="parameter.schema"
+              .request-schema.hide-code(ng-show="parameter.schema"
                                         ng-controller="Schema")
                 +schema-example
-              div(ng-if="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
-              div(ng-if="parameter.enum") Allowed values are:
+              div(ng-show="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
+              div(ng-show="parameter.enum") Allowed values are:
                 .enum-list
                   ul
                     li(ng-repeat="item in parameter.enum") {{ item }}
@@ -111,8 +85,8 @@ mixin schema-example
           p
             strong
               span(data-response-code="{{code}}") {{ code }}
-          p(ng-if="response.description" marked="response.description")
+          p(ng-show="response.description" marked="response.description")
           .response-schema.hide-code(
                 ng-controller="Schema"
-                ng-if="response.schema")
+                ng-show="response.schema")
             +schema-example

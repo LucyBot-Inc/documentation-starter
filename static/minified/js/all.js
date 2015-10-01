@@ -2468,6 +2468,7 @@ App.controller('Docs', function($scope) {
         }
       }))
     }
+    $scope.menuItems.active = $scope.menuItems[0];
   }
 
   $scope.scrollToTarget = function(target) {
@@ -2481,6 +2482,8 @@ App.controller('Docs', function($scope) {
       scrollTop: newTop
     }, 800, function() {
       $scope.animatingScroll = false;
+      $scope.onScroll();
+      $scope.$apply();
     })
   }
 
@@ -2488,6 +2491,7 @@ App.controller('Docs', function($scope) {
     if (idx === -1) $scope.scrollToTarget('#README');
     else $scope.scrollToTarget('#ScrollRoute' + idx + ' h2');
   }
+
   $scope.scrollToTag = function(idx) {
     var tag = $scope.scrolledTag = $scope.spec.tags[idx];
     var scrollToRoute = -1;
