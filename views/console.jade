@@ -39,7 +39,7 @@
         .row.alert.alert-info.pin-left.pin-right
           div(ng-if="activeRoute.operation.description"
               marked="activeRoute.operation.description")
-          a(ng-click="openDocumentation(activeRouteIdx)") View Documentation
+          a(ng-click="openDocumentation(activeRoute)") View Documentation
         #Keys.row(ng-show="keyInputs.length > 0" ng-controller="Keys")
           include ./includes/keys.jade
         #SampleCode.row(ng-controller="SampleCode")

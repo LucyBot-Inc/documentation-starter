@@ -26,6 +26,7 @@ var ConsoleRouter = module.exports = function(options) {
 
   var assetManager = require('./asset-manager')({
     basePath: self.options.basePath,
+    development: self.options.development,
   })
 
   var renderOpts = {
@@ -35,7 +36,7 @@ var ConsoleRouter = module.exports = function(options) {
     client_ids: self.options.client_ids || {},
     oauth_callback: self.options.oauth_callback,
     basePath: self.options.basePath,
-    assetManager: require('./asset-manager.js'),
+    assetManager: assetManager,
   }
   if (self.options.swagger) {
     renderOpts.specURL = self.options.basePath + '/swagger.json',

@@ -2408,12 +2408,12 @@ App.controller('Portal', function($scope, spec) {
       }
     }
 
-    $scope.openDocumentation = function(idx) {
+    $scope.openDocumentation = function(route) {
       $scope.activePage = 'documentation';
-      if (idx || idx === 0) {
-        $('#Docs').scope().routesFiltered = $scope.routes;
+      if (route) {
+        $('#Docs').scope().query = '';
         setTimeout(function() {
-          $('#Docs').scope().scrollToRoute(idx);
+          $('#Docs').scope().scrollToRoute(route);
         }, 800);
       }
     }
@@ -2485,12 +2485,11 @@ App.controller('Docs', function($scope) {
       scrollTop: newTop
     }, 800, function() {
       $scope.animatingScroll = false;
-      $scope.onScroll();
-      $scope.$apply();
     })
   }
 
   $scope.scrollToRoute = function(idx) {
+    if (typeof idx === 'object') idx = $scope.routesFiltered.indexOf(idx);
     if (idx === -1) $scope.scrollToTarget('#README');
     else $scope.scrollToTarget('#ScrollRoute' + idx + ' h2');
   }
@@ -2513,7 +2512,6 @@ App.controller('Docs', function($scope) {
     var minDist = Infinity;
     $('.scroll-target').each(function(index) {
       var thisTop = $(this).offset().top;
-      var thisBottom = thisTop + $(this).height();
       if (closest === null ||
           (minDist < 0 && thisTop < visibleHeight) ||
           (thisTop >= 0 && thisTop < minDist && thisTop < visibleHeight)) {
@@ -2572,13 +2570,13 @@ App.controller('Docs', function($scope) {
     return SORT_ROUTES(r1, r2);
   }
   $scope.routesFiltered = $scope.routes;
-  var filterRoutes = function() {
+  $scope.filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
         .sort(sortByTag)
     initMenu();
   }
-  $scope.$watch('query', filterRoutes);
+  $scope.$watch('query', $scope.filterRoutes);
 });
 
 App.controller('Route', function($scope) {})

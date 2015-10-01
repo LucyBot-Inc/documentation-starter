@@ -142,12 +142,12 @@ App.controller('Portal', function($scope, spec) {
       }
     }
 
-    $scope.openDocumentation = function(idx) {
+    $scope.openDocumentation = function(route) {
       $scope.activePage = 'documentation';
-      if (idx || idx === 0) {
-        $('#Docs').scope().routesFiltered = $scope.routes;
+      if (route) {
+        $('#Docs').scope().query = '';
         setTimeout(function() {
-          $('#Docs').scope().scrollToRoute(idx);
+          $('#Docs').scope().scrollToRoute(route);
         }, 800);
       }
     }
