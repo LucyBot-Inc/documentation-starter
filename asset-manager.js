@@ -2,7 +2,7 @@ var FS = require('fs');
 var AssetMan = require('bb-asset-manager');
 module.exports = function(options) {
   options = options || {};
-  var assetManager = module.exports = new AssetMan({
+  var assetManager = new AssetMan({
     useOriginalAssets: options.development,
     staticDirectory: __dirname + '/static',
     basePath: options.basePath,

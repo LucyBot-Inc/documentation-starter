@@ -26,7 +26,7 @@ mixin schema-example
           li(ng-repeat="child in item.children" ng-class="{'scrolled-item': child === menuItems.active}")
             +menuItem('child')
   .col-xs-12.col-md-9.docs-col
-    #README.row.scroll-target(ng-show="spec.info['x-lucy/readme'] || spec.info.description")
+    #README.row.scroll-target(ng-if="spec.info['x-lucy/readme'] || spec.info.description")
       .col-xs-12
         img.logo(ng-show="spec.info['x-logo']"
                  ng-src="{{ spec.info['x-logo'].url || spec.info['x-logo'] }}"
