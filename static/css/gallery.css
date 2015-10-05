@@ -12,8 +12,8 @@ h1.large {
   font-weight: 900;
 }
 
-h1.large .fa-bolt {
-  color: #df691a;
+img.gallery-logo {
+  max-height: 350px;
 }
 
 .heading h3 {

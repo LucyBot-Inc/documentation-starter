@@ -15,7 +15,9 @@ html
     .container(ng-controller="Body")
       #APIs(ng-controller="APIs")
         .heading
-          h1.large.text-center= galleryInfo.title
+          .text-center
+            img.gallery-logo(src= galleryInfo.logo)
+          h3.large.text-center= galleryInfo.title
         .row(ng-if="loading")
           .col-xs-12.col-sm-8.col-sm-offset-2.col-lg-4.col-lg-offset-4
             .alert.alert-default
