@@ -24,13 +24,15 @@ html
                 div(ng-class="{'input-group': tags.length}")
                   input.form-control(type="text" ng-model="query" placeholder="Search for APIs..." ng-change="queryChanged()")
                   .input-group-btn(ng-show="tags.length")
-                    button.btn.btn-default.dropdown-toggle(type='button' data-toggle="dropdown")
-                      | {{ activeTag || 'Filter' }}
+                    button.btn.btn-default.dropdown-toggle.tag-dropdown(type='button' data-toggle="dropdown")
+                      | {{ tags.active || 'All' }}
                       span &nbsp;&nbsp;
-                      i.fa.fa-caret
+                      i.caret
                     ul.dropdown-menu
+                      li
+                        a(ng-click="tags.active = null") All
                       li(ng-repeat="tag in tags")
-                        a(ng-click="activeTag = tag") {{ tag }}
+                        a(ng-click="tags.active = tag") {{ tag }}
               .hidden-xs.col-sm-2
                 .btn-group.pull-right
                   a.btn.btn-default(
@@ -48,7 +50,7 @@ html
                                ng-controller="API")
               mixin apilink
                 a.link-fill(href="#{basePath}/{{ api.name }}" target="_blank")
-              .filter-guard(ng-show="!query || api.info.title.toLowerCase().indexOf(query.toLowerCase()) !== -1 || (api.info.description && api.info.description.toLowerCase().indexOf(query.toLowerCase()) !== -1)")
+              .filter-guard(ng-show="shouldShow()")
                 .gallery-view.hidden-xs(ng-show="!viewStyle || viewStyle === 'gallery'")
                   include ./panel-view.jade
                 .list-view.hidden-xs(ng-show="viewStyle === 'list'")

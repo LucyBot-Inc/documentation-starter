@@ -8793,6 +8793,10 @@ img.dog-icon {
   min-height: 500px;
 }
 
+.tag-dropdown {
+  min-width: 200px;
+}
+
 .panel {
   background-color: #336e7b;
   border: none;

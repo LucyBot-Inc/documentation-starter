@@ -36,8 +36,10 @@ App.controller('APIs', function($scope) {
   $.getJSON(BASE_PATH + '/apis', function(data) {
     $scope.apis = data;
     $scope.tags = [];
-    $scope.tags = $scope.apis.forEach(function(api) {
-      $scope.tags = $scope.tags.concat(api.tags || []);
+    $scope.apis.forEach(function(api) {
+      api.tags.forEach(function(tag) {
+        if ($scope.tags.indexOf(tag) === -1) $scope.tags.push(tag);
+      });
     })
     $scope.$apply();
   })
@@ -59,5 +61,17 @@ App.controller('API', function($scope) {
   $scope.api.info.title = $scope.api.info.title || '';
   if ($scope.api.info.title.indexOf(' API') === $scope.api.info.title.length - 4) {
     $scope.api.info.title = $scope.api.info.title.substring(0, $scope.api.info.title.length - 4);
+  }
+
+  $scope.shouldShow = function() {
+    if ($scope.query) {
+      var searchText = $scope.api.info.title + '\n' + $scope.api.info.description;
+      searchText = searchText.toLowerCase();
+      if (searchText.indexOf($scope.query.toLowerCase()) === -1) return false;
+    }
+    if ($scope.tags.active) {
+      if ($scope.api.tags.indexOf($scope.tags.active) === -1) return false;
+    }
+    return true;
   }
 })

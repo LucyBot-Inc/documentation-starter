@@ -11,7 +11,3 @@
         i(ng-if="!api.info.description") No description
         span {{ truncate(api.info.description, 88) }}
     .panel-footer
-      p.text-center
-        span {{ numVotes }} like
-        span(ng-if="numVotes !== 1") s
-        i.thumb-icon.fa.fa-thumbs-up(ng-click="upvote()", ng-class="{voted: upvoted}")
