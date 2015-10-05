@@ -36,6 +36,7 @@ var ConsoleRouter = module.exports = function(options) {
     client_ids: self.options.client_ids || {},
     oauth_callback: self.options.oauth_callback,
     basePath: self.options.basePath,
+    galleryInfo: self.options.galleryInfo,
     assetManager: assetManager,
   }
   if (self.options.swagger) {
