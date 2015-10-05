@@ -4,7 +4,11 @@ html
     title API Gallery
     link(href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css')
     | !{assetManager.renderCSS('gallery')}
+    for css in cssIncludes
+      link(href=css rel='stylesheet')
     | !{assetManager.renderJS('gallery')}
+    for js in jsIncludes
+      script(src=js)
     script.
       var BASE_PATH = "#{basePath}";
   body(ng-app="App" ng-cloak)
