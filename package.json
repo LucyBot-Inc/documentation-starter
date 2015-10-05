@@ -19,11 +19,11 @@
   "dependencies": {
     "bb-asset-manager": "^1.2.0",
     "body-parser": "^1.13.3",
-    "bower": "^1.5.2",
     "clean-css": "~3.3.9",
     "compression": "~1.5.2",
     "express": "^4.12.4",
     "jade": "^1.10.0",
+    "lodash": "^3.10.1",
     "lucy-codegen": "https://github.com/bobby-brennan/lucy-codegen.git",
     "request": "^2.57.0",
     "uglify-js": "~2.4.24",

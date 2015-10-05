@@ -1,0 +1,164 @@
+body {
+  background-color: #edb88b;
+}
+
+.heading {
+  margin-bottom: 80px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+h1.large {
+  font-size: 72px;
+  font-weight: 900;
+}
+
+img.gallery-logo {
+  max-height: 350px;
+}
+
+.heading h3 {
+  font-weight: 600;
+}
+
+.heading .fa-circle {
+  font-size: 30%;
+  vertical-align: middle;
+  margin: 10px;
+}
+
+img.dog-icon {
+  height: 24px;
+}
+
+.apis {
+  margin-bottom: 80px;
+  min-height: 500px;
+}
+
+.tag-dropdown {
+  min-width: 200px;
+}
+
+.panel {
+  background-color: #336e7b;
+  border: none;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.row.list-controls {
+  margin-bottom: 30px;
+}
+
+hr.no-margin-bottom {
+  margin-bottom: 0px;
+}
+
+.xs-view-logo {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.xs-view-title,
+.list-view-title {
+  font-size: 20px;
+}
+
+.list-view-item {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #333;
+  background-color: #fff;
+}
+
+.list-view-description {
+  padding-right: 30px;
+}
+
+.panel {
+  margin-bottom: 24px;
+  border-radius: 4px;
+}
+
+.link-fill-parent {
+  position: relative;
+}
+
+a.link-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.panel-heading {
+  color: #fff;
+}
+
+.panel-title {
+  font-size: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  text-align: center;
+}
+
+.panel-body {
+  font-family: 'Roboto Mono', monospace;
+  min-height: 200px;
+  background-color: #fff;
+  color: #253237;
+}
+
+.panel-body .panel-body-logo {
+  height: 150px;
+  padding: 40px;
+  line-height: 90px;
+}
+
+.panel-body .panel-body-description {
+  min-height: 68px;
+  max-height: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+img.api-logo {
+  max-height: 100%;
+  max-width: 100%;
+  padding: 5px;
+}
+
+img.api-list-logo {
+  max-width: 50%;
+  max-height: 60px;
+  padding: 5px;
+}
+
+.panel-footer {
+  font-size: 20px;
+  color: #fff;
+  background-color: #336E7B;
+}
+
+.panel-footer p {
+  margin-bottom: 0px;
+}
+
+.panel-footer .fa-thumbs-up {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.fa-thumbs-up.voted {
+  color: #2ecc71;
+}
+
+.fa-thumbs-down.voted {
+  color: red;
+}

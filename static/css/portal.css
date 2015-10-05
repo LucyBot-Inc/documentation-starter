@@ -10,19 +10,24 @@ h1, h2, h3, h4, h5, h6 {
 a {
   cursor: pointer;
 }
+a.no-click {
+  cursor: text;
+}
 
 .spec-loading {
   font-size: 150px;
   padding-top: 150px;
 }
 
+.navbar-header .navbar-brand {
+  padding: 0px;
+}
+.navbar-header img {
+  max-height: 100%;
+}
 .navbar.navbar-secondary {
   margin-bottom: 0;
   z-index: 100;
-}
-
-.navbar.navbar-secondary a {
-  cursor: pointer;
 }
 
 #README {
