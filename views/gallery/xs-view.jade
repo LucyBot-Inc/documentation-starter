@@ -1,0 +1,9 @@
+.col-xs-12.bg-white.link-fill-parent
+  +apilink
+  .xs-view-logo.text-center
+    img.api-list-logo(ng-src="{{ getLogo(api) }}" style="background-color: {{ getBackgroundColor() }}")
+  .xs-view-title
+    span {{ api.info.title || api.provider }}
+  .xs-view-description
+    span {{ truncate(api.info.description, 200) || 'No description' }}
+  hr

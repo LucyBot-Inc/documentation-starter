@@ -15,10 +15,10 @@ html
         #nav.navbar.navbar-secondary.navbar-inverse.square
           .container-fluid
             if galleryInfo
-            .navbar-header
-              if galleryInfo.logo
-                a.navbar-brand(href="/")
-                  img(src=galleryInfo.logo)
+              .navbar-header
+                if galleryInfo.logo
+                  a.navbar-brand(href="/")
+                    img(src=galleryInfo.logo)
             ul.nav.navbar-nav.nav-pills
               li(ng-show="spec")
                 if isAnyAPI

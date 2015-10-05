@@ -1,5 +1,16 @@
 var FS = require('fs');
 var AssetMan = require('bb-asset-manager');
+
+var CORE_JS = [
+  "bower/jquery/dist/jquery.min.js",
+  "bower/bootstrap/dist/js/bootstrap.min.js",
+  "bower/angular/angular.min.js",
+]
+var CORE_CSS = [
+  "less/styles.css",
+  "bower/fontawesome/css/font-awesome.min.css",
+]
+
 module.exports = function(options) {
   options = options || {};
   var assetManager = new AssetMan({
@@ -12,13 +23,21 @@ module.exports = function(options) {
     css: {
       outputDirectory: 'minified/css',
     }
+  });
+
+  assetManager.addCSS('gallery', {
+    files: CORE_CSS.concat([
+      "css/gallery.css",
+    ]),
+  })
+  assetManager.addJS('gallery', {
+    files: CORE_JS.concat([
+      "js/ng/gallery.js",
+    ]),
   })
 
   assetManager.addJS('console', {
-    files: [
-      "bower/jquery/dist/jquery.min.js",
-      "bower/bootstrap/dist/js/bootstrap.min.js",
-      "bower/angular/angular.min.js",
+    files: CORE_JS.concat([
       "bower/highlightjs/highlight.pack.js",
       "bower/zeroclipboard/dist/ZeroClipboard.min.js",
       "bower/marked/lib/marked.js",
@@ -37,12 +56,12 @@ module.exports = function(options) {
       "js/ng/oauth2.js",
       "js/sort-routes.js",
       "js/ng/parameter.js",
-    ],
+    ]),
   });
 
   assetManager.addCSS('console', {
-    files: [
-      "less/styles.css",
+    files: CORE_CSS.concat([
+      "bower/fontawesome/css/font-awesome.min.css",
       "bower/highlightjs/styles/github.css",
       "bower/highlightjs/styles/atelier-forest.light.css",
       "css/portal.css",
@@ -51,7 +70,7 @@ module.exports = function(options) {
       "css/documentation.css",
       "css/console.css",
       "css/markdown.css",
-    ],
+    ]),
   });
 
   assetManager.compile();
