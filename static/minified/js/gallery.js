@@ -340,7 +340,7 @@ App.controller('APIs', function($scope) {
     $scope.apis = data;
     $scope.tags = [];
     $scope.apis.forEach(function(api) {
-      api.tags.forEach(function(tag) {
+      (api.tags || []).forEach(function(tag) {
         if ($scope.tags.indexOf(tag) === -1) $scope.tags.push(tag);
       });
     })
@@ -373,6 +373,7 @@ App.controller('API', function($scope) {
       if (searchText.indexOf($scope.query.toLowerCase()) === -1) return false;
     }
     if ($scope.tags.active) {
+      if (!$scope.api.tags) return false;
       if ($scope.api.tags.indexOf($scope.tags.active) === -1) return false;
     }
     return true;
