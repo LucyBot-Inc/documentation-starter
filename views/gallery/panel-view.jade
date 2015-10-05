@@ -2,7 +2,7 @@
   .panel
     .panel-heading.link-fill-parent
       +apilink
-      .panel-title {{ api.info.title || api.provider }}
+      .panel-title {{ api.info.title || api.provider || 'Untitled' }}
     .panel-body.link-fill-parent
       +apilink
       p.text-center.panel-body-logo
