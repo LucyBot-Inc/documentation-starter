@@ -68,7 +68,7 @@ html
                                ng-if="$index < apisToShow || apisToShow === -1"
                                ng-controller="API")
               +apidisplay
-          .row(ng-if="!tags.length")
+          .row(ng-if="!tags.length || tags.active")
             .api-col-container(ng-repeat="api in apis"
                                ng-if="$index < apisToShow || apisToShow === -1"
                                ng-controller="API")
