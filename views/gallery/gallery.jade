@@ -64,7 +64,7 @@ html
             .col-xs-12
               h2 {{ tag }}
               hr
-            .api-col-container(ng-repeat="api in apis | filter:{tags: tag}"
+            .api-col-container(ng-repeat="api in apis | filter:{tags: tag}:true"
                                ng-if="$index < apisToShow || apisToShow === -1"
                                ng-controller="API")
               +apidisplay
