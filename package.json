@@ -19,7 +19,6 @@
   "dependencies": {
     "bb-asset-manager": "^1.2.0",
     "body-parser": "^1.13.3",
-    "bower": "^1.5.2",
     "clean-css": "~3.3.9",
     "compression": "~1.5.2",
     "express": "^4.12.4",
