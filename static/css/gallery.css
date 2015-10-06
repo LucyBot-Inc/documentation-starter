@@ -3,31 +3,25 @@ body {
 }
 
 .heading {
-  margin-bottom: 80px;
-  font-family: 'Ubuntu', sans-serif;
+  margin-bottom: 40px;
+  height: 100px;
 }
 
-h1.large {
-  font-size: 72px;
-  font-weight: 900;
+.heading .gallery-title {
+  font-size: 24px;
+  margin-left: 15px;
 }
 
-img.gallery-logo {
-  max-height: 350px;
+.heading img.gallery-logo {
+  height: 80px;
 }
 
-.heading h3 {
-  font-weight: 600;
+.heading .gallery-info {
+  margin-top: 10px;
 }
 
-.heading .fa-circle {
-  font-size: 30%;
-  vertical-align: middle;
-  margin: 10px;
-}
-
-img.dog-icon {
-  height: 24px;
+.heading .list-controls {
+  margin-top: 30px;
 }
 
 .apis {
@@ -46,10 +40,6 @@ img.dog-icon {
 
 .bg-white {
   background-color: #fff;
-}
-
-.row.list-controls {
-  margin-bottom: 30px;
 }
 
 hr.no-margin-bottom {
