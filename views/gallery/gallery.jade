@@ -12,6 +12,7 @@ html
     script.
       var BASE_PATH = "#{basePath}";
       var TAGS = !{JSON.stringify(tags)};
+      var GALLERY_INFO = !{JSON.stringify(galleryInfo)};
   body(ng-app="App" ng-cloak)
     #APIs(ng-controller="APIs")
       .heading

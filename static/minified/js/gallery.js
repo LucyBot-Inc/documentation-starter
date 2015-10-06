@@ -351,7 +351,7 @@ App.controller('API', function($scope) {
   $scope.getLogo = function(api) {
     var logo = api.info.logo || api.info['x-logo'];
     if (logo) return logo.url;
-    return BASE_PATH + '/img/missing.png';
+    return GALLERY_INFO.defaultLogo || BASE_PATH + '/img/missing.png';
   }
   $scope.getBackgroundColor = function() {
     if (!$scope.api.info['x-logo']) return '#fff';

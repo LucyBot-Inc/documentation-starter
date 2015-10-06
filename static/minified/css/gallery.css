@@ -8761,8 +8761,27 @@ body {
 }
 
 .heading {
-  margin-bottom: 80px;
+  margin-bottom: 40px;
   height: 100px;
+}
+
+@media (max-width: 991px) {
+  .heading {
+    height: 180px;
+  }
+  .heading .gallery-info {
+    text-align: center;
+  }
+}
+
+.heading input,
+.heading .btn {
+  border: none;
+  height: 34px;
+}
+
+.heading .btn.tag-dropdown {
+  border-left: 1px solid #ccc;
 }
 
 .heading .gallery-title {
@@ -8771,7 +8790,15 @@ body {
 }
 
 .heading img.gallery-logo {
-  height: 100px;
+  height: 80px;
+}
+
+.heading .gallery-info {
+  margin-top: 10px;
+}
+
+.heading .list-controls {
+  margin-top: 30px;
 }
 
 .apis {
@@ -8792,12 +8819,12 @@ body {
   background-color: #fff;
 }
 
-.row.list-controls {
-  margin-bottom: 30px;
-}
-
 hr.no-margin-bottom {
   margin-bottom: 0px;
+}
+
+.xs-view {
+  padding: 10px;
 }
 
 .xs-view-logo {
@@ -8808,12 +8835,20 @@ hr.no-margin-bottom {
 .xs-view-title,
 .list-view-title {
   font-size: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-view {
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .list-view-item {
   padding-top: 15px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #333;
+  margin-bottom: 15px;
+  border-radius: 4px;
   background-color: #fff;
 }
 
@@ -8857,6 +8892,8 @@ a.link-fill {
   min-height: 200px;
   background-color: #fff;
   color: #253237;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .panel-body .panel-body-logo {
