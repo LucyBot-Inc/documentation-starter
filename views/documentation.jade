@@ -15,8 +15,8 @@ mixin schema-example
         input.form-control(type="text" ng-model="query")
     mixin menuItem(name)
       a(ng-click="menuItems.active = #{name}.children ? #{name}.children[0] : #{name}; scrollToTarget(#{name}.target || #{name}.children[0].target)")
-        span.method-text.text-uppercase(ng-show="#{name}.method" data-verb="{{#{name}.method}}") {{ #{name}.method }}
-        span {{ #{name}.title }}
+        span.method-text.text-uppercase(ng-show="#{name}.method" data-verb="{{#{name}.method}}" ng-bind="#{name}.method")
+        span(ng-bind="#{name}.title")
     ul.nav.nav-list(ng-cloak)
       li(ng-repeat="item in menuItems"
          ng-class="{'scrolled-parent': item.children && item.children.indexOf(menuItems.active) !== -1, 'scrolled-item': item === menuItems.active}"
