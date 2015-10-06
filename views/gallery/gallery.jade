@@ -11,6 +11,7 @@ html
       script(src=js)
     script.
       var BASE_PATH = "#{basePath}";
+      var TAGS = !{JSON.stringify(tags)};
   body(ng-app="App" ng-cloak)
     .container(ng-controller="Body")
       #APIs(ng-controller="APIs")

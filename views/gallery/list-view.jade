@@ -4,6 +4,6 @@
     .col-sm-3.text-center
       img.api-list-logo(ng-src="{{ getLogo(api) }}", style="background-color: {{ getBackgroundColor() }}")
     .col-sm-3.list-view-title
-      span {{ api.info.title || api.provider }}
+      span {{ api.info.title || api.provider || 'Untitled' }}
     .col-sm-6.list-view-description
       span {{ truncate(api.info.description, 200) || 'No description' }}

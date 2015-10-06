@@ -334,11 +334,10 @@ App.controller('APIs', function($scope) {
     $scope.apisToShow = -1;
   }
 
-  $scope.tags = [];
+  $scope.tags = TAGS;
   $scope.apis = [];
   $.getJSON(BASE_PATH + '/apis', function(data) {
     $scope.apis = data;
-    $scope.tags = [];
     $scope.apis.forEach(function(api) {
       (api.tags || []).forEach(function(tag) {
         if ($scope.tags.indexOf(tag) === -1) $scope.tags.push(tag);

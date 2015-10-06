@@ -8981,6 +8981,10 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   opacity: 0.5;
 }
 
+.ng-cloak, [ng-cloak] {
+  display: none !important;
+}
+
 body {
   background-color: #f7f7f7;
   font-family: 'Open Sans', sans-serif;
