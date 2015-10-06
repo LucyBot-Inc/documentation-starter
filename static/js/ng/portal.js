@@ -8,6 +8,16 @@ var maybeAddExternalDocs = function(description, externalDocs) {
   return description;
 }
 
+var maybeTruncateSummary = function(operation) {
+  if (!operation.summary) return;
+  if (operation.summary.length <= 120) return;
+  if (operation.description) return;
+  var firstSentence = operation.summary.split(/\.\s/)[0];
+  if (firstSentence.length > 120) firstSentence = firstSentence.substring(0, 120) + '...';
+  operation.description = operation.summary;
+  operation.summary = firstSentence;
+}
+
 App.controller('Portal', function($scope, spec) {
   $scope.MAX_HIGHLIGHT_LEN = 10000;
   $scope.activePage = 'documentation';
@@ -50,6 +60,7 @@ App.controller('Portal', function($scope, spec) {
         if (method === 'parameters') continue;
         var operation = $scope.spec.paths[path][method];
         operation.parameters = (operation.parameters || []).concat(pathParams);
+        maybeTruncateSummary(operation);
         operation.description = maybeAddExternalDocs(operation.description, operation.externalDocs);
         operation.responses = operation.responses || {};
         var successResponse = operation.responses['200'] = operation.responses['200'] || {};

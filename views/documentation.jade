@@ -41,8 +41,9 @@ mixin schema-example
         hr(ng-show="$index !== 0")
         h2.text-regular
           span.pull-left
-            span.text-uppercase(data-verb="{{ route.method }}") {{ route.method }}
-            span &nbsp; {{ route.path }}
+            span.text-uppercase(data-verb="{{ route.method }}" ng-bind="route.method")
+            span &nbsp;&nbsp;
+            span(ng-bind="route.path")
           a.btn.btn-lg.btn-primary.pull-right(ng-click="openConsole(route)") Try it out!
           .clearfix
           p.small(ng-bind="stripHtml(route.operation.summary)")
