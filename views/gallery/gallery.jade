@@ -60,7 +60,7 @@ html
             .xs-view.visible-xs
               include ./xs-view.jade
         .apis.infinite-scroll(infinite-scroll="showNext()" infinite-scroll-distance="3")
-          .row(ng-if="tags.length && !tags.active" ng-repeat="tag in tags")
+          .row(ng-if="tags.length" ng-repeat="tag in tags" ng-show="!tags.active || tags.active === tag")
             .col-xs-12
               h2 {{ tag }}
               hr
@@ -68,7 +68,7 @@ html
                                ng-if="$index < apisToShow || apisToShow === -1"
                                ng-controller="API")
               +apidisplay
-          .row(ng-if="!tags.length || tags.active")
+          .row(ng-if="!tags.length")
             .api-col-container(ng-repeat="api in apis"
                                ng-if="$index < apisToShow || apisToShow === -1"
                                ng-controller="API")

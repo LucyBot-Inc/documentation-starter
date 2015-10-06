@@ -7,6 +7,12 @@ body {
   height: 100px;
 }
 
+@media (max-width: 991px) {
+  .heading {
+    height: 180px;
+  }
+}
+
 .heading .gallery-title {
   font-size: 24px;
   margin-left: 15px;
@@ -54,12 +60,20 @@ hr.no-margin-bottom {
 .xs-view-title,
 .list-view-title {
   font-size: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-view {
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .list-view-item {
   padding-top: 15px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #333;
+  margin-bottom: 15px;
+  border-radius: 4px;
   background-color: #fff;
 }
 

@@ -1,9 +1,9 @@
 .col-xs-12.list-view-item.link-fill-parent
   +apilink
   .row
-    .col-sm-3.text-center
+    .col-sm-2.text-center
       img.api-list-logo(ng-src="{{ getLogo(api) }}", style="background-color: {{ getBackgroundColor() }}")
-    .col-sm-3.list-view-title
+    .col-sm-4.list-view-title
       span {{ api.info.title || api.provider || 'Untitled' }}
     .col-sm-6.list-view-description
       span {{ truncate(api.info.description, 200) || 'No description' }}
