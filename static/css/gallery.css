@@ -11,6 +11,19 @@ body {
   .heading {
     height: 180px;
   }
+  .heading .gallery-info {
+    text-align: center;
+  }
+}
+
+.heading input,
+.heading .btn {
+  border: none;
+  height: 34px;
+}
+
+.heading .btn.tag-dropdown {
+  border-left: 1px solid #ccc;
 }
 
 .heading .gallery-title {
@@ -50,6 +63,10 @@ body {
 
 hr.no-margin-bottom {
   margin-bottom: 0px;
+}
+
+.xs-view {
+  padding: 10px;
 }
 
 .xs-view-logo {
