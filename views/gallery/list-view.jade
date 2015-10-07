@@ -6,6 +6,6 @@
     .col-sm-4.list-view-title
       span {{ api.info.title || api.provider || 'Untitled' }}
     .col-sm-6.list-view-description(ng-if="!showDisabled")
-      span {{ truncate(api.info.description, 200) || 'No description' }}
+      span {{ truncate(api.info['x-summary'], 200) || 'No description' }}
     .col-sm-6.list-view-description(ng-if="showDisabled")
       +disabled-message

@@ -334,11 +334,17 @@ App.controller('APIs', function($scope) {
     $scope.apisToShow = -1;
   }
 
+  function sortAPIs(api1, api2) {
+    if (api1.disabled === api2.disabled) return 0;
+    if (!api1.disabled) return -1;
+    if (!api2.disabled) return 1;
+  }
+
   $scope.tags = TAGS;
   $scope.tags.active = TAGS[0];
   $scope.apis = [];
   $.getJSON(BASE_PATH + '/apis', function(data) {
-    $scope.apis = data;
+    $scope.apis = data.sort(sortAPIs);
     $scope.apis.forEach(function(api) {
       (api.tags || []).forEach(function(tag) {
         var exists = false;
@@ -361,6 +367,9 @@ App.controller('API', function($scope) {
   $scope.getBackgroundColor = function() {
     if (!$scope.api.info['x-logo']) return '#fff';
     return $scope.api.info['x-logo'].backgroundColor || '#fff';
+  }
+  $scope.toggleDisabled = function() {
+    $scope.showDisabled = !$scope.showDisabled;
   }
 
   $scope.api.info.description = $scope.api.info.description || '';

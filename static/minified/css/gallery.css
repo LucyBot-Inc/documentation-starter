@@ -8864,6 +8864,10 @@ hr.no-margin-bottom {
   padding-right: 30px;
 }
 
+.list-view-description .alert {
+  margin-bottom: 0px;
+}
+
 .panel {
   margin-bottom: 24px;
   border-radius: 4px;
@@ -8911,10 +8915,10 @@ a.link-fill {
 }
 
 .panel-body .panel-body-description {
-  min-height: 68px;
-  max-height: 68px;
+  height: 68px;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 10px;
 }
 
 img.api-logo {

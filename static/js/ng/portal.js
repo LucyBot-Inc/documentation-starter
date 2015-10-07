@@ -120,6 +120,7 @@ App.controller('Portal', function($scope, spec) {
     $scope.setSpec = function(spec) {
       $scope.spec = spec;
       var info = $scope.spec.info = $scope.spec.info || {};
+      info['x-summary'] = info['x-summary'] || info.description;
       info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
       initRoutes();
       initTags();
