@@ -12,44 +12,46 @@ html
     script.
       var BASE_PATH = "#{basePath}";
       var TAGS = !{JSON.stringify(tags)};
+      var GALLERY_INFO = !{JSON.stringify(galleryInfo)};
   body(ng-app="App" ng-cloak)
-    .container(ng-controller="Body")
-      #APIs(ng-controller="APIs")
-        .heading
-          .text-center
-            img.gallery-logo(src= galleryInfo.logo)
-          h3.large.text-center= galleryInfo.title
+    #APIs(ng-controller="APIs")
+      .heading
+        .container
+          .row
+            .col-xs-12.col-md-5.gallery-info
+              img.gallery-logo(src= galleryInfo.logo)
+              span.gallery-title= galleryInfo.title
+            .col-xs-12.col-md-7.list-controls
+              .row
+                .col-xs-12.col-sm-9.col-lg-10
+                  div(ng-class="{'input-group': tags.length}")
+                    input.form-control(type="text" ng-model="query" placeholder="Search for APIs..." ng-change="queryChanged()")
+                    .input-group-btn(ng-show="tags.length")
+                      button.btn.btn-default.dropdown-toggle.tag-dropdown(type='button' data-toggle="dropdown")
+                        | {{ tags.active || 'All' }}
+                        span &nbsp;&nbsp;
+                        i.caret
+                      ul.dropdown-menu
+                        li
+                          a(ng-click="tags.active = null") All
+                        li(ng-repeat="tag in tags")
+                          a(ng-click="tags.active = tag") {{ tag }}
+                .hidden-xs.col-sm-3.col-lg-2
+                  .btn-group.pull-right
+                    a.btn.btn-default(
+                        title="Show gallery view"
+                        ng-click="viewStyle='gallery'" ng-class="{active: viewStyle === 'gallery' || !viewStyle}")
+                      span.fa.fa-th
+                    a.btn.btn-default(
+                        title="Show list view"
+                        ng-click="viewStyle='list'" ng-class="{active: viewStyle === 'list'}")
+                      span.fa.fa-bars
+      .container(ng-controller="Body")
         .row(ng-if="loading")
           .col-xs-12.col-sm-8.col-sm-offset-2.col-lg-4.col-lg-offset-4
             .alert.alert-default
               p Loading...
                 span.fa.fa-refresh.fa-spin.pull-right
-        .row.list-controls(ng-show="!loading")
-          .col-xs-12
-            .row
-              .col-xs-12.col-sm-10
-                div(ng-class="{'input-group': tags.length}")
-                  input.form-control(type="text" ng-model="query" placeholder="Search for APIs..." ng-change="queryChanged()")
-                  .input-group-btn(ng-show="tags.length")
-                    button.btn.btn-default.dropdown-toggle.tag-dropdown(type='button' data-toggle="dropdown")
-                      | {{ tags.active || 'All' }}
-                      span &nbsp;&nbsp;
-                      i.caret
-                    ul.dropdown-menu
-                      li
-                        a(ng-click="tags.active = null") All
-                      li(ng-repeat="tag in tags")
-                        a(ng-click="tags.active = tag") {{ tag }}
-              .hidden-xs.col-sm-2
-                .btn-group.pull-right
-                  a.btn.btn-default(
-                      title="Show gallery view"
-                      ng-click="viewStyle='gallery'" ng-class="{active: viewStyle === 'gallery' || !viewStyle}")
-                    span.fa.fa-th
-                  a.btn.btn-default(
-                      title="Show list view"
-                      ng-click="viewStyle='list'" ng-class="{active: viewStyle === 'list'}")
-                    span.fa.fa-bars
         mixin apilink
           a.link-fill(href="#{basePath}/{{ api.name }}" target="_blank")
         mixin apidisplay
@@ -59,9 +61,9 @@ html
             .list-view.hidden-xs(ng-show="viewStyle === 'list'")
               include ./list-view.jade
             .xs-view.visible-xs
-              include ./xs-view.jade
+              include ./list-view.jade
         .apis.infinite-scroll(infinite-scroll="showNext()" infinite-scroll-distance="3")
-          .row(ng-if="tags.length && !tags.active" ng-repeat="tag in tags")
+          .row(ng-if="tags.length" ng-repeat="tag in tags" ng-show="!tags.active || tags.active === tag")
             .col-xs-12
               h2 {{ tag }}
               hr
@@ -69,7 +71,7 @@ html
                                ng-if="$index < apisToShow || apisToShow === -1"
                                ng-controller="API")
               +apidisplay
-          .row(ng-if="!tags.length || tags.active")
+          .row(ng-if="!tags.length")
             .api-col-container(ng-repeat="api in apis"
                                ng-if="$index < apisToShow || apisToShow === -1"
                                ng-controller="API")
