@@ -7,6 +7,8 @@
       +apilink
       p.text-center.panel-body-logo
         img.api-logo(ng-src="{{ getLogo(api) }}", style="background-color: {{ getBackgroundColor() }}")
-      p.panel-body-description
-        i(ng-if="!api.info.description") No description
-        span {{ truncate(api.info.description, 88) }}
+      p.panel-body-description(ng-if="!showDisabled")
+          i(ng-if="!api.info.description") No description
+          span {{ truncate(api.info.description, 88) }}
+      .panel-body-description(ng-if="showDisabled")
+        +disabled-message

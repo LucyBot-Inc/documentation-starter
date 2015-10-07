@@ -335,12 +335,17 @@ App.controller('APIs', function($scope) {
   }
 
   $scope.tags = TAGS;
+  $scope.tags.active = TAGS[0];
   $scope.apis = [];
   $.getJSON(BASE_PATH + '/apis', function(data) {
     $scope.apis = data;
     $scope.apis.forEach(function(api) {
       (api.tags || []).forEach(function(tag) {
-        if ($scope.tags.indexOf(tag) === -1) $scope.tags.push(tag);
+        var exists = false;
+        $scope.tags.forEach(function(existingTag) {
+          if (tag === existingTag.name) exists = true;
+        });
+        if (!exists) $scope.tags.push({name: tag});
       });
     })
     $scope.$apply();
@@ -373,7 +378,7 @@ App.controller('API', function($scope) {
     }
     if ($scope.tags.active) {
       if (!$scope.api.tags) return false;
-      if ($scope.api.tags.indexOf($scope.tags.active) === -1) return false;
+      if ($scope.api.tags.indexOf($scope.tags.active.name) === -1) return false;
     }
     return true;
   }

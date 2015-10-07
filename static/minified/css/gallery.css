@@ -8801,6 +8801,10 @@ body {
   margin-top: 30px;
 }
 
+.gallery-description {
+  font-size: 20px;
+}
+
 .apis {
   margin-bottom: 80px;
   min-height: 500px;
@@ -8808,6 +8812,10 @@ body {
 
 .tag-dropdown {
   min-width: 120px;
+}
+
+.tag-tabs {
+  margin-bottom: 30px;
 }
 
 .panel {

@@ -28,14 +28,14 @@ html
                     input.form-control(type="text" ng-model="query" placeholder="Search for APIs..." ng-change="queryChanged()")
                     .input-group-btn(ng-show="tags.length")
                       button.btn.btn-default.dropdown-toggle.tag-dropdown(type='button' data-toggle="dropdown")
-                        | {{ tags.active || 'All' }}
+                        | {{ tags.active ? tags.active.name : 'All' }}
                         span &nbsp;&nbsp;
                         i.caret
                       ul.dropdown-menu
                         li
                           a(ng-click="tags.active = null") All
                         li(ng-repeat="tag in tags")
-                          a(ng-click="tags.active = tag") {{ tag }}
+                          a(ng-click="tags.active = tag") {{ tag.name }}
                 .hidden-xs.col-sm-3.col-lg-2
                   .btn-group.pull-right
                     a.btn.btn-default(
@@ -47,13 +47,21 @@ html
                         ng-click="viewStyle='list'" ng-class="{active: viewStyle === 'list'}")
                       span.fa.fa-bars
       .container(ng-controller="Body")
+        if galleryInfo.description
+          .row.gallery-description
+            .col-xs-12
+              div !{Marked(galleryInfo.description)}
+              hr
         .row(ng-if="loading")
           .col-xs-12.col-sm-8.col-sm-offset-2.col-lg-4.col-lg-offset-4
             .alert.alert-default
               p Loading...
                 span.fa.fa-refresh.fa-spin.pull-right
         mixin apilink
-          a.link-fill(href="#{basePath}/{{ api.name }}" target="_blank")
+          a.link-fill(ng-if="!api.disabled" href="#{basePath}/{{ api.name }}" target="_blank")
+          a.link-fill(ng-if="api.disabled" ng-mouseover="toggleDisabled()" ng-mouseleave="toggleDisabled()" disabled)
+        mixin disabled-message
+          .alert.alert-info Sorry, documentation for this API is not currently available.
         mixin apidisplay
           .filter-guard(ng-show="shouldShow()")
             .panel-view.hidden-xs(ng-show="!viewStyle || viewStyle === 'gallery'")
@@ -63,11 +71,14 @@ html
             .xs-view.visible-xs
               include ./list-view.jade
         .apis.infinite-scroll(infinite-scroll="showNext()" infinite-scroll-distance="3")
+          ul.nav.nav-tabs.nav-justified.tag-tabs
+            li(role="presentation" ng-repeat="tag in tags" ng-class="{active: tag === tags.active}")
+              a(ng-click="tags.active = tag") {{ tag.name }}
           .row(ng-if="tags.length" ng-repeat="tag in tags" ng-show="!tags.active || tags.active === tag")
-            .col-xs-12
-              h2 {{ tag }}
+            .col-xs-12(ng-show="!tags.active")
+              h2 {{ tag.name }}
               hr
-            .api-col-container(ng-repeat="api in apis | filter:{tags: tag}:true"
+            .api-col-container(ng-repeat="api in apis | filter:{tags: tag.name}:true"
                                ng-if="$index < apisToShow || apisToShow === -1"
                                ng-controller="API")
               +apidisplay

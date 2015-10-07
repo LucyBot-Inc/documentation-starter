@@ -31,13 +31,24 @@ App.controller('APIs', function($scope) {
     $scope.apisToShow = -1;
   }
 
+  function sortAPIs(api1, api2) {
+    if (api1.disabled === api2.disabled) return 0;
+    if (!api1.disabled) return -1;
+    if (!api2.disabled) return 1;
+  }
+
   $scope.tags = TAGS;
+  $scope.tags.active = TAGS[0];
   $scope.apis = [];
   $.getJSON(BASE_PATH + '/apis', function(data) {
-    $scope.apis = data;
+    $scope.apis = data.sort(sortAPIs);
     $scope.apis.forEach(function(api) {
       (api.tags || []).forEach(function(tag) {
-        if ($scope.tags.indexOf(tag) === -1) $scope.tags.push(tag);
+        var exists = false;
+        $scope.tags.forEach(function(existingTag) {
+          if (tag === existingTag.name) exists = true;
+        });
+        if (!exists) $scope.tags.push({name: tag});
       });
     })
     $scope.$apply();
@@ -53,6 +64,9 @@ App.controller('API', function($scope) {
   $scope.getBackgroundColor = function() {
     if (!$scope.api.info['x-logo']) return '#fff';
     return $scope.api.info['x-logo'].backgroundColor || '#fff';
+  }
+  $scope.toggleDisabled = function() {
+    $scope.showDisabled = !$scope.showDisabled;
   }
 
   $scope.api.info.description = $scope.api.info.description || '';
@@ -70,7 +84,7 @@ App.controller('API', function($scope) {
     }
     if ($scope.tags.active) {
       if (!$scope.api.tags) return false;
-      if ($scope.api.tags.indexOf($scope.tags.active) === -1) return false;
+      if ($scope.api.tags.indexOf($scope.tags.active.name) === -1) return false;
     }
     return true;
   }

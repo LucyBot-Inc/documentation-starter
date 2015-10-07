@@ -25,6 +25,7 @@
     "jade": "^1.10.0",
     "lodash": "^3.10.1",
     "lucy-codegen": "https://github.com/bobby-brennan/lucy-codegen.git",
+    "marked": "^0.3.5",
     "request": "^2.57.0",
     "uglify-js": "~2.4.24",
     "underscore": "^1.8.3"
