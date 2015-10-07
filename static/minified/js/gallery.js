@@ -372,8 +372,8 @@ App.controller('API', function($scope) {
     $scope.showDisabled = !$scope.showDisabled;
   }
 
-  $scope.api.info.description = $scope.api.info.description || '';
-  $scope.api.info.description = $scope.api.info.description.replace(/<(?:.|\n)*?>/gm, '');
+  $scope.api.info['x-summary'] = $scope.api.info['x-summary'] || $scope.api.info.description || '';
+  $scope.api.info['x-summary'] = $scope.api.info['x-summary'].replace(/<(?:.|\n)*?>/gm, '');
   $scope.api.info.title = $scope.api.info.title || '';
   if ($scope.api.info.title.indexOf(' API') === $scope.api.info.title.length - 4) {
     $scope.api.info.title = $scope.api.info.title.substring(0, $scope.api.info.title.length - 4);
@@ -381,7 +381,7 @@ App.controller('API', function($scope) {
 
   $scope.shouldShow = function() {
     if ($scope.query) {
-      var searchText = $scope.api.info.title + '\n' + $scope.api.info.description;
+      var searchText = $scope.api.info.title + '\n' + $scope.api.info['x-summary'];
       searchText = searchText.toLowerCase();
       if (searchText.indexOf($scope.query.toLowerCase()) === -1) return false;
     }
