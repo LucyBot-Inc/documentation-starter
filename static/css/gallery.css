@@ -99,6 +99,7 @@ hr.no-margin-bottom {
   margin-bottom: 15px;
   border-radius: 4px;
   background-color: #fff;
+  min-height: 120px;
 }
 
 .tag-view .list-view-item {

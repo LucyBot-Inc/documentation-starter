@@ -62,9 +62,9 @@ html
                   include ./list-view.jade
             .apis.infinite-scroll(infinite-scroll="showNext()" infinite-scroll-distance="3")
               .tag-view(ng-show="tags.length")
-                ul.nav.nav-tabs.nav-justified.tag-tabs
+                ul.nav.nav-tabs.nav-justified.tag-tabs(ng-show="tags.active")
                   li(role="presentation" ng-repeat="tag in tags" ng-class="{active: tag === tags.active}")
-                    a(ng-click="tags.active = tag") {{ tag.name }}
+                    a.btn-lg(ng-click="tags.active = tag") {{ tag.name }}
                 .row(ng-repeat="tag in tags" ng-show="!tags.active || tags.active === tag")
                   .col-xs-12(ng-show="!tags.active")
                     h2 {{ tag.name }}
