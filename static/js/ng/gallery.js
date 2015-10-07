@@ -9,7 +9,6 @@ var App = angular.module('App', []);
 App.controller('Body', function($scope) {})
 
 App.controller('APIs', function($scope) {
-  $scope.viewStyle = 'list';
   $scope.BASE_PATH = BASE_PATH || '';
   $scope.apisToShow = 10;
   $scope.showNext = function() {
