@@ -8761,7 +8761,6 @@ body {
 }
 
 .heading {
-  margin-bottom: 40px;
   height: 100px;
 }
 
@@ -8802,10 +8801,13 @@ body {
 }
 
 .gallery-description {
+  padding-top: 40px;
+  background-color: #fff;
   font-size: 20px;
 }
 
 .apis {
+  margin-top: 40px;
   margin-bottom: 80px;
   min-height: 500px;
 }

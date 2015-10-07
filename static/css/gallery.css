@@ -3,7 +3,6 @@ body {
 }
 
 .heading {
-  margin-bottom: 40px;
   height: 100px;
 }
 
@@ -44,10 +43,13 @@ body {
 }
 
 .gallery-description {
+  padding-top: 40px;
+  background-color: #fff;
   font-size: 20px;
 }
 
 .apis {
+  margin-top: 40px;
   margin-bottom: 80px;
   min-height: 500px;
 }
@@ -56,8 +58,10 @@ body {
   min-width: 120px;
 }
 
-.tag-tabs {
-  margin-bottom: 30px;
+.tag-tabs > li > a {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .panel {
@@ -95,15 +99,29 @@ hr.no-margin-bottom {
 }
 
 .list-view-item {
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 25px;
+  padding-bottom: 25px;
   margin-bottom: 15px;
   border-radius: 4px;
   background-color: #fff;
 }
 
+.tag-view .list-view-item {
+  margin-bottom: 0px;
+  border-radius: 0px;
+  border-top: 1px solid #333;
+}
+.tag-view .list-view-item.list-view-item-first {
+  border-top: none;
+}
+
+.tag-view .view-style-gallery {
+  margin-top: 30px;
+}
+
 .list-view-description {
   padding-right: 30px;
+  font-size: 16px;
 }
 
 .list-view-description .alert {
