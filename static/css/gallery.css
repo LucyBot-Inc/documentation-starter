@@ -149,3 +149,6 @@ img.api-list-logo {
   padding: 5px;
 }
 
+.list-view-item .list-view-title {
+  padding-top: 16px;
+}
