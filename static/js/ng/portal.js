@@ -20,7 +20,9 @@ var maybeTruncateSummary = function(operation) {
 
 App.controller('Portal', function($scope, spec) {
   $scope.MAX_HIGHLIGHT_LEN = 10000;
-  $scope.activePage = 'documentation';
+  var hash = window.location.hash || START_PAGE;
+  $scope.activePage = hash.substring(1);
+  console.log('hash', window.location.hash);
   $scope.$watch('activePage', function(page) {
     mixpanel.track('set_page_' + page, {
       url: SPEC_URL,
@@ -120,7 +122,6 @@ App.controller('Portal', function($scope, spec) {
     $scope.setSpec = function(spec) {
       $scope.spec = spec;
       var info = $scope.spec.info = $scope.spec.info || {};
-      info['x-summary'] = info['x-summary'] || info.description;
       info.description = maybeAddExternalDocs(info.description, $scope.spec.externalDocs);
       initRoutes();
       initTags();
@@ -167,6 +168,7 @@ App.controller('Portal', function($scope, spec) {
     $scope.openPage = function(page) {
       if (page === 'console') $scope.openConsole();
       else if (page === 'documentation') $scope.openDocumentation();
+      else $scope.activePage = page;
     }
   })
 });

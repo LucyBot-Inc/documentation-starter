@@ -4,6 +4,7 @@ var GalleryRouter = require('./index.js').GalleryRouter;
 
 var router = new GalleryRouter({
   proxy: true,
+  enableEditor: true,
   apis: [{
     name: 'hacker_news',
     swagger: JSON.parse(FS.readFileSync(__dirname + '/examples/hacker_news.json')),

@@ -3,9 +3,9 @@ App.controller('Docs', function($scope) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
   $scope.getId = function(verb, path) {
-    return verb + '_' + path.replace(/\W/g, '_')
+    return verb + '_' + path.replace(/\W/g, '_');
   }
-  var initMenu = function () {
+  $scope.initMenu = function () {
     $scope.menuItems = [];
     if ($scope.spec.info['x-lucy/readme'] || $scope.spec.info.description) {
       $scope.menuItems.push({
@@ -43,6 +43,13 @@ App.controller('Docs', function($scope) {
           target: '#ScrollRoute' + index + ' h2',
         }
       }))
+    }
+  }
+  $scope.scrollTo = function(idx) {
+    var newTop = 0;
+    if (idx !== -1) {
+      if ($('#ScrollRoute0').length === 0) return;
+      $scope.scrollToTarget('#ScrollRoute' + idx + ' h2');
     }
     $scope.menuItems.active = $scope.menuItems[0];
   }
@@ -111,7 +118,7 @@ App.controller('Docs', function($scope) {
     $scope.$apply();
   })
 
-  $scope.query = '';
+  $scope.routesFiltered = $scope.routes;
   $scope.matchesQuery = function(route) {
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
@@ -147,15 +154,114 @@ App.controller('Docs', function($scope) {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
         .sort(sortByTag)
-    initMenu();
+    $scope.initMenu();
   }
   $scope.$watch('query', $scope.filterRoutes);
+  var filterRoutes = function() {
+    $scope.routesFiltered = $scope.routes
+        .filter($scope.matchesQuery)
+  }
+  var filterRoutesAndScroll = function() {
+    filterRoutes();
+    $scope.scrollTo(0);
+  }
+  $scope.$watch('query', filterRoutesAndScroll);
+  $scope.$watch('activeTag', filterRoutesAndScroll);
+  $scope.$watch('routes', filterRoutesAndScroll);
+  $scope.query = '';
+
+  $scope.editorMode = false;
+  $scope.switchMode = function() {
+    $scope.editorMode = !$scope.editorMode;
+  }
+
+  $scope.addOperation = function() {
+    var path = '/newOperation';
+    var i = 0;
+    while ($scope.spec.paths[path]) path = '/newOperation' + (++i);
+    var op = $scope.spec.paths[path] = {
+      parameters: [],
+      responses: {
+        '200': {
+          description: 'Successful Response'
+        }
+      }
+    };
+    $scope.routes.push({operation: op, method: 'get', path: path});
+    filterRoutes();
+    setTimeout(function() {
+      $scope.scrollTo($scope.routes.length - 1);
+    }, 800);
+    $scope.initMenu();
+  }
 });
 
-App.controller('Route', function($scope) {})
+App.controller('Route', function($scope) {
+  $scope.openConsole = function() {
+    $('#Body').scope().activePage = 'console';
+    $('#Consoles').scope().activeConsole = $scope.$index;
+  }
+
+  $scope.addParameter = function() {
+    $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
+  }
+
+  $scope.removeParameter = function(idx) {
+    $scope.route.operation.parameters.splice(idx, 1);
+  }
+
+  $scope.moveParameter = function(idx, dir) {
+    var from = idx;
+    var to = idx + dir;
+    $scope.route.operation.parameters.splice(
+        idx + dir,
+        0,
+        $scope.route.operation.parameters.splice(idx, 1)[0]
+    );
+  }
+
+  $scope.addResponse = function() {
+    var code = 200;
+    while ($scope.route.operation.responses[String(code)]) ++code;
+    $scope.route.operation.responses[String(code)] = {}
+  }
+
+  $scope.removeResponse = function(code) {
+    delete $scope.route.operation.responses[code];
+  }
+});
+
+App.controller('EditCode', function($scope) {})
 
 App.controller('Schema', function($scope) {
   $scope.schemaExample = $scope.printSchema($scope.schema);
+  var removeView = function(key, val) {
+    if (key === 'x-lucy/view') return undefined;
+    return val;
+  }
+  $scope.edit = function(schema) {
+    $scope.schemaString = JSON.stringify(schema, removeView, 2);
+    $scope.clicked = true;
+  }
+  $scope.save = function() {
+    try {
+      var ret = $scope.schemaString ? JSON.parse($scope.schemaString) : null;
+      $scope.clicked = false;
+      $scope.parseError = '';
+      return ret;
+    } catch (e) {
+      console.log('err')
+      $scope.parseError = e.message;
+    }
+  }
+  $scope.getString = function(schema) {
+    return JSON.stringify(schema, removeView, 2);
+  }
+  $scope.codemirrorLoad = function(editor) {
+    editor.on("change", function(ch) {
+      $scope.schemaString = ch.getValue();
+    });
+  }
 })
 
 App.controller('DocParameter', function($scope) {
@@ -183,8 +289,32 @@ App.controller('DocParameter', function($scope) {
     }
     return EXAMPLES.parameterExample($scope.parameter, $scope.route.path);
   }
+  $scope.hasEnum = $scope.parameter.enum ? true : false;
+  $scope.toggleEnum = function() {
+    if ($scope.parameter.enum) {
+      $scope.savedEnum = $scope.parameter.enum;
+      delete $scope.parameter.enum;
+    } else {
+      $scope.parameter.enum = $scope.savedEnum || [];
+    }
+  }
+  $scope.removeEnumItem = function(idx) {
+    $scope.parameter.enum.splice(idx, 1);
+  }
 })
 
 App.controller('DocResponse', function($scope) {
   $scope.schema = $scope.response.schema;
 })
+
+App.controller('ResponseCode', function($scope) {
+  var origCode = $scope.code;
+  $scope.save = function(code) {
+    if (code !== origCode) {
+      $scope.route.operation.responses[code] = $scope.route.operation.responses[origCode];
+      delete $scope.route.operation.responses[origCode];
+    }
+    return true;
+  }
+});
+
