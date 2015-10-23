@@ -92,7 +92,6 @@ App.controller('Console', function($scope) {
       for (var sec in $scope.spec.securityDefinitions) {
         sec = $scope.spec.securityDefinitions[sec];
         if (sec.type === 'apiKey') {
-          console.log('api key', sec, keys[sec.name]);
           if (keys[sec.name]) addParam(sec, keys[sec.name]);
         } else if (sec.type === 'oauth2' && keys.oauth2) {
           if (sec.flow === 'implicit') params.query = {access_token: keys.oauth2};
@@ -190,13 +189,11 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
   var refreshTimeoutLength = 350;
   $scope.refresh = function() {
     $scope.loadingResponse = true;
-    console.log('ref1');
     if (refreshTimeout) clearTimeout(refreshTimeout);
     refreshTimeout = setTimeout($scope.refreshInner, refreshTimeoutLength);
   }
 
   $scope.refreshInner = function() {
-    console.log('refresh!', $scope.answers);
     mixpanel.track('refresh_response', {
       visual: $scope.activeRoute.visual,
       method: $scope.activeRoute.method,
@@ -220,7 +217,6 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
           answers: $scope.answers,
         }),
         success: function(data) {
-          console.log('success', data.length);
           frameDoc.body.innerHTML = '';
           frameDoc.write(data);
         },

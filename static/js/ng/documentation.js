@@ -122,9 +122,6 @@ App.controller('Docs', function($scope) {
   })
 
   $scope.routesFiltered = $scope.routes;
-  $scope.matchesTag = function(route) {
-    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
-  }
   $scope.matchesQuery = function(route) {
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
@@ -166,7 +163,6 @@ App.controller('Docs', function($scope) {
   var filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
-        .filter($scope.matchesTag)
   }
   var filterRoutesAndScroll = function() {
     filterRoutes();
@@ -209,7 +205,6 @@ App.controller('Route', function($scope) {
   }
 
   $scope.addParameter = function() {
-    console.log('add p');
     $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
   }
 
@@ -220,49 +215,6 @@ App.controller('Route', function($scope) {
   $scope.moveParameter = function(idx, dir) {
     var from = idx;
     var to = idx + dir;
-    console.log('move from ' + from + ' to ' + to); 
-    $scope.route.operation.parameters.splice(
-        idx + dir,
-        0,
-        $scope.route.operation.parameters.splice(idx, 1)[0]
-    );
-  }
-
-  $scope.addResponse = function() {
-    var code = 200;
-    while ($scope.route.operation.responses[String(code)]) ++code;
-    $scope.route.operation.responses[String(code)] = {}
-  }
-
-  $scope.removeResponse = function(code) {
-    delete $scope.route.operation.responses[code];
-  }
-});
-
-
-App.controller('SidebarNav', function($scope) {
-  $scope.navLinks = [];
-});
-
-App.controller('Route', function($scope) {
-  $scope.openConsole = function() {
-    $('#Body').scope().activePage = 'console';
-    $('#Consoles').scope().activeConsole = $scope.$index;
-  }
-
-  $scope.addParameter = function() {
-    console.log('add p');
-    $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
-  }
-
-  $scope.removeParameter = function(idx) {
-    $scope.route.operation.parameters.splice(idx, 1);
-  }
-
-  $scope.moveParameter = function(idx, dir) {
-    var from = idx;
-    var to = idx + dir;
-    console.log('move from ' + from + ' to ' + to); 
     $scope.route.operation.parameters.splice(
         idx + dir,
         0,
@@ -284,9 +236,6 @@ App.controller('Route', function($scope) {
 App.controller('EditCode', function($scope) {})
 
 App.controller('Schema', function($scope) {
-  $scope.printSchema = function(schema) {
-    return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
-  }
   $scope.schemaExample = $scope.printSchema($scope.schema);
   var removeView = function(key, val) {
     if (key === 'x-lucy/view') return undefined;
@@ -362,10 +311,8 @@ App.controller('DocResponse', function($scope) {
 
 App.controller('ResponseCode', function($scope) {
   var origCode = $scope.code;
-  console.log('orig', origCode);
   $scope.save = function(code) {
     if (code !== origCode) {
-      console.log('swag', origCode, code);
       $scope.route.operation.responses[code] = $scope.route.operation.responses[origCode];
       delete $scope.route.operation.responses[origCode];
     }
