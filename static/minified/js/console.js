@@ -13412,6 +13412,7 @@ App.controller('Portal', function($scope, spec) {
     $scope.openPage = function(page) {
       if (page === 'console') $scope.openConsole();
       else if (page === 'documentation') $scope.openDocumentation();
+      else $scope.activePage = page;
     }
   })
 });
