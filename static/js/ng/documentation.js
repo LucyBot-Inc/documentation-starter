@@ -5,7 +5,7 @@ App.controller('Docs', function($scope) {
   $scope.getId = function(verb, path) {
     return verb + '_' + path.replace(/\W/g, '_');
   }
-  var initMenu = function () {
+  $scope.initMenu = function () {
     $scope.menuItems = [];
     if ($scope.spec.info['x-lucy/readme'] || $scope.spec.info.description) {
       $scope.menuItems.push({
@@ -49,16 +49,12 @@ App.controller('Docs', function($scope) {
     var newTop = 0;
     if (idx !== -1) {
       if ($('#ScrollRoute0').length === 0) return;
-      var curTop = $('.docs-col').scrollTop();
-      var colTop = $('.docs-col').offset().top;
-      var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
-      newTop = routeTop - colTop + curTop - 15;
+      $scope.scrollToTarget('#ScrollRoute' + idx + ' h2');
     }
     $scope.menuItems.active = $scope.menuItems[0];
   }
 
   $scope.scrollToTarget = function(target) {
-    console.log('scrolling to ' + target);
     var curTop = $('.docs-col').scrollTop();
     var colTop = $('.docs-col').offset().top;
     var targetTop = $(target).offset().top;
@@ -158,7 +154,7 @@ App.controller('Docs', function($scope) {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
         .sort(sortByTag)
-    initMenu();
+    $scope.initMenu();
   }
   $scope.$watch('query', $scope.filterRoutes);
   var filterRoutes = function() {
@@ -196,6 +192,7 @@ App.controller('Docs', function($scope) {
     setTimeout(function() {
       $scope.scrollTo($scope.routes.length - 1);
     }, 800);
+    $scope.initMenu();
   }
 });
 
