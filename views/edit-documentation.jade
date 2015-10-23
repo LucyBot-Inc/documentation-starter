@@ -21,12 +21,13 @@ include ./mixins/sidebar.jade
       p
         span Base Path:&nbsp;
         span(editable-text="spec.basePath" blur="submit") {{ spec.basePath || 'add basePath' }}
-    #README.row
+    #README.row.scroll-target
       .col-md-12
         +edit-markdown('README', 'spec.info["x-lucy/readme"]')
-    .row.scroll-route(ng-controller="Route"
-         ng-repeat="route in routesFiltered"
-         id="ScrollRoute{{$index}}")
+    .row.scroll-route.scroll-target(
+        ng-controller="Route"
+        ng-repeat="route in routesFiltered"
+        id="ScrollRoute{{$index}}")
       .col-md-12
         hr(ng-if="$index !== 0")
         h2.text-regular

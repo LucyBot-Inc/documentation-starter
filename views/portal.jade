@@ -54,8 +54,8 @@ html
             div(ng-show="activePage === 'recipes'")
               include ./recipes.jade
           #Docs.portal-page(ng-controller="Docs")
-            div(ng-show="activePage === 'documentation'" ng-cloak)
+            div(ng-if="activePage === 'documentation'" ng-cloak)
               include ./documentation.jade
             if showEditor
-              div(ng-if="activePage === 'editor'")
+              div(ng-if="activePage === 'editor'" ng-cloak)
                 include ./edit-documentation.jade
