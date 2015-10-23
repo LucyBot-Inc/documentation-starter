@@ -8994,6 +8994,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
+.show-cursor,
 a {
   cursor: pointer;
 }
@@ -9177,6 +9178,10 @@ span[data-verb="delete"] {
   min-width: 50px;
 }
 
+.docs-nav-col li.route-link a {
+  color: #86E2D5;
+}
+
 .docs-nav-col, .docs-col {
   position: fixed;
   top: 52px;
@@ -9238,6 +9243,7 @@ span[data-verb="delete"] {
   background-color: #333;
 }
 
+<<<<<<< HEAD
 .docs-nav-col > ul.nav > ul > li a:hover,
 .docs-nav-col > ul.nav > li a:hover {
   background-color: #444;
@@ -9249,12 +9255,17 @@ span[data-verb="delete"] {
 }
 
 .docs-nav-col li.menu-readme a {
-  color: #eee;
+  color: #fff;
 }
 
 .docs-nav-col .method-text,
 .docs-nav-col .menu-readme a {
   font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.docs-nav-col li.readme-link a {
+  color: #eee;
 }
 
 .docs-col {
@@ -9280,6 +9291,15 @@ span[data-verb="delete"] {
     margin: 1%;
   }
 }
+.editable-full-width .editable-text,
+.editable-full-width .editable-text .editable-controls.form-group,
+.editable-full-width .editable-text input.form-control {
+  width: 100%;
+}
+
+.scroll-route {
+  padding-bottom: 20px;
+}
 
 #README.row {
   background-color: #fff;
@@ -9298,6 +9318,10 @@ span[data-verb="delete"] {
 
 .route-description {
   margin-bottom: 28px;
+}
+
+.scroll-route {
+  padding-bottom: 20px;
 }
 
 table.doc-table {
@@ -9343,8 +9367,22 @@ table.doc-table td.example {
   z-index: 1;
 }
 
+.response-details,
 .parameter-details {
-  padding-left: 20px;
+  padding-left: 12px;
+}
+
+.parameter-detail-label {
+  float: left;
+  width: 120px;
+}
+
+strong.parameter-detail-label {
+  width: 132px;
+}
+
+ul.enum-list {
+  list-style-type: none;
 }
 
 .response-schema.resizable-y {

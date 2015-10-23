@@ -1647,7 +1647,9 @@ $(function() {
 var EXAMPLES = {};
 EXAMPLES.parameterExample = function(param, path) {
   var ret = '';
-  if (param.format === 'date') {
+  if (param.example) {
+    ret = param.example;
+  } else if (param.format === 'date') {
     ret = '1987-09-23';
   } else if (param.format === 'date-time') {
     ret = '1987-09-23T18:30:00Z';
@@ -2236,7 +2238,11 @@ https://github.com/pc035860/angular-highlightjs.git */
 
 }());
 
-var App = angular.module('App', ['hc.marked', 'zeroclipboard', 'hljs'])
+var App = angular.module('App', ['hc.marked', 'zeroclipboard', 'hljs', 'xeditable', 'ui.codemirror'])
+App.run(function(editableOptions) {
+  editableOptions.buttons = 'no';
+  editableOptions.theme = 'bs3';
+});
 App.service('spec', function($http) {
   var promise = $http.get(SPEC_URL).success(function(data) {
     return data.data;
@@ -2286,7 +2292,9 @@ var maybeTruncateSummary = function(operation) {
 
 App.controller('Portal', function($scope, spec) {
   $scope.MAX_HIGHLIGHT_LEN = 10000;
-  $scope.activePage = 'documentation';
+  var hash = window.location.hash || START_PAGE;
+  $scope.activePage = hash.substring(1);
+  console.log('hash', window.location.hash);
   $scope.$watch('activePage', function(page) {
     mixpanel.track('set_page_' + page, {
       url: SPEC_URL,
@@ -2442,7 +2450,7 @@ App.controller('Docs', function($scope) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
   $scope.getId = function(verb, path) {
-    return verb + '_' + path.replace(/\W/g, '_')
+    return verb + '_' + path.replace(/\W/g, '_');
   }
   var initMenu = function () {
     $scope.menuItems = [];
@@ -2482,6 +2490,16 @@ App.controller('Docs', function($scope) {
           target: '#ScrollRoute' + index + ' h2',
         }
       }))
+    }
+  }
+  $scope.scrollTo = function(idx) {
+    var newTop = 0;
+    if (idx !== -1) {
+      if ($('#ScrollRoute0').length === 0) return;
+      var curTop = $('.docs-col').scrollTop();
+      var colTop = $('.docs-col').offset().top;
+      var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
+      newTop = routeTop - colTop + curTop - 15;
     }
     $scope.menuItems.active = $scope.menuItems[0];
   }
@@ -2550,7 +2568,10 @@ App.controller('Docs', function($scope) {
     $scope.$apply();
   })
 
-  $scope.query = '';
+  $scope.routesFiltered = $scope.routes;
+  $scope.matchesTag = function(route) {
+    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
+  }
   $scope.matchesQuery = function(route) {
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
@@ -2589,12 +2610,158 @@ App.controller('Docs', function($scope) {
     initMenu();
   }
   $scope.$watch('query', $scope.filterRoutes);
+  var filterRoutes = function() {
+    $scope.routesFiltered = $scope.routes
+        .filter($scope.matchesQuery)
+        .filter($scope.matchesTag)
+  }
+  var filterRoutesAndScroll = function() {
+    filterRoutes();
+    $scope.scrollTo(0);
+  }
+  $scope.$watch('query', filterRoutesAndScroll);
+  $scope.$watch('activeTag', filterRoutesAndScroll);
+  $scope.$watch('routes', filterRoutesAndScroll);
+  $scope.query = '';
+
+  $scope.editorMode = false;
+  $scope.switchMode = function() {
+    $scope.editorMode = !$scope.editorMode;
+  }
+
+  $scope.addOperation = function() {
+    var path = '/newOperation';
+    var i = 0;
+    while ($scope.spec.paths[path]) path = '/newOperation' + (++i);
+    var op = $scope.spec.paths[path] = {
+      parameters: [],
+      responses: {
+        '200': {
+          description: 'Successful Response'
+        }
+      }
+    };
+    $scope.routes.push({operation: op, method: 'get', path: path});
+    filterRoutes();
+    setTimeout(function() {
+      $scope.scrollTo($scope.routes.length - 1);
+    }, 800);
+  }
 });
 
-App.controller('Route', function($scope) {})
+App.controller('Route', function($scope) {
+  $scope.openConsole = function() {
+    $('#Body').scope().activePage = 'console';
+    $('#Consoles').scope().activeConsole = $scope.$index;
+  }
+
+  $scope.addParameter = function() {
+    console.log('add p');
+    $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
+  }
+
+  $scope.removeParameter = function(idx) {
+    $scope.route.operation.parameters.splice(idx, 1);
+  }
+
+  $scope.moveParameter = function(idx, dir) {
+    var from = idx;
+    var to = idx + dir;
+    console.log('move from ' + from + ' to ' + to); 
+    $scope.route.operation.parameters.splice(
+        idx + dir,
+        0,
+        $scope.route.operation.parameters.splice(idx, 1)[0]
+    );
+  }
+
+  $scope.addResponse = function() {
+    var code = 200;
+    while ($scope.route.operation.responses[String(code)]) ++code;
+    $scope.route.operation.responses[String(code)] = {}
+  }
+
+  $scope.removeResponse = function(code) {
+    delete $scope.route.operation.responses[code];
+  }
+});
+
+
+App.controller('SidebarNav', function($scope) {
+  $scope.navLinks = [];
+});
+
+App.controller('Route', function($scope) {
+  $scope.openConsole = function() {
+    $('#Body').scope().activePage = 'console';
+    $('#Consoles').scope().activeConsole = $scope.$index;
+  }
+
+  $scope.addParameter = function() {
+    console.log('add p');
+    $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
+  }
+
+  $scope.removeParameter = function(idx) {
+    $scope.route.operation.parameters.splice(idx, 1);
+  }
+
+  $scope.moveParameter = function(idx, dir) {
+    var from = idx;
+    var to = idx + dir;
+    console.log('move from ' + from + ' to ' + to); 
+    $scope.route.operation.parameters.splice(
+        idx + dir,
+        0,
+        $scope.route.operation.parameters.splice(idx, 1)[0]
+    );
+  }
+
+  $scope.addResponse = function() {
+    var code = 200;
+    while ($scope.route.operation.responses[String(code)]) ++code;
+    $scope.route.operation.responses[String(code)] = {}
+  }
+
+  $scope.removeResponse = function(code) {
+    delete $scope.route.operation.responses[code];
+  }
+});
+
+App.controller('EditCode', function($scope) {})
 
 App.controller('Schema', function($scope) {
+  $scope.printSchema = function(schema) {
+    return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
+  }
   $scope.schemaExample = $scope.printSchema($scope.schema);
+  var removeView = function(key, val) {
+    if (key === 'x-lucy/view') return undefined;
+    return val;
+  }
+  $scope.edit = function(schema) {
+    $scope.schemaString = JSON.stringify(schema, removeView, 2);
+    $scope.clicked = true;
+  }
+  $scope.save = function() {
+    try {
+      var ret = $scope.schemaString ? JSON.parse($scope.schemaString) : null;
+      $scope.clicked = false;
+      $scope.parseError = '';
+      return ret;
+    } catch (e) {
+      console.log('err')
+      $scope.parseError = e.message;
+    }
+  }
+  $scope.getString = function(schema) {
+    return JSON.stringify(schema, removeView, 2);
+  }
+  $scope.codemirrorLoad = function(editor) {
+    editor.on("change", function(ch) {
+      $scope.schemaString = ch.getValue();
+    });
+  }
 })
 
 App.controller('DocParameter', function($scope) {
@@ -2622,11 +2789,37 @@ App.controller('DocParameter', function($scope) {
     }
     return EXAMPLES.parameterExample($scope.parameter, $scope.route.path);
   }
+  $scope.hasEnum = $scope.parameter.enum ? true : false;
+  $scope.toggleEnum = function() {
+    if ($scope.parameter.enum) {
+      $scope.savedEnum = $scope.parameter.enum;
+      delete $scope.parameter.enum;
+    } else {
+      $scope.parameter.enum = $scope.savedEnum || [];
+    }
+  }
+  $scope.removeEnumItem = function(idx) {
+    $scope.parameter.enum.splice(idx, 1);
+  }
 })
 
 App.controller('DocResponse', function($scope) {
   $scope.schema = $scope.response.schema;
 })
+
+App.controller('ResponseCode', function($scope) {
+  var origCode = $scope.code;
+  console.log('orig', origCode);
+  $scope.save = function(code) {
+    if (code !== origCode) {
+      console.log('swag', origCode, code);
+      $scope.route.operation.responses[code] = $scope.route.operation.responses[origCode];
+      delete $scope.route.operation.responses[origCode];
+    }
+    return true;
+  }
+});
+
 
 var getSeparatorFromFormat = function(format) {
   if (!format || format === 'csv' || format === 'multi') {
@@ -2649,11 +2842,9 @@ var oauthIsImplicit = function(defns) {
 }
 
 App.controller('Console', function($scope) {
-  $scope.callOnChange = [];
   $scope.onAnswerChanged = function() {
-    $scope.callOnChange.forEach(function(fn) {
-      fn();
-    })
+    if ($('#SampleCode').length) $('#SampleCode').scope().refresh();
+    if ($('#Response').length) $('#Response').scope().autorefresh();
   }
 
   $scope.setActiveRoute = function(route) {
@@ -2798,7 +2989,6 @@ App.controller('SampleCode', function($scope) {
       $scope.$apply();
     });
   }
-  $scope.callOnChange.push($scope.refresh);
 
   Lucy.get('/code/languages', function(err, languages) {
     $scope.languages = languages;
@@ -2819,37 +3009,17 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     $scope.outputType = type;
   }
 
-  $scope.getDemoUrl = function() {
-    var demoURL = BASE_URL + '/code/build/embed?';
-    demoURL += 'lucy_swaggerURL=' + encodeURIComponent(SPEC_URL);
-    demoURL += '&lucy_method=' + encodeURIComponent($scope.activeRoute.method);
-    demoURL += '&lucy_path=' + encodeURIComponent($scope.activeRoute.path);
-    var keys = $('#Keys').scope().keys;
-    var keysAdded = [];
-    for (key in keys) {
-      if (keys[key] !== undefined && keys[key] !== null && keysAdded.indexOf(key) === -1) {
-        keysAdded.push(key);
-        demoURL += '&' + key + '=' + encodeURIComponent(JSON.stringify(keys[key]));
-      }
-    }
-    for (key in $scope.answers) {
-      if ($scope.answers[key] !== undefined && $scope.answers[key] !== null && keysAdded.indexOf(key) === -1) {
-        keysAdded.push(key);
-        demoURL += '&' + key + '=' + encodeURIComponent(JSON.stringify($scope.answers[key]));
-      }
-    }
-    return demoURL;
-  }
-
   var refreshTimeout = null;
   var refreshTimeoutLength = 350;
   $scope.refresh = function() {
     $scope.loadingResponse = true;
+    console.log('ref1');
     if (refreshTimeout) clearTimeout(refreshTimeout);
     refreshTimeout = setTimeout($scope.refreshInner, refreshTimeoutLength);
   }
 
   $scope.refreshInner = function() {
+    console.log('refresh!', $scope.answers);
     mixpanel.track('refresh_response', {
       visual: $scope.activeRoute.visual,
       method: $scope.activeRoute.method,
@@ -2858,10 +3028,26 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     })
     $scope.outputType = !$scope.askedForRaw && $scope.activeRoute.visual ? 'visual' : 'raw';
     $scope.response = '';
+    var frameDoc = $('iframe.response-frame')[0].contentWindow.document;
+    frameDoc.body.innerHTML = '<h1 class="text-center"><i class="fa fa-spin fa-spinner"></i></h1>'
     if ($scope.activeRoute.visual) {
-      $scope.frameSrc = $sce.trustAsResourceUrl($scope.getDemoUrl());
-      var frame = $('iframe.response-frame');
-      frame.attr('src', $scope.frameSrc);
+      $.ajax({
+        type: 'POST',
+        url: BASE_URL + '/code/build/embed',
+        contentType : 'application/json',
+        data: JSON.stringify({
+          swagger: $scope.spec,
+          method: $scope.activeRoute.method,
+          path: $scope.activeRoute.path,
+          keys: $("#Keys").scope().keys,
+          answers: $scope.answers,
+        }),
+        success: function(data) {
+          console.log('success', data.length);
+          frameDoc.body.innerHTML = '';
+          frameDoc.write(data);
+        },
+      });
     }
 
     var request = $scope.getRequestParameters();
@@ -2934,13 +3120,12 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
       }
     })
   }
-  var autorefresh = function() {
+  $scope.autorefresh = function() {
     if ($scope.activeRoute.method === 'get') {
       $scope.refresh()
     }
   }
-  autorefresh();
-  $scope.callOnChange.push(autorefresh);
+  $scope.autorefresh();
 }]);
 
 
