@@ -72,6 +72,7 @@ module.exports = function(options) {
       "bower/highlightjs/styles/github.css",
       "bower/highlightjs/styles/atelier-forest.light.css",
       "bower/angular-xeditable/dist/css/xeditable.css",
+      "bower/codemirror/lib/codemirror.css",
       "css/portal.css",
       "css/spec-url.css",
       "css/data-colors.css",
