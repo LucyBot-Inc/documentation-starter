@@ -24,7 +24,7 @@ App.config(['markedProvider', function(markedProvider) {
 }]);
 App.config(['uiZeroclipConfigProvider', function(uiZeroclipConfigProvider) {
   uiZeroclipConfigProvider.setZcConf({
-    swfPath: '/bower/zeroclipboard/dist/ZeroClipboard.swf'
+    swfPath: BASE_URL + '/bower/zeroclipboard/dist/ZeroClipboard.swf'
   });
 }])
 App.controller('Body', function($scope) {});

@@ -13235,7 +13235,7 @@ App.config(['markedProvider', function(markedProvider) {
 }]);
 App.config(['uiZeroclipConfigProvider', function(uiZeroclipConfigProvider) {
   uiZeroclipConfigProvider.setZcConf({
-    swfPath: '/bower/zeroclipboard/dist/ZeroClipboard.swf'
+    swfPath: BASE_URL + '/bower/zeroclipboard/dist/ZeroClipboard.swf'
   });
 }])
 App.controller('Body', function($scope) {});
@@ -13940,20 +13940,30 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     })
     $scope.outputType = !$scope.askedForRaw && $scope.activeRoute.visual ? 'visual' : 'raw';
     $scope.response = '';
-    var frameDoc = $('iframe.response-frame')[0].contentWindow.document;
-    frameDoc.body.innerHTML = '<h1 class="text-center"><i class="fa fa-spin fa-spinner"></i></h1>'
     if ($scope.activeRoute.visual) {
+      var frameDoc = $('iframe.response-frame')[0].contentWindow.document;
+      frameDoc.body.innerHTML = '<h1 class="text-center"><i class="fa fa-spin fa-spinner"></i></h1>';
+      var removeCruft = function(k, v) {
+        if (k === 'description' || k === 'x-lucy/readme' || k.indexOf('$$') === 0) return;
+        return v;
+      }
+      var answers = JSON.parse(JSON.stringify($scope.answers));
+      var keys = $('#Keys').scope().keys;
+      for (var key in keys) {
+        answers[key] = keys[key];
+      }
+      var req =  JSON.stringify({
+        swagger: $scope.spec,
+        method: $scope.activeRoute.method,
+        path: $scope.activeRoute.path,
+        keys: keys,
+        answers: answers,
+      }, removeCruft);
       $.ajax({
         type: 'POST',
         url: BASE_URL + '/code/build/embed',
-        contentType : 'application/json',
-        data: JSON.stringify({
-          swagger: $scope.spec,
-          method: $scope.activeRoute.method,
-          path: $scope.activeRoute.path,
-          keys: $("#Keys").scope().keys,
-          answers: $scope.answers,
-        }),
+        contentType: 'application/json',
+        data: req,
         success: function(data) {
           frameDoc.body.innerHTML = '';
           frameDoc.write(data);

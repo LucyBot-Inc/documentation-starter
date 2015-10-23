@@ -6,7 +6,7 @@ var Router = module.exports = require('express').Router();
 
 var SwaggerImporter = require('../lib/swagger-importer.js');
 
-Router.use(require('body-parser').json());
+Router.use(require('body-parser').json({limit: '500kb'}));
 
 Router.get('/languages', function(req, res) {
   res.json(RequestBuilder.getLanguages());
