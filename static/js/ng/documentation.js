@@ -44,6 +44,16 @@ App.controller('Docs', function($scope) {
         }
       }))
     }
+  }
+  $scope.scrollTo = function(idx) {
+    var newTop = 0;
+    if (idx !== -1) {
+      if ($('#ScrollRoute0').length === 0) return;
+      var curTop = $('.docs-col').scrollTop();
+      var colTop = $('.docs-col').offset().top;
+      var routeTop = $('#ScrollRoute' + idx + ' h2').offset().top;
+      newTop = routeTop - colTop + curTop - 15;
+    }
     $scope.menuItems.active = $scope.menuItems[0];
   }
 
@@ -111,7 +121,10 @@ App.controller('Docs', function($scope) {
     $scope.$apply();
   })
 
-  $scope.query = '';
+  $scope.routesFiltered = $scope.routes;
+  $scope.matchesTag = function(route) {
+    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
+  }
   $scope.matchesQuery = function(route) {
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
@@ -150,6 +163,11 @@ App.controller('Docs', function($scope) {
     initMenu();
   }
   $scope.$watch('query', $scope.filterRoutes);
+  var filterRoutes = function() {
+    $scope.routesFiltered = $scope.routes
+        .filter($scope.matchesQuery)
+        .filter($scope.matchesTag)
+  }
   var filterRoutesAndScroll = function() {
     filterRoutes();
     $scope.scrollTo(0);
@@ -182,6 +200,48 @@ App.controller('Docs', function($scope) {
       $scope.scrollTo($scope.routes.length - 1);
     }, 800);
   }
+});
+
+App.controller('Route', function($scope) {
+  $scope.openConsole = function() {
+    $('#Body').scope().activePage = 'console';
+    $('#Consoles').scope().activeConsole = $scope.$index;
+  }
+
+  $scope.addParameter = function() {
+    console.log('add p');
+    $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
+  }
+
+  $scope.removeParameter = function(idx) {
+    $scope.route.operation.parameters.splice(idx, 1);
+  }
+
+  $scope.moveParameter = function(idx, dir) {
+    var from = idx;
+    var to = idx + dir;
+    console.log('move from ' + from + ' to ' + to); 
+    $scope.route.operation.parameters.splice(
+        idx + dir,
+        0,
+        $scope.route.operation.parameters.splice(idx, 1)[0]
+    );
+  }
+
+  $scope.addResponse = function() {
+    var code = 200;
+    while ($scope.route.operation.responses[String(code)]) ++code;
+    $scope.route.operation.responses[String(code)] = {}
+  }
+
+  $scope.removeResponse = function(code) {
+    delete $scope.route.operation.responses[code];
+  }
+});
+
+
+App.controller('SidebarNav', function($scope) {
+  $scope.navLinks = [];
 });
 
 App.controller('Route', function($scope) {
