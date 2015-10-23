@@ -9250,7 +9250,6 @@ span[data-verb="delete"] {
   background-color: #333;
 }
 
-<<<<<<< HEAD
 .docs-nav-col > ul.nav > ul > li a:hover,
 .docs-nav-col > ul.nav > li a:hover {
   background-color: #444;
@@ -9262,17 +9261,13 @@ span[data-verb="delete"] {
 }
 
 .docs-nav-col li.menu-readme a {
-  color: #fff;
+  color: #eee;
 }
 
 .docs-nav-col .method-text,
 .docs-nav-col .menu-readme a {
   font-weight: 500;
   margin-bottom: 5px;
-}
-
-.docs-nav-col li.readme-link a {
-  color: #eee;
 }
 
 .docs-col {

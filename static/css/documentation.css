@@ -86,17 +86,13 @@
 }
 
 .docs-nav-col li.menu-readme a {
-  color: #fff;
+  color: #eee;
 }
 
 .docs-nav-col .method-text,
 .docs-nav-col .menu-readme a {
   font-weight: 500;
   margin-bottom: 5px;
-}
-
-.docs-nav-col li.readme-link a {
-  color: #eee;
 }
 
 .docs-col {

@@ -13540,9 +13540,6 @@ App.controller('Docs', function($scope) {
   })
 
   $scope.routesFiltered = $scope.routes;
-  $scope.matchesTag = function(route) {
-    return !$scope.activeTag || (route.operation.tags && route.operation.tags.indexOf($scope.activeTag.name) !== -1)
-  }
   $scope.matchesQuery = function(route) {
     if (!$scope.query) return true;
     var query = $scope.query.toLowerCase();
@@ -13584,7 +13581,6 @@ App.controller('Docs', function($scope) {
   var filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
-        .filter($scope.matchesTag)
   }
   var filterRoutesAndScroll = function() {
     filterRoutes();
@@ -13627,7 +13623,6 @@ App.controller('Route', function($scope) {
   }
 
   $scope.addParameter = function() {
-    console.log('add p');
     $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
   }
 
@@ -13638,49 +13633,6 @@ App.controller('Route', function($scope) {
   $scope.moveParameter = function(idx, dir) {
     var from = idx;
     var to = idx + dir;
-    console.log('move from ' + from + ' to ' + to); 
-    $scope.route.operation.parameters.splice(
-        idx + dir,
-        0,
-        $scope.route.operation.parameters.splice(idx, 1)[0]
-    );
-  }
-
-  $scope.addResponse = function() {
-    var code = 200;
-    while ($scope.route.operation.responses[String(code)]) ++code;
-    $scope.route.operation.responses[String(code)] = {}
-  }
-
-  $scope.removeResponse = function(code) {
-    delete $scope.route.operation.responses[code];
-  }
-});
-
-
-App.controller('SidebarNav', function($scope) {
-  $scope.navLinks = [];
-});
-
-App.controller('Route', function($scope) {
-  $scope.openConsole = function() {
-    $('#Body').scope().activePage = 'console';
-    $('#Consoles').scope().activeConsole = $scope.$index;
-  }
-
-  $scope.addParameter = function() {
-    console.log('add p');
-    $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
-  }
-
-  $scope.removeParameter = function(idx) {
-    $scope.route.operation.parameters.splice(idx, 1);
-  }
-
-  $scope.moveParameter = function(idx, dir) {
-    var from = idx;
-    var to = idx + dir;
-    console.log('move from ' + from + ' to ' + to); 
     $scope.route.operation.parameters.splice(
         idx + dir,
         0,
@@ -13702,9 +13654,6 @@ App.controller('Route', function($scope) {
 App.controller('EditCode', function($scope) {})
 
 App.controller('Schema', function($scope) {
-  $scope.printSchema = function(schema) {
-    return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
-  }
   $scope.schemaExample = $scope.printSchema($scope.schema);
   var removeView = function(key, val) {
     if (key === 'x-lucy/view') return undefined;
@@ -13780,10 +13729,8 @@ App.controller('DocResponse', function($scope) {
 
 App.controller('ResponseCode', function($scope) {
   var origCode = $scope.code;
-  console.log('orig', origCode);
   $scope.save = function(code) {
     if (code !== origCode) {
-      console.log('swag', origCode, code);
       $scope.route.operation.responses[code] = $scope.route.operation.responses[origCode];
       delete $scope.route.operation.responses[origCode];
     }
@@ -13886,7 +13833,6 @@ App.controller('Console', function($scope) {
       for (var sec in $scope.spec.securityDefinitions) {
         sec = $scope.spec.securityDefinitions[sec];
         if (sec.type === 'apiKey') {
-          console.log('api key', sec, keys[sec.name]);
           if (keys[sec.name]) addParam(sec, keys[sec.name]);
         } else if (sec.type === 'oauth2' && keys.oauth2) {
           if (sec.flow === 'implicit') params.query = {access_token: keys.oauth2};
@@ -13984,13 +13930,11 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
   var refreshTimeoutLength = 350;
   $scope.refresh = function() {
     $scope.loadingResponse = true;
-    console.log('ref1');
     if (refreshTimeout) clearTimeout(refreshTimeout);
     refreshTimeout = setTimeout($scope.refreshInner, refreshTimeoutLength);
   }
 
   $scope.refreshInner = function() {
-    console.log('refresh!', $scope.answers);
     mixpanel.track('refresh_response', {
       visual: $scope.activeRoute.visual,
       method: $scope.activeRoute.method,
@@ -14014,7 +13958,6 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
           answers: $scope.answers,
         }),
         success: function(data) {
-          console.log('success', data.length);
           frameDoc.body.innerHTML = '';
           frameDoc.write(data);
         },
