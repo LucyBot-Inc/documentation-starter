@@ -75,3 +75,11 @@ mixin schema-example
                 ng-controller="Schema"
                 ng-show="response.schema")
             +schema-example
+  script.
+    var scope = $('.docs-col').scope();
+    $('.docs-col').scroll(function() {
+      console.log('scrol!');
+      scope.onScroll();
+      scope.$apply();
+    })
+

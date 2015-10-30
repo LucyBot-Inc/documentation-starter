@@ -113,10 +113,6 @@ App.controller('Docs', function($scope) {
       }
     })
   }
-  $('.docs-col').scroll(function() {
-    $scope.onScroll();
-    $scope.$apply();
-  })
 
   $scope.routesFiltered = $scope.routes;
   $scope.matchesQuery = function(route) {
