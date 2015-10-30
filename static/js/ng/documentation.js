@@ -116,8 +116,8 @@ App.controller('Docs', function($scope) {
 
   $scope.routesFiltered = $scope.routes;
   $scope.matchesQuery = function(route) {
-    if (!$scope.query) return true;
-    var query = $scope.query.toLowerCase();
+    if (!$scope.filter.query) return true;
+    var query = $scope.filter.query.toLowerCase();
     var terms = query.split(' ');
     for (var i = 0; i < terms.length; ++i) {
       if (route.searchText.indexOf(terms[i]) === -1) return false;
@@ -156,10 +156,12 @@ App.controller('Docs', function($scope) {
     filterRoutes();
     $scope.scrollTo(0);
   }
-  $scope.$watch('query', filterRoutesAndScroll);
+  $scope.filter = {
+    query: ''
+  };
+  $scope.$watch('filter.query', filterRoutesAndScroll);
   $scope.$watch('activeTag', filterRoutesAndScroll);
   $scope.$watch('routes', filterRoutesAndScroll);
-  $scope.query = '';
 
   $scope.editorMode = false;
   $scope.switchMode = function() {

@@ -8,7 +8,7 @@ mixin sidebar(editable)
       .input-group.input-group-sm.width-full
         span.input-group-addon
           i.fa.fa-search
-        input.form-control(type="text" ng-model="query")
+        input.form-control(type="text" ng-model="filter.query")
     mixin menuItem(name)
       a(ng-click="menuItems.active = #{name}.children ? #{name}.children[0] : #{name}; scrollToTarget(#{name}.target || #{name}.children[0].target)")
         span.method-text.text-uppercase(ng-show="#{name}.method" data-verb="{{#{name}.method}}" ng-bind="#{name}.method")
