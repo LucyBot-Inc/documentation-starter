@@ -1,7 +1,7 @@
 .row
   .col-xs-12.col-sm-6.left-col
     .row.control-row
-      .hidden-xs.col-sm-3(ng-if="spec.tags || hasVisualRoute")
+      .hidden-xs.col-sm-3(ng-if="(spec.tags && spec.tags.length) || hasVisualRoute")
         .dropdown.tag-dropdown
           button.tag-dropdown-btn.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
                 type="button"
@@ -19,7 +19,7 @@
                 span.pull-left {{ tag.name }}
                 span.small.pull-right {{ tag.description }}
                 span.clearfix
-      .col-xs-12(ng-class="{'col-sm-9': spec.tags || hasVisualRoute}")
+      .col-xs-12(ng-class="{'col-sm-9': (spec.tags && spec.tags.length) || hasVisualRoute}")
         .dropdown.route-dropdown
           button.route-dropdown-btn.btn.btn-default.btn-lg.dropdown-toggle.width-full.btn-text-left(
                 type="button"
