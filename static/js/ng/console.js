@@ -19,11 +19,9 @@ var oauthIsImplicit = function(defns) {
 }
 
 App.controller('Console', function($scope) {
-  $scope.callOnChange = [];
   $scope.onAnswerChanged = function() {
-    $scope.callOnChange.forEach(function(fn) {
-      fn();
-    })
+    if ($('#SampleCode').length) $('#SampleCode').scope().refresh();
+    if ($('#Response').length) $('#Response').scope().autorefresh();
   }
 
   $scope.setActiveRoute = function(route) {
@@ -91,14 +89,15 @@ App.controller('Console', function($scope) {
     }
     var keys = $('#Keys').scope().keys;
     if ($scope.spec.securityDefinitions) {
+      var addedOauth = false;
       for (var sec in $scope.spec.securityDefinitions) {
         sec = $scope.spec.securityDefinitions[sec];
         if (sec.type === 'apiKey') {
-          console.log('api key', sec, keys[sec.name]);
           if (keys[sec.name]) addParam(sec, keys[sec.name]);
-        } else if (sec.type === 'oauth2' && keys.oauth2) {
+        } else if (sec.type === 'oauth2' && keys.oauth2 && !addedOauth) {
           if (sec.flow === 'implicit') params.query = {access_token: keys.oauth2};
           else params.headers = {'Authorization': keys.oauth2}
+          addedOauth = true;
         } else if (sec.type === 'basic' && keys.username && keys.password) {
           params.headers = {'Authorization': 'Basic ' + btoa(keys.username + ':' + keys.password)};
         }
@@ -168,7 +167,6 @@ App.controller('SampleCode', function($scope) {
       $scope.$apply();
     });
   }
-  $scope.callOnChange.push($scope.refresh);
 
   Lucy.get('/code/languages', function(err, languages) {
     $scope.languages = languages;
@@ -189,28 +187,6 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     $scope.outputType = type;
   }
 
-  $scope.getDemoUrl = function() {
-    var demoURL = BASE_URL + '/code/build/embed?';
-    demoURL += 'lucy_swaggerURL=' + encodeURIComponent(SPEC_URL);
-    demoURL += '&lucy_method=' + encodeURIComponent($scope.activeRoute.method);
-    demoURL += '&lucy_path=' + encodeURIComponent($scope.activeRoute.path);
-    var keys = $('#Keys').scope().keys;
-    var keysAdded = [];
-    for (key in keys) {
-      if (keys[key] !== undefined && keys[key] !== null && keysAdded.indexOf(key) === -1) {
-        keysAdded.push(key);
-        demoURL += '&' + key + '=' + encodeURIComponent(JSON.stringify(keys[key]));
-      }
-    }
-    for (key in $scope.answers) {
-      if ($scope.answers[key] !== undefined && $scope.answers[key] !== null && keysAdded.indexOf(key) === -1) {
-        keysAdded.push(key);
-        demoURL += '&' + key + '=' + encodeURIComponent(JSON.stringify($scope.answers[key]));
-      }
-    }
-    return demoURL;
-  }
-
   var refreshTimeout = null;
   var refreshTimeoutLength = 350;
   $scope.refresh = function() {
@@ -229,9 +205,34 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     $scope.outputType = !$scope.askedForRaw && $scope.activeRoute.visual ? 'visual' : 'raw';
     $scope.response = '';
     if ($scope.activeRoute.visual) {
-      $scope.frameSrc = $sce.trustAsResourceUrl($scope.getDemoUrl());
-      var frame = $('iframe.response-frame');
-      frame.attr('src', $scope.frameSrc);
+      var frameDoc = $('iframe.response-frame')[0].contentWindow.document;
+      frameDoc.body.innerHTML = '<h1 class="text-center"><i class="fa fa-spin fa-spinner"></i></h1>';
+      var removeCruft = function(k, v) {
+        if (k === 'description' || k === 'x-lucy/readme' || k.indexOf('$$') === 0) return;
+        return v;
+      }
+      var answers = JSON.parse(JSON.stringify($scope.answers));
+      var keys = $('#Keys').scope().keys;
+      for (var key in keys) {
+        answers[key] = keys[key];
+      }
+      var req =  JSON.stringify({
+        swagger: $scope.spec,
+        method: $scope.activeRoute.method,
+        path: $scope.activeRoute.path,
+        keys: keys,
+        answers: answers,
+      }, removeCruft);
+      $.ajax({
+        type: 'POST',
+        url: BASE_URL + '/code/build/embed',
+        contentType: 'application/json',
+        data: req,
+        success: function(data) {
+          frameDoc.body.innerHTML = '';
+          frameDoc.write(data);
+        },
+      });
     }
 
     var request = $scope.getRequestParameters();
@@ -304,12 +305,11 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
       }
     })
   }
-  var autorefresh = function() {
+  $scope.autorefresh = function() {
     if ($scope.activeRoute.method === 'get') {
       $scope.refresh()
     }
   }
-  autorefresh();
-  $scope.callOnChange.push(autorefresh);
+  $scope.autorefresh();
 }]);
 

@@ -1,4 +1,8 @@
-var App = angular.module('App', ['hc.marked', 'zeroclipboard', 'hljs'])
+var App = angular.module('App', ['hc.marked', 'zeroclipboard', 'hljs', 'xeditable', 'ui.codemirror'])
+App.run(function(editableOptions) {
+  editableOptions.buttons = 'no';
+  editableOptions.theme = 'bs3';
+});
 App.service('spec', function($http) {
   var promise = $http.get(SPEC_URL).success(function(data) {
     return data.data;
@@ -20,7 +24,7 @@ App.config(['markedProvider', function(markedProvider) {
 }]);
 App.config(['uiZeroclipConfigProvider', function(uiZeroclipConfigProvider) {
   uiZeroclipConfigProvider.setZcConf({
-    swfPath: '/bower/zeroclipboard/dist/ZeroClipboard.swf'
+    swfPath: BASE_URL + '/bower/zeroclipboard/dist/ZeroClipboard.swf'
   });
 }])
 App.controller('Body', function($scope) {});

@@ -6,6 +6,8 @@ doctype html
 html
   head
     title API Console
+    script.
+      var START_PAGE = "#{showEditor ? '#editor' : '#documentation'}";
     include ./includes/head.jade
     link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,200,300,700,600')
 
@@ -34,6 +36,8 @@ html
                 include ./includes/spec-link.jade
             .navbar-collapse
               ul.nav.navbar-nav.nav-pills.navbar-right
+                if showEditor
+                  +navitem('Editor')
                 +navitem('Documentation')
                 +navitem('Console')
         .container-fluid(ng-if="!spec")
@@ -50,6 +54,8 @@ html
             div(ng-show="activePage === 'recipes'")
               include ./recipes.jade
           #Docs.portal-page(ng-controller="Docs")
-            div(ng-show="activePage === 'documentation'" ng-cloak)
+            div(ng-if="activePage === 'documentation'" ng-cloak)
               include ./documentation.jade
-
+            if showEditor
+              div(ng-if="activePage === 'editor'" ng-cloak)
+                include ./edit-documentation.jade
