@@ -146,16 +146,11 @@ App.controller('Docs', function($scope) {
     return SORT_ROUTES(r1, r2);
   }
   $scope.routesFiltered = $scope.routes;
-  $scope.filterRoutes = function() {
+  var filterRoutes = function() {
     $scope.routesFiltered = $scope.routes
         .filter($scope.matchesQuery)
         .sort(sortByTag)
     $scope.initMenu();
-  }
-  $scope.$watch('query', $scope.filterRoutes);
-  var filterRoutes = function() {
-    $scope.routesFiltered = $scope.routes
-        .filter($scope.matchesQuery)
   }
   var filterRoutesAndScroll = function() {
     filterRoutes();
