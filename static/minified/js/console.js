@@ -13827,13 +13827,15 @@ App.controller('Console', function($scope) {
     }
     var keys = $('#Keys').scope().keys;
     if ($scope.spec.securityDefinitions) {
+      var addedOauth = false;
       for (var sec in $scope.spec.securityDefinitions) {
         sec = $scope.spec.securityDefinitions[sec];
         if (sec.type === 'apiKey') {
           if (keys[sec.name]) addParam(sec, keys[sec.name]);
-        } else if (sec.type === 'oauth2' && keys.oauth2) {
+        } else if (sec.type === 'oauth2' && keys.oauth2 && !addedOauth) {
           if (sec.flow === 'implicit') params.query = {access_token: keys.oauth2};
           else params.headers = {'Authorization': keys.oauth2}
+          addedOauth = true;
         } else if (sec.type === 'basic' && keys.username && keys.password) {
           params.headers = {'Authorization': 'Basic ' + btoa(keys.username + ':' + keys.password)};
         }
@@ -14147,6 +14149,7 @@ App.controller('Keys', function($scope) {
   }
   $scope.keyInputs = [];
   if ($scope.spec.securityDefinitions) {
+    var addedOauth = false;
     for (var label in $scope.spec.securityDefinitions) {
       def = $scope.spec.securityDefinitions[label];
       if (def.type === 'apiKey') {
@@ -14154,7 +14157,8 @@ App.controller('Keys', function($scope) {
           name: def.name,
           label: label,
         });
-      } else if (def.type === 'oauth2') {
+      } else if (def.type === 'oauth2' && !addedOauth) {
+        addedOauth = true;
         $scope.keyInputs.push({
           name: 'oauth2',
           label: 'OAuth2 Token',

@@ -26,6 +26,7 @@ App.controller('Keys', function($scope) {
   }
   $scope.keyInputs = [];
   if ($scope.spec.securityDefinitions) {
+    var addedOauth = false;
     for (var label in $scope.spec.securityDefinitions) {
       def = $scope.spec.securityDefinitions[label];
       if (def.type === 'apiKey') {
@@ -33,7 +34,8 @@ App.controller('Keys', function($scope) {
           name: def.name,
           label: label,
         });
-      } else if (def.type === 'oauth2') {
+      } else if (def.type === 'oauth2' && !addedOauth) {
+        addedOauth = true;
         $scope.keyInputs.push({
           name: 'oauth2',
           label: 'OAuth2 Token',
