@@ -190,11 +190,6 @@ App.controller('Docs', function($scope) {
 });
 
 App.controller('Route', function($scope) {
-  $scope.openConsole = function() {
-    $('#Body').scope().activePage = 'console';
-    $('#Consoles').scope().activeConsole = $scope.$index;
-  }
-
   $scope.addParameter = function() {
     $scope.route.operation.parameters.push({in: 'query', name: 'myParam', type: 'string'})
   }
