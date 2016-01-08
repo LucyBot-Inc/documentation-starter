@@ -29,5 +29,8 @@
     "request": "^2.57.0",
     "uglify-js": "~2.4.24",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "strapping": "^1.5.2"
   }
 }
