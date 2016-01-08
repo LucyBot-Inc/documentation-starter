@@ -49,9 +49,7 @@ This helps individual deployments customize the console's look, feel, and behavi
 
 lucy-console also comes loaded with [Strapping!](/bobby-brennan/strapping), a GUI for customizing bootstrap.
 If you pass in the `strapping` option, the router will serve the GUI at `{basePath}/strapping/editor`. Making changes
-inside the GUI and clicking **Save** will alter the `css` and `config` files passed in as options.
-
-Be sure to add the CSS file to cssIncludes so your changes are reflected on the page.
+inside the GUI and clicking **Save** will alter the `css` and `config` files passed in as options. Be sure to disable Strapping! in production.  You'll also need to add the CSS file to cssIncludes so your changes are reflected on the page.
 
 ## Visual Overlays
 In addition to showing the raw output of your API, the LucyBot Console UI allows you to display neatly-formatted output using snippets of HTML.
