@@ -111,4 +111,4 @@ For the /users endpoint, we only get an array of user IDs. In order to display t
 ## Contributing
 Contributions are welcome and encouraged. We'll try to respond to Pull Requests within 24 hours.
 
-See [issues](lucybot/lucy-console/issues) for some things that need to get done.
+See [issues](/lucybot/lucy-console/issues) for some things that need to get done.
