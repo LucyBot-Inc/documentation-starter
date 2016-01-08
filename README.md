@@ -36,7 +36,7 @@ var myConsole = new LucyConsole({
     'example.com': 'abcd1234'
   },
   cssIncludes: ['/css/styles.css'], // See Extending below
-  jsIncludes: ['/js/console.js'], // See Extending below
+  jsIncludes: ['/js/console.js'],   // See Extending below
   cache: 1000 * 60 * 60, // The number of ms to cache static assets like JS and CSS
 });
 App.use('/api', myConsole.router);
