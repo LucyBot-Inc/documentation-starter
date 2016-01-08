@@ -39,7 +39,7 @@
       },
       "@brand-success": {
         "default": "#5cb85c",
-        "value": "#18BC9C",
+        "value": "#27ae60",
         "type": "color"
       },
       "@brand-info": {
@@ -69,7 +69,7 @@
       },
       "@link-color": {
         "default": "@brand-primary",
-        "value": "@brand-success",
+        "value": "@brand-primary",
         "type": "color"
       },
       "@link-hover-color": {
@@ -1322,7 +1322,7 @@
       },
       "@alert-info-bg": {
         "default": "@state-info-bg",
-        "value": "@state-info-bg",
+        "value": "lighten(@state-info-bg, 15%)",
         "type": "color"
       },
       "@alert-info-text": {

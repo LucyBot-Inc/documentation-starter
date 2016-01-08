@@ -1,0 +1,13 @@
+.sidebar {
+  background-color: #f7f7f7;
+  padding-top: 30px;
+}
+
+.sidebar > ul > li {
+  background-color: #555;
+  margin-bottom: 12px;
+}
+
+.sidebar > ul > li > a {
+  color: #3498db;
+}
