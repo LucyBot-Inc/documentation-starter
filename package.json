@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bobby-brennan/lucy-console"
+    "url": "https://github.com/lucybot/lucy-console"
   },
   "author": "Bobby Brennan <bobby@lucybot.com> (https://lucybot.com)",
   "bugs": {
-    "url": "https://github.com/bobby-brennan/lucy-console/issues"
+    "url": "https://github.com/lucybot/lucy-console/issues"
   },
-  "homepage": "https://github.com/bobby-brennan/lucy-console",
+  "homepage": "https://github.com/lucybot/lucy-console",
   "dependencies": {
     "bb-asset-manager": "^1.2.0",
     "body-parser": "^1.13.3",
