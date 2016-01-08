@@ -1,8 +1,8 @@
 # lucy-console
 
-This respository contains the LucyBot API Console UI. It uses Swagger 2.0 to generate documentation and a console for your API.
+This respository contains the LucyBot API Console UI. It uses **Swagger 2.0** to generate documentation and a console for your API.
 
-If you use another type of API Specification, such as RAML, WADL, or API Blueprint, you can use [api-spec-converter](/lucybot/api-spec-converter) to generate a Swagger document.
+If you use another type of API Specification, such as **RAML**, **WADL**, or **API Blueprint**, you can use [api-spec-converter](/lucybot/api-spec-converter) to generate a Swagger document.
 
 ## Sample Usage
 ```js
@@ -108,3 +108,7 @@ For the /users endpoint, we only get an array of user IDs. In order to display t
 </lucy>
 ```
 
+## Contributing
+Contributions are welcome and encouraged. We'll try to respond to Pull Requests within 24 hours.
+
+See [issues](lucybot/lucy-console/issues) for some things that need to get done.
