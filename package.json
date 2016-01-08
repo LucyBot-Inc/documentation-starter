@@ -24,7 +24,7 @@
     "express": "^4.12.4",
     "jade": "^1.10.0",
     "lodash": "^3.10.1",
-    "lucy-codegen": "https://github.com/bobby-brennan/lucy-codegen.git",
+    "lucy-codegen": "0.0.0",
     "marked": "^0.3.5",
     "request": "^2.57.0",
     "uglify-js": "~2.4.24",
