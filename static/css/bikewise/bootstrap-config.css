@@ -19,12 +19,12 @@
       },
       "@gray": {
         "default": "lighten(@gray-base, 33.5%)",
-        "value": "lighten(@gray-base, 33.5%)",
+        "value": "#777",
         "type": "color"
       },
       "@gray-light": {
         "default": "lighten(@gray-base, 46.7%)",
-        "value": "lighten(@gray-base, 46.7%)",
+        "value": "lighten(@gray-base, 60%)",
         "type": "color"
       },
       "@gray-lighter": {
@@ -34,27 +34,27 @@
       },
       "@brand-primary": {
         "default": "darken(#428bca, 6.5%)",
-        "value": "darken(#428bca, 6.5%)",
+        "value": "#EB6864",
         "type": "color"
       },
       "@brand-success": {
         "default": "#5cb85c",
-        "value": "#5cb85c",
+        "value": "#22B24C",
         "type": "color"
       },
       "@brand-info": {
         "default": "#5bc0de",
-        "value": "#5bc0de",
+        "value": "#369",
         "type": "color"
       },
       "@brand-warning": {
         "default": "#f0ad4e",
-        "value": "#f0ad4e",
+        "value": "#F5E625",
         "type": "color"
       },
       "@brand-danger": {
         "default": "#d9534f",
-        "value": "#d9534f",
+        "value": "#F57A00",
         "type": "color"
       },
       "@body-bg": {
@@ -64,7 +64,7 @@
       },
       "@text-color": {
         "default": "@gray-dark",
-        "value": "@gray-dark",
+        "value": "@gray",
         "type": "color"
       },
       "@link-color": {
@@ -83,7 +83,7 @@
       },
       "@font-family-sans-serif": {
         "default": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
-        "value": "\"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "value": "\"News Cycle\", \"Arial Narrow Bold\", sans-serif",
         "type": "font"
       },
       "@font-family-serif": {
@@ -98,12 +98,12 @@
       },
       "@font-family-base": {
         "default": "@font-family-sans-serif",
-        "value": "@font-family-sans-serif",
+        "value": "@font-family-serif",
         "type": "font"
       },
       "@font-size-base": {
         "default": "14px",
-        "value": "14px",
+        "value": "15px",
         "type": "font-size"
       },
       "@font-size-large": {
@@ -156,12 +156,12 @@
       },
       "@headings-font-family": {
         "default": "inherit",
-        "value": "inherit",
+        "value": "@font-family-sans-serif",
         "type": "font"
       },
       "@headings-font-weight": {
         "default": "500",
-        "value": "500"
+        "value": "700"
       },
       "@headings-line-height": {
         "default": "1.1",
@@ -169,7 +169,7 @@
       },
       "@headings-color": {
         "default": "inherit",
-        "value": "inherit"
+        "value": "#000"
       },
       "@icon-font-path": {
         "default": "\"../fonts/\"",
@@ -185,7 +185,7 @@
       },
       "@padding-base-vertical": {
         "default": "6px",
-        "value": "6px",
+        "value": "8px",
         "type": "size"
       },
       "@padding-base-horizontal": {
@@ -195,7 +195,7 @@
       },
       "@padding-large-vertical": {
         "default": "10px",
-        "value": "10px",
+        "value": "14px",
         "type": "size"
       },
       "@padding-large-horizontal": {
@@ -306,22 +306,22 @@
       },
       "@btn-default-color": {
         "default": "#333",
-        "value": "#333",
+        "value": "#fff",
         "type": "color"
       },
       "@btn-default-bg": {
         "default": "#fff",
-        "value": "#fff",
+        "value": "@gray-light",
         "type": "color"
       },
       "@btn-default-border": {
         "default": "#ccc",
-        "value": "#ccc",
+        "value": "@btn-default-bg",
         "type": "color"
       },
       "@btn-primary-color": {
         "default": "#fff",
-        "value": "#fff",
+        "value": "@btn-default-color",
         "type": "color"
       },
       "@btn-primary-bg": {
@@ -331,12 +331,12 @@
       },
       "@btn-primary-border": {
         "default": "darken(@btn-primary-bg, 5%)",
-        "value": "darken(@btn-primary-bg, 5%)",
+        "value": "@btn-primary-bg",
         "type": "color"
       },
       "@btn-success-color": {
         "default": "#fff",
-        "value": "#fff",
+        "value": "@btn-default-color",
         "type": "color"
       },
       "@btn-success-bg": {
@@ -346,12 +346,12 @@
       },
       "@btn-success-border": {
         "default": "darken(@btn-success-bg, 5%)",
-        "value": "darken(@btn-success-bg, 5%)",
+        "value": "@btn-success-bg",
         "type": "color"
       },
       "@btn-info-color": {
         "default": "#fff",
-        "value": "#fff",
+        "value": "@btn-default-color",
         "type": "color"
       },
       "@btn-info-bg": {
@@ -361,12 +361,12 @@
       },
       "@btn-info-border": {
         "default": "darken(@btn-info-bg, 5%)",
-        "value": "darken(@btn-info-bg, 5%)",
+        "value": "@btn-info-bg",
         "type": "color"
       },
       "@btn-warning-color": {
         "default": "#fff",
-        "value": "#fff",
+        "value": "@btn-default-color",
         "type": "color"
       },
       "@btn-warning-bg": {
@@ -376,12 +376,12 @@
       },
       "@btn-warning-border": {
         "default": "darken(@btn-warning-bg, 5%)",
-        "value": "darken(@btn-warning-bg, 5%)",
+        "value": "@btn-warning-bg",
         "type": "color"
       },
       "@btn-danger-color": {
         "default": "#fff",
-        "value": "#fff",
+        "value": "@btn-default-color",
         "type": "color"
       },
       "@btn-danger-bg": {
@@ -391,7 +391,7 @@
       },
       "@btn-danger-border": {
         "default": "darken(@btn-danger-bg, 5%)",
-        "value": "darken(@btn-danger-bg, 5%)",
+        "value": "@btn-danger-bg",
         "type": "color"
       },
       "@btn-link-disabled-color": {
@@ -426,7 +426,7 @@
       },
       "@input-color": {
         "default": "@gray",
-        "value": "@gray",
+        "value": "@text-color",
         "type": "color"
       },
       "@input-border": {
@@ -456,7 +456,7 @@
       },
       "@input-color-placeholder": {
         "default": "#999",
-        "value": "#999",
+        "value": "@gray-light",
         "type": "color"
       },
       "@input-height-base": {
@@ -478,7 +478,7 @@
       },
       "@legend-color": {
         "default": "@gray-dark",
-        "value": "@gray-dark",
+        "value": "@text-color",
         "type": "color"
       },
       "@legend-border-color": {
@@ -526,17 +526,17 @@
       },
       "@dropdown-link-hover-color": {
         "default": "darken(@gray-dark, 5%)",
-        "value": "darken(@gray-dark, 5%)",
+        "value": "#fff",
         "type": "color"
       },
       "@dropdown-link-hover-bg": {
         "default": "#f5f5f5",
-        "value": "#f5f5f5",
+        "value": "@component-active-bg",
         "type": "color"
       },
       "@dropdown-link-active-color": {
         "default": "@component-active-color",
-        "value": "@component-active-color",
+        "value": "#fff",
         "type": "color"
       },
       "@dropdown-link-active-bg": {
@@ -681,7 +681,7 @@
       },
       "@navbar-height": {
         "default": "50px",
-        "value": "50px",
+        "value": "60px",
         "type": "size"
       },
       "@navbar-margin-bottom": {
@@ -708,12 +708,12 @@
       },
       "@navbar-default-color": {
         "default": "#777",
-        "value": "#777",
+        "value": "#000",
         "type": "color"
       },
       "@navbar-default-bg": {
         "default": "#f8f8f8",
-        "value": "#f8f8f8",
+        "value": "#fff",
         "type": "color"
       },
       "@navbar-default-border": {
@@ -723,21 +723,21 @@
       },
       "@navbar-default-link-color": {
         "default": "#777",
-        "value": "#777",
+        "value": "#000",
         "type": "color"
       },
       "@navbar-default-link-hover-color": {
         "default": "#333",
-        "value": "#333",
+        "value": "#000",
         "type": "color"
       },
       "@navbar-default-link-hover-bg": {
         "default": "transparent",
-        "value": "transparent"
+        "value": "darken(@navbar-default-bg, 6.5%)"
       },
       "@navbar-default-link-active-color": {
         "default": "#555",
-        "value": "#555",
+        "value": "#000",
         "type": "color"
       },
       "@navbar-default-link-active-bg": {
@@ -761,12 +761,12 @@
       },
       "@navbar-default-brand-hover-color": {
         "default": "darken(@navbar-default-brand-color, 10%)",
-        "value": "darken(@navbar-default-brand-color, 10%)",
+        "value": "@navbar-default-link-hover-color",
         "type": "color"
       },
       "@navbar-default-brand-hover-bg": {
         "default": "transparent",
-        "value": "transparent"
+        "value": "darken(@navbar-default-bg, 6.5%)"
       },
       "@navbar-default-toggle-hover-bg": {
         "default": "#ddd",
@@ -775,7 +775,7 @@
       },
       "@navbar-default-toggle-icon-bar-bg": {
         "default": "#888",
-        "value": "#888",
+        "value": "#ccc",
         "type": "color"
       },
       "@navbar-default-toggle-border-color": {
@@ -785,12 +785,12 @@
       },
       "@navbar-inverse-color": {
         "default": "lighten(@gray-light, 15%)",
-        "value": "lighten(@gray-light, 15%)",
+        "value": "#fff",
         "type": "color"
       },
       "@navbar-inverse-bg": {
         "default": "#222",
-        "value": "#222",
+        "value": "@brand-primary",
         "type": "color"
       },
       "@navbar-inverse-border": {
@@ -800,7 +800,7 @@
       },
       "@navbar-inverse-link-color": {
         "default": "lighten(@gray-light, 15%)",
-        "value": "lighten(@gray-light, 15%)",
+        "value": "#fff",
         "type": "color"
       },
       "@navbar-inverse-link-hover-color": {
@@ -810,16 +810,16 @@
       },
       "@navbar-inverse-link-hover-bg": {
         "default": "transparent",
-        "value": "transparent"
+        "value": "darken(@navbar-inverse-bg, 6.5%)"
       },
       "@navbar-inverse-link-active-color": {
         "default": "@navbar-inverse-link-hover-color",
-        "value": "@navbar-inverse-link-hover-color",
+        "value": "#fff",
         "type": "color"
       },
       "@navbar-inverse-link-active-bg": {
         "default": "darken(@navbar-inverse-bg, 10%)",
-        "value": "darken(@navbar-inverse-bg, 10%)",
+        "value": "darken(@navbar-inverse-bg, 6.5%)",
         "type": "color"
       },
       "@navbar-inverse-link-disabled-color": {
@@ -843,11 +843,11 @@
       },
       "@navbar-inverse-brand-hover-bg": {
         "default": "transparent",
-        "value": "transparent"
+        "value": "darken(@navbar-inverse-bg, 6.5%)"
       },
       "@navbar-inverse-toggle-hover-bg": {
         "default": "#333",
-        "value": "#333",
+        "value": "darken(@navbar-inverse-bg, 10%)",
         "type": "color"
       },
       "@navbar-inverse-toggle-icon-bar-bg": {
@@ -857,7 +857,7 @@
       },
       "@navbar-inverse-toggle-border-color": {
         "default": "#333",
-        "value": "#333",
+        "value": "darken(@navbar-inverse-bg, 10%)",
         "type": "color"
       },
       "@nav-link-padding": {
@@ -962,17 +962,17 @@
       },
       "@pagination-active-color": {
         "default": "#fff",
-        "value": "#fff",
+        "value": "@gray-light",
         "type": "color"
       },
       "@pagination-active-bg": {
         "default": "@brand-primary",
-        "value": "@brand-primary",
+        "value": "#f5f5f5",
         "type": "color"
       },
       "@pagination-active-border": {
         "default": "@brand-primary",
-        "value": "@brand-primary",
+        "value": "#ddd",
         "type": "color"
       },
       "@pagination-disabled-color": {
@@ -1022,7 +1022,7 @@
       },
       "@pager-disabled-color": {
         "default": "@pagination-disabled-color",
-        "value": "@pagination-disabled-color",
+        "value": "@gray-light",
         "type": "color"
       },
       "@jumbotron-padding": {
@@ -1055,7 +1055,7 @@
       },
       "@state-success-text": {
         "default": "#3c763d",
-        "value": "#3c763d",
+        "value": "#468847",
         "type": "color"
       },
       "@state-success-bg": {
@@ -1070,7 +1070,7 @@
       },
       "@state-info-text": {
         "default": "#31708f",
-        "value": "#31708f",
+        "value": "#3a87ad",
         "type": "color"
       },
       "@state-info-bg": {
@@ -1085,7 +1085,7 @@
       },
       "@state-warning-text": {
         "default": "#8a6d3b",
-        "value": "#8a6d3b",
+        "value": "#c09853",
         "type": "color"
       },
       "@state-warning-bg": {
@@ -1095,12 +1095,12 @@
       },
       "@state-warning-border": {
         "default": "darken(spin(@state-warning-bg, -10), 5%)",
-        "value": "darken(spin(@state-warning-bg, -10), 5%)",
+        "value": "darken(spin(@state-warning-bg, -10), 3%)",
         "type": "color"
       },
       "@state-danger-text": {
         "default": "#a94442",
-        "value": "#a94442",
+        "value": "#b94a48",
         "type": "color"
       },
       "@state-danger-bg": {
@@ -1110,7 +1110,7 @@
       },
       "@state-danger-border": {
         "default": "darken(spin(@state-danger-bg, -10), 5%)",
-        "value": "darken(spin(@state-danger-bg, -10), 5%)",
+        "value": "darken(spin(@state-danger-bg, -10), 3%)",
         "type": "color"
       },
       "@tooltip-max-width": {
@@ -1191,7 +1191,7 @@
       },
       "@label-default-bg": {
         "default": "@gray-light",
-        "value": "@gray-light",
+        "value": "@btn-default-bg",
         "type": "color"
       },
       "@label-primary-bg": {
@@ -1231,7 +1231,7 @@
       },
       "@modal-inner-padding": {
         "default": "15px",
-        "value": "15px",
+        "value": "20px",
         "type": "size"
       },
       "@modal-title-padding": {
@@ -1512,7 +1512,7 @@
       },
       "@panel-default-text": {
         "default": "@gray-dark",
-        "value": "@gray-dark",
+        "value": "@text-color",
         "type": "color"
       },
       "@panel-default-border": {
@@ -1547,12 +1547,12 @@
       },
       "@panel-success-border": {
         "default": "@state-success-border",
-        "value": "@state-success-border",
+        "value": "@brand-success",
         "type": "color"
       },
       "@panel-success-heading-bg": {
         "default": "@state-success-bg",
-        "value": "@state-success-bg",
+        "value": "@brand-success",
         "type": "color"
       },
       "@panel-info-text": {
@@ -1562,12 +1562,12 @@
       },
       "@panel-info-border": {
         "default": "@state-info-border",
-        "value": "@state-info-border",
+        "value": "@brand-info",
         "type": "color"
       },
       "@panel-info-heading-bg": {
         "default": "@state-info-bg",
-        "value": "@state-info-bg",
+        "value": "@brand-info",
         "type": "color"
       },
       "@panel-warning-text": {
@@ -1577,12 +1577,12 @@
       },
       "@panel-warning-border": {
         "default": "@state-warning-border",
-        "value": "@state-warning-border",
+        "value": "@brand-warning",
         "type": "color"
       },
       "@panel-warning-heading-bg": {
         "default": "@state-warning-bg",
-        "value": "@state-warning-bg",
+        "value": "@brand-warning",
         "type": "color"
       },
       "@panel-danger-text": {
@@ -1592,12 +1592,12 @@
       },
       "@panel-danger-border": {
         "default": "@state-danger-border",
-        "value": "@state-danger-border",
+        "value": "@brand-danger",
         "type": "color"
       },
       "@panel-danger-heading-bg": {
         "default": "@state-danger-bg",
-        "value": "@state-danger-bg",
+        "value": "@brand-danger",
         "type": "color"
       },
       "@thumbnail-padding": {
@@ -1652,7 +1652,7 @@
       },
       "@badge-bg": {
         "default": "@gray-light",
-        "value": "@gray-light",
+        "value": "@link-color",
         "type": "color"
       },
       "@badge-active-color": {
@@ -1900,5 +1900,19 @@
       "scrollspy.js",
       "transition.js"
     ]
+  },
+  "extensions": {},
+  "theme": {
+    "name": "Journal",
+    "description": "Crisp like a new sheet of paper",
+    "thumbnail": "https://bootswatch.com/journal/thumbnail.png",
+    "preview": "https://bootswatch.com/journal/",
+    "css": "https://bootswatch.com/journal/bootstrap.css",
+    "cssMin": "https://bootswatch.com/journal/bootstrap.min.css",
+    "cssCdn": "https://maxcdn.bootstrapcdn.com/bootswatch/latest/journal/bootstrap.min.css",
+    "less": "https://bootswatch.com/journal/bootswatch.less",
+    "lessVariables": "https://bootswatch.com/journal/variables.less",
+    "scss": "https://bootswatch.com/journal/_bootswatch.scss",
+    "scssVariables": "https://bootswatch.com/journal/_variables.scss"
   }
 }
