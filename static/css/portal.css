@@ -33,6 +33,7 @@ a.no-click {
 .navbar.navbar-secondary {
   margin-bottom: 0;
   z-index: 100;
+  border-radius: 0px;
 }
 
 #README {

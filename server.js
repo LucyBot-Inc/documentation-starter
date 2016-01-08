@@ -14,7 +14,7 @@ var router = new GalleryRouter({
     name: 'hacker_news',
     swagger: JSON.parse(FS.readFileSync(__dirname + '/examples/hacker_news.json')),
   }],
-  cssIncludes: [__dirname + '/static/css/bootstrap.css'],
+  cssIncludes: ['/css/bootstrap.css'],
   galleryInfo: {
     title: "Sample APIs"
   },
