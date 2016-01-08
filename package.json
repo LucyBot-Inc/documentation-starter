@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "postinstall": "bower cache clean && bower --config.interactive=false install"
   },
   "repository": {
     "type": "git",
