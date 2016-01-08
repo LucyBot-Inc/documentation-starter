@@ -82,6 +82,11 @@ module.exports = function(options) {
     ]),
   });
 
-  assetManager.compile();
   return assetManager;
 }
+
+if (require.main === module) {
+  var assetManager = module.exports({});
+  assetManager.compile();
+}
+
