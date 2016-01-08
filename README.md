@@ -2,6 +2,8 @@
 
 This respository contains the LucyBot API Console UI. It uses Swagger 2.0 to generate documentation and a console for your API.
 
+If you use another type of API Specification, such as RAML, WADL, or API Blueprint, you can use [api-spec-converter](/lucybot/api-spec-converter) to generate a Swagger document.
+
 ## Sample Usage
 ```js
 var FS = require('fs');
@@ -13,13 +15,9 @@ var hackerNewsConsole = new LucyConsole({
   swagger: JSON.parse(FS.readFileSync(SWAGGER_FILE, 'utf8')),
 });
 
-App.get('/', function(req, res) {
-  res.redirect('/console');
-});
-
 App.use(hackerNewsConsole.router);
 
-App.listen(process.env.PORT || 3000);
+App.listen(3000);
 ```
 
 ## Options
@@ -34,9 +32,24 @@ var myConsole = new LucyConsole({
     'example.com': 'abcd1234'
   },
   cache: 1000 * 60 * 60, // The number of ms to cache static assets like JS and CSS
+  cssIncludes: ['/css/styles.css', '/css/bootstrap.css'], // See Customization below
+  jsIncludes: ['/js/console.js'],                         // See Customization below
+  strapping: {  // See Customization below
+    css: __dirname + '/static/css/bootstrap.css',
+    config: __dirname + '/static/css/bootstrap-config.json',
+  }
 });
+App.use(Express.static(__dirname + '/static'));
 App.use('/api', myConsole.router);
 ```
+
+## Customization
+You can use the `cssIncludes` and `jsIncludes` options to inject CSS and JS into the page.
+This helps individual deployments customize the console's look, feel, and behavior.
+
+lucy-console also comes loaded with [Strapping!](/bobby-brennan/strapping), a GUI for customizing bootstrap.
+If you pass in the `strapping` option, the router will serve the GUI at `{basePath}/strapping/editor`. Making changes
+inside the GUI and clicking **Save** will alter the `css` and `config` files passed in as options. Be sure to disable Strapping! in production.  You'll also need to add the CSS file to cssIncludes so your changes are reflected on the page.
 
 ## Visual Overlays
 In addition to showing the raw output of your API, the LucyBot Console UI allows you to display neatly-formatted output using snippets of HTML.
