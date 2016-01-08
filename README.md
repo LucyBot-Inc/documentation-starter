@@ -2,6 +2,8 @@
 
 This respository contains the LucyBot API Console UI. It uses Swagger 2.0 to generate documentation and a console for your API.
 
+If you use another type of API Specification, such as RAML, WADL, or API Blueprint, you can use [api-spec-converter](/lucybot/api-spec-converter) to generate a Swagger document.
+
 ## Sample Usage
 ```js
 var FS = require('fs');
@@ -33,6 +35,8 @@ var myConsole = new LucyConsole({
   client_ids: { // A mapping from hostname to OAuth2 client IDs
     'example.com': 'abcd1234'
   },
+  cssIncludes: ['/css/styles.css'], // See Extending below
+  jsIncludes: ['/js/console.js'], // See Extending below
   cache: 1000 * 60 * 60, // The number of ms to cache static assets like JS and CSS
 });
 App.use('/api', myConsole.router);
