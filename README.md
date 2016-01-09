@@ -1,6 +1,6 @@
 # lucy-console
 
-This respository contains the LucyBot API Console UI. It uses **Swagger 2.0** to generate documentation and a console for your API.
+LucyBot's API Console uses **Swagger 2.0** to generate customizable documentation for your API.
 
 If you use another type of API Specification, such as **RAML**, **WADL**, or **API Blueprint**, you can use [api-spec-converter](https://github.com/lucybot/api-spec-converter) to generate a Swagger document.
 
