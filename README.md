@@ -2,7 +2,7 @@
 
 This respository contains the LucyBot API Console UI. It uses **Swagger 2.0** to generate documentation and a console for your API.
 
-If you use another type of API Specification, such as **RAML**, **WADL**, or **API Blueprint**, you can use [api-spec-converter](/lucybot/api-spec-converter) to generate a Swagger document.
+If you use another type of API Specification, such as **RAML**, **WADL**, or **API Blueprint**, you can use [api-spec-converter](https://github.com/lucybot/api-spec-converter) to generate a Swagger document.
 
 ## Demo
 You can see the console in action for over 150 different APIs at [AnyAPI](https://any-api.com).
@@ -52,7 +52,7 @@ App.use('/api', myConsole.router);
 You can use the `cssIncludes` and `jsIncludes` options to inject CSS and JS into the page.
 This helps individual deployments customize the console's look, feel, and behavior.
 
-lucy-console also comes loaded with [Strapping!](/bobby-brennan/strapping), a GUI for customizing bootstrap.
+lucy-console also comes loaded with [Strapping!](https://github.com/bobby-brennan/strapping), a GUI for customizing bootstrap.
 If you pass in the `strapping` option, the router will serve the GUI at `{basePath}/strapping/editor`. Making changes
 inside the GUI and clicking **Save** will alter the `css` and `config` files passed in as options. Be sure to disable Strapping! in production.  You'll also need to add the CSS file to cssIncludes so your changes are reflected on the page.
 
