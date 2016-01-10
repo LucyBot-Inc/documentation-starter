@@ -1322,7 +1322,7 @@
       },
       "@alert-info-bg": {
         "default": "@state-info-bg",
-        "value": "lighten(@state-info-bg, 15%)",
+        "value": "lighten(@state-info-bg, 30%)",
         "type": "color"
       },
       "@alert-info-text": {
@@ -1332,7 +1332,7 @@
       },
       "@alert-info-border": {
         "default": "@state-info-border",
-        "value": "@state-info-border",
+        "value": "@alert-info-bg",
         "type": "color"
       },
       "@alert-warning-bg": {

@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.sidebar {
+  padding-top: 30px;
+}
+
 .sidebar .method-text {
   min-width: 50px;
 }

@@ -1,6 +1,9 @@
+.navbar.navbar-inverse .nav > li > a:hover {
+  color: #eee;
+}
+
 .sidebar {
-  background-color: #f7f7f7;
-  padding-top: 30px;
+  background-color: #ddd;
 }
 
 .sidebar > ul > li {
@@ -9,5 +12,26 @@
 }
 
 .sidebar > ul > li > a {
-  color: #3498db;
+  color: #ff6600;
+}
+
+.left-col {
+  border-right: 1px solid #333
+}
+
+.control-row .btn-default {
+  background-color: #fff;
+  color: #333;
+}
+
+.control-row {
+  background-color: #eee;
+  padding-top: 26px;
+  border: none;
+}
+
+.control-row .btn {
+  height: 40px;
+  font-size: 15px;
+  padding: 8px;
 }

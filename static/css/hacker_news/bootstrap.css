@@ -5093,12 +5093,12 @@ a.thumbnail.active {
   color: #e6e6e6;
 }
 .alert-info {
-  background-color: #75b9e7;
-  border-color: #3498DB;
+  background-color: #b6daf2;
+  border-color: #b6daf2;
   color: #fff;
 }
 .alert-info hr {
-  border-top-color: #258cd1;
+  border-top-color: #a0cfee;
 }
 .alert-info .alert-link {
   color: #e6e6e6;
