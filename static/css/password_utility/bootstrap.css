@@ -4196,7 +4196,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 45px;
+  min-height: 60px;
   margin-bottom: 21px;
   border: 1px solid transparent;
 }
@@ -4302,10 +4302,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar-brand {
   float: left;
-  padding: 12px 15px;
+  padding: 19.5px 15px;
   font-size: 19px;
   line-height: 21px;
-  height: 45px;
+  height: 60px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
@@ -4325,8 +4325,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   float: right;
   margin-right: 15px;
   padding: 9px 10px;
-  margin-top: 5.5px;
-  margin-bottom: 5.5px;
+  margin-top: 13px;
+  margin-bottom: 13px;
   background-color: transparent;
   background-image: none;
   border: 1px solid transparent;
@@ -4350,7 +4350,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-nav {
-  margin: 6px -15px;
+  margin: 9.75px -15px;
 }
 .navbar-nav > li > a {
   padding-top: 10px;
@@ -4388,8 +4388,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 19.5px;
+    padding-bottom: 19.5px;
   }
 }
 .navbar-form {
@@ -4400,8 +4400,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-bottom: 1px solid transparent;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  margin-top: 3px;
-  margin-bottom: 3px;
+  margin-top: 10.5px;
+  margin-bottom: 10.5px;
 }
 @media (min-width: 768px) {
   .navbar-form .form-group {
@@ -4486,20 +4486,20 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-bottom-left-radius: 0;
 }
 .navbar-btn {
-  margin-top: 3px;
-  margin-bottom: 3px;
+  margin-top: 10.5px;
+  margin-bottom: 10.5px;
 }
 .navbar-btn.btn-sm {
-  margin-top: 4.5px;
-  margin-bottom: 4.5px;
-}
-.navbar-btn.btn-xs {
-  margin-top: 11.5px;
-  margin-bottom: 11.5px;
-}
-.navbar-text {
   margin-top: 12px;
   margin-bottom: 12px;
+}
+.navbar-btn.btn-xs {
+  margin-top: 19px;
+  margin-bottom: 19px;
+}
+.navbar-text {
+  margin-top: 19.5px;
+  margin-bottom: 19.5px;
 }
 @media (min-width: 768px) {
   .navbar-text {

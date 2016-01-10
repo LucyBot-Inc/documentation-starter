@@ -23,7 +23,8 @@ var router = new GalleryRouter({
   enableEditor: true,
   apis: apis,
   galleryInfo: {
-    title: "LucyBot API Console Demo"
+    title: "LUCYBOT",
+    description: FS.readFileSync(__dirname + "/static/Demo.md", 'utf8'),
   },
   development: process.env.DEVELOPMENT ? true : false,
 });

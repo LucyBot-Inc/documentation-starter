@@ -1,5 +1,5 @@
 mixin sidebar(editable)
-  .hidden-xs.hidden-sm.col-md-3.sidebar
+  .hidden-xs.col-sm-3.sidebar
     .form-group
     if editable
       .form-group
@@ -24,4 +24,6 @@ mixin sidebar(editable)
       if editable
         li.route-link
           a(ng-click="addOperation()") Add Operation
-
+    p.attribution
+      span Powered by 
+      a(href="http://lucybot.com") LucyBot

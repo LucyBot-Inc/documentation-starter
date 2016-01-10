@@ -20,10 +20,14 @@
 @media (min-width: 768px) {
   .left-col, .right-col {
     position: fixed !important;
-    top: 52px;
+    top: 60px;
     bottom: 0px;
     margin-top: 0;
     padding-bottom: 100px;
+  }
+
+  .left-col {
+    border-right: 1px solid #333;
   }
 
   .right-col .body-row,
@@ -40,8 +44,12 @@
 
 .control-row {
   background-color: #333;
-  border: 1px solid black;
   padding: 20px;
+}
+
+.control-row .btn-default {
+  background-color: #fff;
+  color: #333;
 }
 
 .control-row .dropdown ul {

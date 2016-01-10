@@ -1,9 +1,11 @@
 body {
-  background-color: #edb88b;
+  background-color: #80a1d4;
 }
 
 .heading {
   height: 100px;
+  background-color: #27557d;
+  color: #fff;
 }
 
 @media (max-width: 991px) {
@@ -27,7 +29,6 @@ body {
 
 .heading .gallery-title {
   font-size: 24px;
-  margin-left: 15px;
 }
 
 .heading img.gallery-logo {
@@ -44,6 +45,7 @@ body {
 
 .gallery-description {
   padding-top: 40px;
+  padding-bottom: 40px;
   background-color: #fff;
   font-size: 20px;
 }

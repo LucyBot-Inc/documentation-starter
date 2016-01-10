@@ -8,6 +8,7 @@
 
 .sidebar {
   padding-top: 30px;
+  position: relative;
 }
 
 .sidebar .method-text {
@@ -20,7 +21,7 @@
 
 .sidebar, .docs-col {
   position: fixed !important;
-  top: 52px;
+  top: 60px;
   bottom: 0px;
   margin-top: 0;
   overflow-y: scroll;
@@ -117,12 +118,12 @@
   border-color: #333;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .docs-request-col,
   .docs-response-col {
     border: 1px solid #bbb;
     border-radius: 4px;
-    width: 48%;
+    width: 48% !important;
     margin: 1%;
   }
 }
@@ -138,6 +139,7 @@
 
 #README.row {
   background-color: #fff;
+  padding-top: 20px;
   padding-bottom: 20px;
 }
 
@@ -329,4 +331,10 @@ span[data-verb="delete"] {
 
 .btn.header-btn {
   margin-top: -4px;
+}
+
+.attribution {
+  position: absolute;
+  bottom: 0;
+  color: #fff;
 }
