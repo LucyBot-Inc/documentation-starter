@@ -9517,6 +9517,11 @@ span[data-verb="delete"] {
   width: 100%;
 }
 
+.sidebar {
+  padding-top: 30px;
+  position: relative;
+}
+
 .sidebar .method-text {
   min-width: 50px;
 }
@@ -9527,7 +9532,7 @@ span[data-verb="delete"] {
 
 .sidebar, .docs-col {
   position: fixed !important;
-  top: 52px;
+  top: 60px;
   bottom: 0px;
   margin-top: 0;
   overflow-y: scroll;
@@ -9624,12 +9629,12 @@ span[data-verb="delete"] {
   border-color: #333;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .docs-request-col,
   .docs-response-col {
     border: 1px solid #bbb;
     border-radius: 4px;
-    width: 48%;
+    width: 48% !important;
     margin: 1%;
   }
 }
@@ -9645,6 +9650,7 @@ span[data-verb="delete"] {
 
 #README.row {
   background-color: #fff;
+  padding-top: 20px;
   padding-bottom: 20px;
 }
 
@@ -9838,6 +9844,12 @@ span[data-verb="delete"] {
   margin-top: -4px;
 }
 
+.attribution {
+  position: absolute;
+  bottom: 0;
+  color: #fff;
+}
+
 .fa.spin-fix {
   height: 18px;
   width: 16px;
@@ -9860,10 +9872,14 @@ span[data-verb="delete"] {
 @media (min-width: 768px) {
   .left-col, .right-col {
     position: fixed !important;
-    top: 52px;
+    top: 60px;
     bottom: 0px;
     margin-top: 0;
     padding-bottom: 100px;
+  }
+
+  .left-col {
+    border-right: 1px solid #333;
   }
 
   .right-col .body-row,
@@ -9880,8 +9896,12 @@ span[data-verb="delete"] {
 
 .control-row {
   background-color: #333;
-  border: 1px solid black;
   padding: 20px;
+}
+
+.control-row .btn-default {
+  background-color: #fff;
+  color: #333;
 }
 
 .control-row .dropdown ul {
