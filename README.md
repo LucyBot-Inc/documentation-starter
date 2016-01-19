@@ -9,6 +9,16 @@ You can see the console in action for over 150 different APIs at [AnyAPI](https:
 
 There is also a [small gallery](https://lucybot.com/console_demo) of consoles using custom styles.
 
+## Installation
+The API Console can be installed as a NodeJS package, which will expose an Express router that you can attatch to any existing Express server:
+
+```bash
+npm install --save lucy-console
+```
+
+You can also clone this project and edit server.js to point to your Swagger file.
+
+
 ## Sample Usage
 ```js
 var FS = require('fs');
