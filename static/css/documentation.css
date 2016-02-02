@@ -334,7 +334,10 @@ span[data-verb="delete"] {
 }
 
 .attribution {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   color: #fff;
+  border-radius: 4px;
+  background-color: #27557d;
+  padding: 10px;
 }
