@@ -48526,91 +48526,349 @@
   },
   "swagger": "2.0",
   "tags": [
-    "accessControlProfile",
-    "accessControl",
-    "adminUser",
-    "baseEntry",
-    "bulkUpload",
-    "categoryEntry",
-    "category",
-    "categoryUser",
-    "conversionProfileAssetParams",
-    "conversionProfile",
-    "data",
-    "deliveryProfile",
-    "document",
-    "EmailIngestionProfile",
-    "fileAsset",
-    "flavorAsset",
-    "flavorParamsOutput",
-    "flavorParams",
-    "groupUser",
-    "liveChannelSegment",
-    "liveChannel",
-    "liveReports",
-    "liveStats",
-    "liveStream",
-    "mediaInfo",
-    "mediaServer",
-    "media",
-    "mixing",
-    "notification",
-    "partner",
-    "permissionItem",
-    "permission",
-    "playlist",
-    "report",
-    "responseProfile",
-    "schema",
-    "search",
-    "session",
-    "stats",
-    "storageProfile",
-    "syndicationFeed",
-    "system",
-    "thumbAsset",
-    "thumbParamsOutput",
-    "thumbParams",
-    "uiConf",
-    "upload",
-    "uploadToken",
-    "userRole",
-    "user",
-    "widget",
-    "xInternal",
-    "metadata",
-    "metadataProfile",
-    "documents",
-    "annotation",
-    "aspera",
-    "attachmentAsset",
-    "auditTrail",
-    "bulk",
-    "captionAsset",
-    "captionParams",
-    "captionAssetItem",
-    "distributionProfile",
-    "entryDistribution",
-    "distributionProvider",
-    "genericDistributionProvider",
-    "genericDistributionProviderAction",
-    "cuePoint",
-    "dropFolder",
-    "dropFolderFile",
-    "eventNotificationTemplate",
-    "like",
-    "shortLink",
-    "tag",
-    "varConsole",
-    "virusScanProfile",
-    "externalMedia",
-    "drmPolicy",
-    "drmProfile",
-    "widevineDrm",
-    "scheduledTaskProfile",
-    "playReadyDrm",
-    "integration",
-    "businessProcessServer",
-    "businessProcessCase"
+    {
+      "description": "Manage access control profiles\n ",
+      "name": "accessControlProfile"
+    },
+    {
+      "description": "Add & Manage Access Controls\n ",
+      "name": "accessControl"
+    },
+    {
+      "description": "Manage details for the administrative user\n ",
+      "name": "adminUser"
+    },
+    {
+      "description": "Base Entry Service\n ",
+      "name": "baseEntry"
+    },
+    {
+      "description": "Bulk upload service is used to upload & manage bulk uploads using CSV files.\n This service manages only entry bulk uploads.\n ",
+      "name": "bulkUpload"
+    },
+    {
+      "description": "Add & Manage CategoryEntry - assign entry to category\n ",
+      "name": "categoryEntry"
+    },
+    {
+      "description": "Add & Manage Categories\n ",
+      "name": "category"
+    },
+    {
+      "description": "Add & Manage CategoryUser - membership of a user in a category\n ",
+      "name": "categoryUser"
+    },
+    {
+      "description": "Manage the connection between Conversion Profiles and Asset Params\n ",
+      "name": "conversionProfileAssetParams"
+    },
+    {
+      "description": "Add & Manage Conversion Profiles\n ",
+      "name": "conversionProfile"
+    },
+    {
+      "description": "Data service lets you manage data content (textual content)\n ",
+      "name": "data"
+    },
+    {
+      "description": "delivery service is used to control delivery objects\n ",
+      "name": "deliveryProfile"
+    },
+    {
+      "description": "Document service\n ",
+      "name": "document"
+    },
+    {
+      "description": "EmailIngestionProfile service lets you manage email ingestion profile records\n ",
+      "name": "EmailIngestionProfile"
+    },
+    {
+      "description": "Manage file assets\n ",
+      "name": "fileAsset"
+    },
+    {
+      "description": "Retrieve information and invoke actions on Flavor Asset\n ",
+      "name": "flavorAsset"
+    },
+    {
+      "description": "Flavor Params Output service\n ",
+      "name": "flavorParamsOutput"
+    },
+    {
+      "description": "Add & Manage Flavor Params\n ",
+      "name": "flavorParams"
+    },
+    {
+      "description": "Add & Manage GroupUser\n ",
+      "name": "groupUser"
+    },
+    {
+      "description": "Manage live channel segments\n ",
+      "name": "liveChannelSegment"
+    },
+    {
+      "description": "Live Channel service lets you manage live channels\n ",
+      "name": "liveChannel"
+    },
+    {
+      "description": "",
+      "name": "liveReports"
+    },
+    {
+      "description": "Stats Service\n ",
+      "name": "liveStats"
+    },
+    {
+      "description": "Live Stream service lets you manage live stream entries\n ",
+      "name": "liveStream"
+    },
+    {
+      "description": "Media Info service\n ",
+      "name": "mediaInfo"
+    },
+    {
+      "description": "Manage media servers\n ",
+      "name": "mediaServer"
+    },
+    {
+      "description": "Media service lets you upload and manage media files (images / videos & audio)\n ",
+      "name": "media"
+    },
+    {
+      "description": "A Mix is an XML unique format invented by Kaltura, it allows the user to create a mix of videos and images, in and out points, transitions, text overlays, soundtrack, effects and much more...\n Mixing service lets you create a new mix, manage its metadata and make basic manipulations.   \n ",
+      "name": "mixing"
+    },
+    {
+      "description": "Notification Service\n ",
+      "name": "notification"
+    },
+    {
+      "description": "partner service allows you to change/manage your partner personal details and settings as well\n ",
+      "name": "partner"
+    },
+    {
+      "description": "PermissionItem service lets you create and manage permission items\n ",
+      "name": "permissionItem"
+    },
+    {
+      "description": "Permission service lets you create and manage user permissions\n ",
+      "name": "permission"
+    },
+    {
+      "description": "Playlist service lets you create,manage and play your playlists\n Playlists could be static (containing a fixed list of entries) or dynamic (baseed on a filter)\n ",
+      "name": "playlist"
+    },
+    {
+      "description": "api for getting reports data by the report type and some inputFilter\n ",
+      "name": "report"
+    },
+    {
+      "description": "Manage response profiles\n ",
+      "name": "responseProfile"
+    },
+    {
+      "description": "Expose the schema definitions for syndication MRSS, bulk upload XML and other schema types. \n ",
+      "name": "schema"
+    },
+    {
+      "description": "Search service allows you to search for media in various media providers\n This service is being used mostly by the CW component\n ",
+      "name": "search"
+    },
+    {
+      "description": "Session service\n ",
+      "name": "session"
+    },
+    {
+      "description": "Stats Service\n ",
+      "name": "stats"
+    },
+    {
+      "description": "Storage Profiles service\n ",
+      "name": "storageProfile"
+    },
+    {
+      "description": "Add & Manage Syndication Feeds\n ",
+      "name": "syndicationFeed"
+    },
+    {
+      "description": "System service is used for internal system helpers & to retrieve system level information\n ",
+      "name": "system"
+    },
+    {
+      "description": "Retrieve information and invoke actions on Thumb Asset\n ",
+      "name": "thumbAsset"
+    },
+    {
+      "description": "Thumbnail Params Output service\n ",
+      "name": "thumbParamsOutput"
+    },
+    {
+      "description": "Add & Manage Thumb Params\n ",
+      "name": "thumbParams"
+    },
+    {
+      "description": "UiConf service lets you create and manage your UIConfs for the various flash components\n This service is used by the KMC-ApplicationStudio\n ",
+      "name": "uiConf"
+    },
+    {
+      "description": "",
+      "name": "upload"
+    },
+    {
+      "description": "",
+      "name": "uploadToken"
+    },
+    {
+      "description": "UserRole service lets you create and manage user roles\n ",
+      "name": "userRole"
+    },
+    {
+      "description": "Manage partner users on Kaltura's side\n The userId in kaltura is the unique Id in the partner's system, and the [partnerId,Id] couple are unique key in kaltura's DB\n ",
+      "name": "user"
+    },
+    {
+      "description": "widget service for full widget management\n ",
+      "name": "widget"
+    },
+    {
+      "description": "Internal Service is used for actions that are used internally in Kaltura applications and might be changed in the future without any notice.\n ",
+      "name": "xInternal"
+    },
+    {
+      "description": "Metadata service\n ",
+      "name": "metadata"
+    },
+    {
+      "description": "Metadata Profile service\n ",
+      "name": "metadataProfile"
+    },
+    {
+      "description": "Document service lets you upload and manage document files\n ",
+      "name": "documents"
+    },
+    {
+      "description": "Annotation service - Video Annotation\n ",
+      "name": "annotation"
+    },
+    {
+      "description": "Aspera service\n ",
+      "name": "aspera"
+    },
+    {
+      "description": "Retrieve information and invoke actions on attachment Asset\n ",
+      "name": "attachmentAsset"
+    },
+    {
+      "description": "Audit Trail service\n ",
+      "name": "auditTrail"
+    },
+    {
+      "description": "Bulk upload service is used to upload & manage bulk uploads\n ",
+      "name": "bulk"
+    },
+    {
+      "description": "Retrieve information and invoke actions on caption Asset\n ",
+      "name": "captionAsset"
+    },
+    {
+      "description": "Add & Manage Caption Params\n ",
+      "name": "captionParams"
+    },
+    {
+      "description": "Search caption asset items\n ",
+      "name": "captionAssetItem"
+    },
+    {
+      "description": "Distribution Profile service\n ",
+      "name": "distributionProfile"
+    },
+    {
+      "description": "Entry Distribution service\n ",
+      "name": "entryDistribution"
+    },
+    {
+      "description": "Distribution Provider service\n ",
+      "name": "distributionProvider"
+    },
+    {
+      "description": "Generic Distribution Provider service\n ",
+      "name": "genericDistributionProvider"
+    },
+    {
+      "description": "Generic Distribution Provider Actions service\n ",
+      "name": "genericDistributionProviderAction"
+    },
+    {
+      "description": "Cue Point service\n ",
+      "name": "cuePoint"
+    },
+    {
+      "description": "DropFolder service lets you create and manage drop folders\n ",
+      "name": "dropFolder"
+    },
+    {
+      "description": "DropFolderFile service lets you create and manage drop folder files\n ",
+      "name": "dropFolderFile"
+    },
+    {
+      "description": "Event notification template service lets you create and manage event notification templates\n ",
+      "name": "eventNotificationTemplate"
+    },
+    {
+      "description": "Allows user to 'like' or 'unlike' and entry\n ",
+      "name": "like"
+    },
+    {
+      "description": "Short link service\n ",
+      "name": "shortLink"
+    },
+    {
+      "description": "Search object tags\n ",
+      "name": "tag"
+    },
+    {
+      "description": "Utility service for the Multi-publishers console\n ",
+      "name": "varConsole"
+    },
+    {
+      "description": "Virus scan profile service\n ",
+      "name": "virusScanProfile"
+    },
+    {
+      "description": "External media service lets you upload and manage embed codes and external playable content\n ",
+      "name": "externalMedia"
+    },
+    {
+      "description": "",
+      "name": "drmPolicy"
+    },
+    {
+      "description": "",
+      "name": "drmProfile"
+    },
+    {
+      "description": "WidevineDrmService serves as a license proxy to a Widevine license server\n ",
+      "name": "widevineDrm"
+    },
+    {
+      "description": "Schedule task service lets you create and manage scheduled task profiles\n ",
+      "name": "scheduledTaskProfile"
+    },
+    {
+      "description": "",
+      "name": "playReadyDrm"
+    },
+    {
+      "description": "Integration service lets you dispatch integration tasks\n ",
+      "name": "integration"
+    },
+    {
+      "description": "Business-Process server service lets you create and manage servers\n ",
+      "name": "businessProcessServer"
+    },
+    {
+      "description": "Business-process case service lets you get information about processes\n ",
+      "name": "businessProcessCase"
+    }
   ]
 }
