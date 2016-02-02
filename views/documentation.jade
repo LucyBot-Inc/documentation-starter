@@ -24,18 +24,20 @@ mixin schema-example
       .col-xs-12
         hr(ng-show="$index !== 0")
         h2.text-regular
-          span.pull-left
+          span
             span.text-uppercase(data-verb="{{ route.method }}" ng-bind="route.method")
             span &nbsp;&nbsp;
             span(ng-bind="route.path")
-          a.btn.btn-lg.btn-primary.pull-right(ng-click="openConsole(route)") Try it out!
-          .clearfix
           p.small(ng-bind="stripHtml(route.operation.summary)")
         .route-description(ng-show="route.operation.description" marked="route.operation.description")
       .col-xs-12
-        a.btn.btn-default(ng-click="expanded = !expanded")
-          span(ng-bind="expanded ? 'Hide' : 'Show'")
-          span  Details
+        .btn-toolbar
+          a.btn.btn-default(ng-click="expanded = !expanded")
+            span(ng-bind="expanded ? 'Hide' : 'Show'")
+            span  details 
+            i.fa.fa-right(ng-class="{'fa-arrow-up': expanded, 'fa-arrow-down': !expanded}")
+          a.btn.btn-primary(ng-click="openConsole(route)") Try it out 
+            i.fa.fa-arrow-right
       div(ng-if="expanded")
         .col-xs-12.col-sm-6.docs-request-col
           h4
