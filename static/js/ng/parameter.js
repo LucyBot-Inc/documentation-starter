@@ -1,4 +1,4 @@
-var LOCAL_STORAGE_KEY = 'API_KEYS:' + window.location.href;
+var LOCAL_STORAGE_KEY = 'API_KEYS:' + window.location.pathname;
 var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
@@ -19,6 +19,7 @@ App.controller('Keys', function($scope) {
       localStorage.setItem(LOCAL_STORAGE_KEY, keys);
     }
   }
+  $scope.$watch('keys', $scope.keyChanged, true)
   $scope.saveChanged = function() {
     if (!$scope.checks.saveKeys) {
       localStorage.setItem(LOCAL_STORAGE_KEY, '{}');
