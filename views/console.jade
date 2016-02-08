@@ -36,7 +36,7 @@
                 span {{ route.path }}
     .row.body-row
       .col-xs-12
-        .row.alert.alert-info.pin-left.pin-right
+        .row.alert.alert-info.pin-left.pin-right.description-alert
           div(ng-if="activeRoute.operation.description"
               marked="activeRoute.operation.description")
           a(ng-click="openDocumentation(activeRoute)") View Documentation

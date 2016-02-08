@@ -79,6 +79,10 @@
   border-radius: 4px;
 }
 
+.alert.row.description-alert {
+  margin-bottom: 0px;
+}
+
 .parameter-list {
   max-height: 338px;
 
