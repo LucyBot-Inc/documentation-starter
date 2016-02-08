@@ -23,9 +23,10 @@
     "jquery": "~2.1.4",
     "swagger-parser": "~3.4.0",
     "WebCodeBeauty": "~1.0.0",
-    "zeroclipboard": "~2.2.0"
+    "zeroclipboard": "~2.2.0",
+    "angular-route": "~1.5.0"
   },
   "resolutions": {
-    "angular": "1.4.3"
+    "angular": "1.5.0"
   }
 }

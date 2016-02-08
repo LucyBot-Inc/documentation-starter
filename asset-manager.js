@@ -45,6 +45,7 @@ module.exports = function(options) {
       "bower/WebCodeBeauty/dist/WebCodeBeauty.min.js",
       "bower/angular-zeroclipboard/src/angular-zeroclipboard.js",
       "bower/angular-highlightjs/angular-highlightjs.min.js",
+      "bower/angular-route/angular-route.js",
       "bower/angular-marked/angular-marked.js",
       "bower/angular-xeditable/dist/js/xeditable.min.js",
       "bower/codemirror/lib/codemirror.js",
