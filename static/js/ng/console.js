@@ -148,7 +148,7 @@ App.controller('SampleCode', function($scope) {
     mixpanel.track('refresh_sample_code', {
       language: language.id
     })
-    Lucy.post('/code/build/request', {
+    Lucy.post(OPTIONS.codegenPath, {
       request: $scope.getRequestParameters(),
       language: language.id
     }, function(err, result) {
