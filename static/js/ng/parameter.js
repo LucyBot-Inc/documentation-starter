@@ -74,8 +74,6 @@ App.controller('Parameter', function($scope) {
   var type = $scope.parameter.type;
   if ($scope.parameter.in === 'body') {
     $scope.inputType = 'body';
-  } else if (type === 'number' || type === 'integer') {
-    $scope.inputType = 'number';
   } else if (type === 'array') {
     if ($scope.parameter.enum) {
       $scope.inputType = 'checkboxes';
@@ -84,6 +82,8 @@ App.controller('Parameter', function($scope) {
     }
   } else if ($scope.parameter.enum) {
     $scope.inputType = 'radio';
+  } else if (type === 'number' || type === 'integer') {
+    $scope.inputType = 'number';
   }
 });
 

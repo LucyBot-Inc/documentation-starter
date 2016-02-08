@@ -19,7 +19,7 @@
   .form-group(ng-if="inputType === 'text' || inputType === 'number'")
     label {{parameter.name}}
     input.input-sm.form-control(
-          type="inputType"
+          type="{{inputType}}"
           ng-change="onAnswerChanged()",
           ng-model="model[parameter.name]")
     span.help-block(ng-if="parameter.description" marked="parameter.description")
