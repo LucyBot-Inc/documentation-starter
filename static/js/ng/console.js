@@ -58,7 +58,8 @@ App.controller('Console', function($scope) {
       protocol: protocol,
       domain: $scope.spec.host,
       method: $scope.activeRoute.method,
-      returns: 'json'
+      returns: 'json',
+      answers: $scope.answers,
     };
     var basePath = $scope.spec.basePath || '';
     if (basePath.lastIndexOf('/') === basePath.length - 1) {
