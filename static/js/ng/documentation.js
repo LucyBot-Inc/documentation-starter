@@ -7,13 +7,6 @@ App.controller('Docs', function($scope, $location) {
   }
   $scope.initMenu = function () {
     $scope.menuItems = [];
-    if ($scope.spec.info['x-lucy/readme'] || $scope.spec.info.description) {
-      $scope.menuItems.push({
-        title: 'README',
-        class: 'readme',
-        target: '#README',
-      });
-    }
     if ($scope.spec.tags && $scope.spec.tags.length) {
       $scope.menuItems = $scope.menuItems.concat($scope.spec.tags.map(function(tag) {
         var children = $scope.routesFiltered.filter(function(r) {

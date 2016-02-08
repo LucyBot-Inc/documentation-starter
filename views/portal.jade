@@ -45,6 +45,7 @@ html
               ul.nav.navbar-nav.nav-pills.navbar-right
                 if showEditor
                   +navitem('Editor')
+                +navitem('README')
                 +navitem('Documentation')
                 +navitem('Console')
         .container-fluid(ng-if="!spec")
@@ -54,6 +55,9 @@ html
         .container-fluid.ng-cloak(ng-if="spec" ng-cloak)
           div(ng-if="oauthDefinition")
             include ./oauth2-modal.jade
+          #README.portal-page
+            div(ng-if="isActive('README')" ng-cloak)
+              include ./readme.jade
           #Console.portal-page(ng-controller="Console")
             div(ng-if="isActive('Console')" ng-cloak)
               include ./console.jade
