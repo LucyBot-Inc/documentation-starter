@@ -54,7 +54,6 @@ module.exports = function(options) {
       "bower/codemirror/mode/javascript/javascript.js",
       "bower/codemirror/mode/markdown/markdown.js",
       "bower/angular-ui-codemirror/ui-codemirror.js",
-      "js/smooth-scroll.js",
       "js/examples.js",
       "js/lucy.js",
       "js/ng/app.js",

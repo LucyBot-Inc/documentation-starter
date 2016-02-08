@@ -18,15 +18,12 @@ var maybeTruncateSummary = function(operation) {
   operation.summary = firstSentence;
 }
 
-App.controller('Portal', function($scope, spec) {
+App.controller('Portal', function($scope, $location, spec) {
   $scope.MAX_HIGHLIGHT_LEN = 10000;
-  var hash = window.location.hash || START_PAGE;
-  $scope.activePage = hash.substring(1);
-  $scope.$watch('activePage', function(page) {
-    mixpanel.track('set_page_' + page, {
-      url: SPEC_URL,
-    })
-  })
+  var DEFAULT_PAGE = 'Documentation';
+  $scope.isActive = function(page) {
+    return ('/' + page) === ($location.path() || '/' + DEFAULT_PAGE);
+  }
   $scope.stripHtml = function(str) {
     if (!str) return str;
     return str.replace(/<(?:.|\n)*?>/gm, '');
@@ -156,7 +153,7 @@ App.controller('Portal', function($scope, spec) {
 
     $scope.setActiveTag = function(tag) {
       $scope.activeTag = tag;
-      if ($scope.activePage === 'documentation') {
+      if ($location.path() === '/Documentation') {
         $('#Docs').scope().scrollTo(0);
       }
     }
@@ -164,7 +161,7 @@ App.controller('Portal', function($scope, spec) {
     var promptedOAuth = false;
     $scope.openConsole = function(route) {
       if (route) $('#Console').scope().setActiveRoute(route);
-      $scope.activePage = 'console';
+      $location.path('/Console')
       if (!promptedOAuth && $scope.startOAuth) {
         promptedOAuth = true;
         $scope.startOAuth();
@@ -172,7 +169,7 @@ App.controller('Portal', function($scope, spec) {
     }
 
     $scope.openDocumentation = function(route) {
-      $scope.activePage = 'documentation';
+      $location.path('/Documentation');
       if (route) {
         $('#Docs').scope().query = '';
         setTimeout(function() {
@@ -184,7 +181,7 @@ App.controller('Portal', function($scope, spec) {
     $scope.openPage = function(page) {
       if (page === 'console') $scope.openConsole();
       else if (page === 'documentation') $scope.openDocumentation();
-      else $scope.activePage = page;
+      $location.path('/' + page);
     }
   })
 });

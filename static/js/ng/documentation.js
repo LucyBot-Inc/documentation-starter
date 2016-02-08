@@ -1,4 +1,4 @@
-App.controller('Docs', function($scope) {
+App.controller('Docs', function($scope, $location) {
   $scope.printSchema = function(schema) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
@@ -86,7 +86,7 @@ App.controller('Docs', function($scope) {
   }
   $scope.onScroll= function() {
     if ($scope.animatingScroll) return;
-    if ($scope.activePage !== 'documentation') return;
+    if ($location.path() !== '/Documentation') return;
     var visibleHeight = $('.docs-col').height() - 50;
     var closest = null;
     var minDist = Infinity;

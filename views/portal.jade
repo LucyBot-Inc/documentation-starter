@@ -1,6 +1,6 @@
 mixin navitem(name)
-  li(ng-class="{active: activePage === '#{name.toLowerCase()}'}")
-    a.navlink.text-capitalize(ng-click="openPage('#{name.toLowerCase()}')") #{name}
+  li(ng-class="{active: isActive('#{name}')}")
+    a.navlink.text-capitalize(href='##{name}' no-scroll)= name
 
 doctype html
 html
@@ -55,14 +55,14 @@ html
           div(ng-if="oauthDefinition")
             include ./oauth2-modal.jade
           #Console.portal-page(ng-controller="Console")
-            div(ng-if="activePage === 'console'" ng-cloak)
+            div(ng-if="isActive('Console')" ng-cloak)
               include ./console.jade
           #Recipes.portal-page
-            div(ng-show="activePage === 'recipes'")
+            div(ng-show="isActive('Recipes')")
               include ./recipes.jade
           #Docs.portal-page(ng-controller="Docs")
-            div(ng-if="activePage === 'documentation'" ng-cloak)
+            div(ng-if="isActive('Documentation')" ng-cloak)
               include ./documentation.jade
             if showEditor
-              div(ng-if="activePage === 'editor'" ng-cloak)
+              div(ng-if="isActive('Editor')" ng-cloak)
                 include ./edit-documentation.jade
