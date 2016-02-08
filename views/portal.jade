@@ -28,7 +28,7 @@ html
                 if galleryInfo.logo
                   a.navbar-brand(href="/")
                     img(src=galleryInfo.logo)
-            ul.nav.navbar-nav.nav-pills
+            ul.nav.navbar-nav
               li(ng-show="spec")
                 if isAnyAPI
                   a.api-title(href="https://any-api.com" target="_parent")
@@ -42,7 +42,7 @@ html
               li
                 include ./includes/spec-link.jade
             .navbar-collapse
-              ul.nav.navbar-nav.nav-pills.navbar-right
+              ul.nav.navbar-nav.navbar-right
                 if showEditor
                   +navitem('Editor')
                 +navitem('README')
