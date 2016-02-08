@@ -126,15 +126,32 @@ App.controller('Portal', function($scope, spec) {
       initTags();
       initSecurity();
     }
-    swagger.parser.parse(spec.data, PARSER_OPTS, function(err, api) {
-      if (err) console.log(err);
-      api = api || spec.data;
-      mixpanel.track('get_swagger', {
-        host: api.host,
-        url: SPEC_URL,
+    var maybeHandleErr = function(err) {
+      if (err) throw err;
+    }
+    var addBaseDefs = function(def, bases) {
+      bases = bases || def.allOf || [];
+      bases.forEach(function(base) {
+        for (var propName in base.properties) {
+          def.properties[propName] = base.properties[propName];
+        }
+        if (base.allOf) addBaseDefs(def, base.allOf);
+      })
+    }
+    SwaggerParser.parse(spec.data, function(err, data) {
+      if (maybeHandleErr(err)) return;
+      SwaggerParser.dereference(data, function(err, data) {
+        if (maybeHandleErr(err)) return;
+        for (var name in data.definitions) {
+          addBaseDefs(data.definitions[name]);
+        }
+        mixpanel.track('get_swagger', {
+          host: data.host,
+          url: SPEC_URL,
+        });
+        $scope.setSpec(data);
+        $scope.$apply();
       });
-      $scope.setSpec(api);
-      $scope.$apply();
     })
 
     $scope.setActiveTag = function(tag) {

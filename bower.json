@@ -21,7 +21,7 @@
     "fontawesome": "~4.3.0",
     "highlightjs": "~8.5.0",
     "jquery": "~2.1.4",
-    "swagger-parser": "~2.4.1",
+    "swagger-parser": "~3.4.0",
     "WebCodeBeauty": "~1.0.0",
     "zeroclipboard": "~2.2.0"
   },
