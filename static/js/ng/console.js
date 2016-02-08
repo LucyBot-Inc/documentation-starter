@@ -306,7 +306,7 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
     })
   }
   $scope.autorefresh = function() {
-    if ($scope.activeRoute.method === 'get') {
+    if (!OPTIONS.disableAutorefresh && $scope.activeRoute.method === 'get') {
       $scope.refresh()
     }
   }
