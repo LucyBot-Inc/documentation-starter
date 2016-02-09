@@ -16415,21 +16415,6 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
 }
 uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
 
-$(function() {
-  $('a[href*=#]:not([href=#])').click(function() {
-    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-      if (target.length) {
-        $('html,body').animate({
-          scrollTop: target.offset().top
-        }, 1000);
-        return false;
-      }
-    }
-  });
-});
-
 var EXAMPLES = {};
 EXAMPLES.parameterExample = function(param, path) {
   var ret = '';
@@ -16647,15 +16632,12 @@ var maybeTruncateSummary = function(operation) {
   operation.summary = firstSentence;
 }
 
-App.controller('Portal', function($scope, spec) {
+App.controller('Portal', function($scope, $location, spec) {
   $scope.MAX_HIGHLIGHT_LEN = 10000;
-  var hash = window.location.hash || START_PAGE;
-  $scope.activePage = hash.substring(1);
-  $scope.$watch('activePage', function(page) {
-    mixpanel.track('set_page_' + page, {
-      url: SPEC_URL,
-    })
-  })
+  var DEFAULT_PAGE = 'Documentation';
+  $scope.isActive = function(page) {
+    return ('/' + page) === ($location.path() || '/' + DEFAULT_PAGE);
+  }
   $scope.stripHtml = function(str) {
     if (!str) return str;
     return str.replace(/<(?:.|\n)*?>/gm, '');
@@ -16785,7 +16767,7 @@ App.controller('Portal', function($scope, spec) {
 
     $scope.setActiveTag = function(tag) {
       $scope.activeTag = tag;
-      if ($scope.activePage === 'documentation') {
+      if ($location.path() === '/Documentation') {
         $('#Docs').scope().scrollTo(0);
       }
     }
@@ -16793,7 +16775,7 @@ App.controller('Portal', function($scope, spec) {
     var promptedOAuth = false;
     $scope.openConsole = function(route) {
       if (route) $('#Console').scope().setActiveRoute(route);
-      $scope.activePage = 'console';
+      $location.path('/Console')
       if (!promptedOAuth && $scope.startOAuth) {
         promptedOAuth = true;
         $scope.startOAuth();
@@ -16801,7 +16783,7 @@ App.controller('Portal', function($scope, spec) {
     }
 
     $scope.openDocumentation = function(route) {
-      $scope.activePage = 'documentation';
+      $location.path('/Documentation');
       if (route) {
         $('#Docs').scope().query = '';
         setTimeout(function() {
@@ -16813,12 +16795,12 @@ App.controller('Portal', function($scope, spec) {
     $scope.openPage = function(page) {
       if (page === 'console') $scope.openConsole();
       else if (page === 'documentation') $scope.openDocumentation();
-      else $scope.activePage = page;
+      $location.path('/' + page);
     }
   })
 });
 
-App.controller('Docs', function($scope) {
+App.controller('Docs', function($scope, $location) {
   $scope.printSchema = function(schema) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
   }
@@ -16827,13 +16809,6 @@ App.controller('Docs', function($scope) {
   }
   $scope.initMenu = function () {
     $scope.menuItems = [];
-    if ($scope.spec.info['x-lucy/readme'] || $scope.spec.info.description) {
-      $scope.menuItems.push({
-        title: 'README',
-        class: 'readme',
-        target: '#README',
-      });
-    }
     if ($scope.spec.tags && $scope.spec.tags.length) {
       $scope.menuItems = $scope.menuItems.concat($scope.spec.tags.map(function(tag) {
         var children = $scope.routesFiltered.filter(function(r) {
@@ -16906,7 +16881,7 @@ App.controller('Docs', function($scope) {
   }
   $scope.onScroll= function() {
     if ($scope.animatingScroll) return;
-    if ($scope.activePage !== 'documentation') return;
+    if ($location.path() !== '/Documentation') return;
     var visibleHeight = $('.docs-col').height() - 50;
     var closest = null;
     var minDist = Infinity;
@@ -17277,7 +17252,7 @@ App.controller('SampleCode', function($scope) {
     mixpanel.track('refresh_sample_code', {
       language: language.id
     })
-    Lucy.post('/code/build/request', {
+    Lucy.post(OPTIONS.codegenPath, {
       request: $scope.getRequestParameters(),
       language: language.id
     }, function(err, result) {
@@ -17513,7 +17488,7 @@ var SORT_ROUTES = function(a, b) {
   return 0;
 }
 
-var LOCAL_STORAGE_KEY = 'API_KEYS:' + window.location.href;
+var LOCAL_STORAGE_KEY = 'API_KEYS:' + window.location.pathname;
 var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
   'api.datumbox.com': ['api_key'],
@@ -17534,6 +17509,7 @@ App.controller('Keys', function($scope) {
       localStorage.setItem(LOCAL_STORAGE_KEY, keys);
     }
   }
+  $scope.$watch('keys', $scope.keyChanged, true)
   $scope.saveChanged = function() {
     if (!$scope.checks.saveKeys) {
       localStorage.setItem(LOCAL_STORAGE_KEY, '{}');

@@ -9519,6 +9519,7 @@ span[data-verb="delete"] {
 
 .sidebar {
   padding-top: 30px;
+  padding-bottom: 100px;
   position: relative;
 }
 
@@ -9932,6 +9933,10 @@ span[data-verb="delete"] {
   margin-top: -3px;
   margin-left: 10px;
   border-radius: 4px;
+}
+
+.alert.row.description-alert {
+  margin-bottom: 0px;
 }
 
 .parameter-list {
