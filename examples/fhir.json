@@ -11505,5 +11505,10 @@
   "schemes": [
     "https"
   ],
-  "basePath": "/baseDstu2"
+  "basePath": "/baseDstu2",
+  "securityDefinitions": {
+    "Basic": {
+      "type": "basic"
+    }
+  }
 }
