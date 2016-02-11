@@ -217,8 +217,11 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
       for (var key in keys) {
         answers[key] = keys[key];
       }
+      for (var key in OPTIONS.embedParameters || {}) {
+        answers[key] = OPTIONS.embedParameters[key];
+      }
       var req =  JSON.stringify({
-        swagger: $scope.spec,
+        swagger: OPTIONS.disableSwaggerUpload ? undefined : $scope.spec,
         method: $scope.activeRoute.method,
         path: $scope.activeRoute.path,
         keys: keys,
