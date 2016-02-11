@@ -6,20 +6,27 @@ App.controller('Docs', function($scope, $location) {
     return verb + '_' + path.replace(/\W/g, '_');
   }
   $scope.initMenu = function () {
+    var requested = $scope.getRouteFromLocation() || {};
     $scope.menuItems = [];
+    var active = null;
+    var getMenuItemFromRoute = function(route) {
+      var index = $scope.routesFiltered.indexOf(route);
+      var item = {
+        method: route.method,
+        title: route.path,
+        class: 'route',
+        target: '#ScrollRoute' + index + ' h2',
+      }
+      if (route.method === requested.method && route.path === requested.path) {
+        active = item;
+      }
+      return item;
+    }
     if ($scope.spec.tags && $scope.spec.tags.length) {
       $scope.menuItems = $scope.menuItems.concat($scope.spec.tags.map(function(tag) {
         var children = $scope.routesFiltered.filter(function(r) {
           return r.operation.tags && r.operation.tags.indexOf(tag.name) !== -1;
-        }).map(function(route) {
-          var index = $scope.routesFiltered.indexOf(route);
-          return {
-            method: route.method,
-            title: route.path,
-            class: 'route',
-            target: '#ScrollRoute' + index + ' h2',
-          }
-        })
+        }).map(getMenuItemFromRoute)
         if (!children.length) return null;
         return {
           title: tag.name,
@@ -28,16 +35,23 @@ App.controller('Docs', function($scope, $location) {
         }
       }).filter(function(item) {return item}));
     } else {
-      $scope.menuItems = $scope.menuItems.concat($scope.routesFiltered.map(function(route, index) {
-        return {
-          method: route.method,
-          title: route.path,
-          class: 'route',
-          target: '#ScrollRoute' + index + ' h2',
-        }
-      }))
+      $scope.menuItems = $scope.menuItems.concat($scope.routesFiltered.map(getMenuItemFromRoute))
+    }
+    if (active) {
+      $scope.menuItems.active = active;
+      setTimeout(function() {
+        $scope.scrollToTarget(active.target);
+      }, 750);
     }
   }
+
+  $scope.$watch('menuItems.active', function() {
+    if ($scope.menuItems) console.log('setac', $scope.menuItems.active);
+    var active = ($scope.menuItems || []).active;
+    if (!active || !active.method) return;
+    if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method + '/' + encodeURIComponent(active.title));
+  })
+
   $scope.scrollTo = function(idx) {
     var newTop = 0;
     if (idx !== -1) {
@@ -52,7 +66,7 @@ App.controller('Docs', function($scope, $location) {
     var colTop = $('.docs-col').offset().top;
     var targetTop = $(target).offset().top;
     newTop = targetTop - colTop + curTop - 15;
-    
+
     $scope.animatingScroll = true;
     $('.docs-col').animate({
       scrollTop: newTop
@@ -79,7 +93,7 @@ App.controller('Docs', function($scope, $location) {
   }
   $scope.onScroll= function() {
     if ($scope.animatingScroll) return;
-    if ($location.path() !== '/Documentation') return;
+    if ($location.path().indexOf('/Documentation') !== 0) return;
     var visibleHeight = $('.docs-col').height() - 50;
     var closest = null;
     var minDist = Infinity;

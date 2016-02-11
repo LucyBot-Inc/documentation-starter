@@ -24,6 +24,12 @@ App.controller('Portal', function($scope, $location, spec) {
   $scope.isActive = function(page) {
     return ($location.path() || '/' + DEFAULT_PAGE).indexOf(page) === 1;
   }
+  $scope.getRouteFromLocation = function() {
+    var loc = $location.path();
+    var match = loc.match(/^\/\w+\/(\w+)\/([^\/]*)/);
+    if (!match) return;
+    return {method: match[1], path: decodeURIComponent(match[2])};
+  }
   $scope.stripHtml = function(str) {
     if (!str) return str;
     return str.replace(/<(?:.|\n)*?>/gm, '');

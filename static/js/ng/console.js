@@ -26,7 +26,7 @@ App.controller('Console', function($scope, $location) {
 
   $scope.setActiveRoute = function(route) {
     $scope.answers = {}
-    $location.path('/Console/' + route.method + '/' + encodeURIComponent(route.path));
+    if ($scope.isActive('Console')) $location.path('/Console/' + route.method + '/' + encodeURIComponent(route.path));
     route.operation.parameters.forEach(function(parameter) {
       if (parameter['x-consoleDefault']) {
         $scope.answers[parameter.name] = parameter['x-consoleDefault'];
@@ -43,13 +43,10 @@ App.controller('Console', function($scope, $location) {
   }
 
   $scope.goToBestRoute = function() {
-    var loc = $location.path();
-    loc = loc.substring(loc.indexOf('/', 1));
     var startRoute = null;
-    if (loc) {
-      var method = loc.substring(1, loc.indexOf('/', 1));
-      var path = decodeURIComponent(loc.substring(loc.indexOf('/', 1) + 1));
-      startRoute = $scope.routes.filter(function(r) {return r.method === method && r.path === path})[0];
+    var requested = $scope.getRouteFromLocation();
+    if (requested) {
+      startRoute = $scope.routes.filter(function(r) {return r.method === requested.method && r.path === requested.path})[0];
     }
     var taggedRoutes= $scope.routes
         .filter(function(r) {
