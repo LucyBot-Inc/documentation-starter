@@ -46,7 +46,6 @@ App.controller('Docs', function($scope, $location) {
   }
 
   $scope.$watch('menuItems.active', function() {
-    if ($scope.menuItems) console.log('setac', $scope.menuItems.active);
     var active = ($scope.menuItems || []).active;
     if (!active || !active.method) return;
     if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method + '/' + encodeURIComponent(active.title));
