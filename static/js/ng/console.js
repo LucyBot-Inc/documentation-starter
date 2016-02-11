@@ -18,7 +18,7 @@ var oauthIsImplicit = function(defns) {
   return false;
 }
 
-App.controller('Console', function($scope) {
+App.controller('Console', function($scope, $location) {
   $scope.onAnswerChanged = function() {
     if ($('#SampleCode').length) $('#SampleCode').scope().refresh();
     if ($('#Response').length) $('#Response').scope().autorefresh();
@@ -26,6 +26,7 @@ App.controller('Console', function($scope) {
 
   $scope.setActiveRoute = function(route) {
     $scope.answers = {}
+    $location.path('/Console/' + route.method + '/' + encodeURIComponent(route.path));
     route.operation.parameters.forEach(function(parameter) {
       if (parameter['x-consoleDefault']) {
         $scope.answers[parameter.name] = parameter['x-consoleDefault'];
@@ -42,11 +43,19 @@ App.controller('Console', function($scope) {
   }
 
   $scope.goToBestRoute = function() {
+    var loc = $location.path();
+    loc = loc.substring(loc.indexOf('/', 1));
+    var startRoute = null;
+    if (loc) {
+      var method = loc.substring(1, loc.indexOf('/', 1));
+      var path = decodeURIComponent(loc.substring(loc.indexOf('/', 1) + 1));
+      startRoute = $scope.routes.filter(function(r) {return r.method === method && r.path === path})[0];
+    }
     var taggedRoutes= $scope.routes
         .filter(function(r) {
           return !$scope.activeTag || (r.operation.tags && r.operation.tags.indexOf($scope.activeTag.name) !== -1)
         })
-    var startRoute = taggedRoutes.filter(function(r) {return r.visual})[0];
+    startRoute = startRoute || taggedRoutes.filter(function(r) {return r.visual})[0];
     startRoute = startRoute || taggedRoutes[0] || $scope.routes[0];
     $scope.setActiveRoute(startRoute);
   }

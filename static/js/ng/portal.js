@@ -22,7 +22,7 @@ App.controller('Portal', function($scope, $location, spec) {
   $scope.MAX_HIGHLIGHT_LEN = 10000;
   var DEFAULT_PAGE = 'Documentation';
   $scope.isActive = function(page) {
-    return ('/' + page) === ($location.path() || '/' + DEFAULT_PAGE);
+    return ($location.path() || '/' + DEFAULT_PAGE).indexOf(page) === 1;
   }
   $scope.stripHtml = function(str) {
     if (!str) return str;
