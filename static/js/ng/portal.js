@@ -166,22 +166,28 @@ App.controller('Portal', function($scope, $location, spec) {
 
     var promptedOAuth = false;
     $scope.openConsole = function(route) {
-      if (route) $('#Console').scope().setActiveRoute(route);
-      $location.path('/Console')
+      var loc = '/Console';
+      if (route) {
+        $('#Console').scope().setActiveRoute(route);
+        loc += '/' + route.method + '/' + encodeURIComponent(route.path);
+      }
       if (!promptedOAuth && $scope.startOAuth) {
         promptedOAuth = true;
         $scope.startOAuth();
       }
+      $location.path(loc);
     }
 
     $scope.openDocumentation = function(route) {
-      $location.path('/Documentation');
+      var loc = '/Documentation';
       if (route) {
         $('#Docs').scope().query = '';
+        loc += '/' + route.method + '/' + encodeURIComponent(route.path);
         setTimeout(function() {
           $('#Docs').scope().scrollToRoute(route);
         }, 800);
       }
+      $location.path(loc);
     }
 
     $scope.openPage = function(page) {
