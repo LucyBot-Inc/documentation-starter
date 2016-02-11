@@ -61,6 +61,7 @@ App.controller('Docs', function($scope, $location) {
   }
 
   $scope.scrollToTarget = function(target) {
+    if (!$scope.isActive('Documentation')) return;
     var curTop = $('.docs-col').scrollTop();
     var colTop = $('.docs-col').offset().top;
     var targetTop = $(target).offset().top;
