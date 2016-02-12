@@ -44,7 +44,8 @@
 
 .control-row {
   background-color: #333;
-  padding: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .control-row .btn-default {
