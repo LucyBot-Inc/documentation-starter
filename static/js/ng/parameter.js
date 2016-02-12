@@ -4,9 +4,24 @@ var DEFAULT_KEYS = {
   'api.datumbox.com': ['api_key'],
   'netlicensing.labs64.com': [{username: 'demo', password: 'demo'}]
 }
+
+var getKeys = function() {
+  var stored = '{}';
+  if (OPTIONS.credentialCookie) {
+    var cookieKey = OPTIONS.credentialCookie;
+    var cookies = document.cookie.split(';').map(function(c) {return c.trim()});
+    var credCookie = cookies.filter(function(c) {
+      return c.indexOf(cookieKey) === 0;
+    })[0];
+    if (credCookie) stored = credCookie.substring(cookieKey.length + 1);
+  } else {
+    stored = localStorage.getItem(LOCAL_STORAGE_KEY) || stored;
+  }
+  return JSON.parse(stored);
+}
+
 App.controller('Keys', function($scope) {
-  var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
-  $scope.keys = JSON.parse(keys) || {};
+  $scope.keys = getKeys();
   $scope.checks = {
     saveKeys: true
   }
