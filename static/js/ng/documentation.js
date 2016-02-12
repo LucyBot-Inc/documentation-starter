@@ -30,6 +30,7 @@ App.controller('Docs', function($scope, $location) {
         if (!children.length) return null;
         return {
           title: tag.name,
+          description: tag.description,
           class: 'tag',
           children: children,
         }
@@ -224,6 +225,28 @@ App.controller('Route', function($scope) {
   $scope.removeResponse = function(code) {
     delete $scope.route.operation.responses[code];
   }
+
+  var getTagIfFirstRoute = function () {
+    if ($scope.spec.tags && $scope.spec.tags.length) {
+      var tags = $scope.spec.tags.map(function (tag) {
+        tag.children = $scope.routesFiltered.filter(function(r) {
+          return r.operation.tags && r.operation.tags.indexOf(tag.name) !== -1;
+        })
+        return tag;
+      });
+      var matched = tags.filter(function(tag) {
+        return tag.children.indexOf($scope.route) === 0;
+      });
+      if (matched.length > 0) {
+        return matched[0];
+      }
+    }
+    return false;
+  }
+  $scope.tag = getTagIfFirstRoute();
+  $scope.$watch('routesFiltered', function () {
+    $scope.tag = getTagIfFirstRoute();
+  });
 });
 
 App.controller('EditCode', function($scope) {})
