@@ -31,6 +31,7 @@ App.controller('Docs', function($scope, $location) {
         return {
           title: tag.name,
           description: tag.description,
+          target: '[data-tag="' + tag.name + '"] h1',
           class: 'tag',
           children: children,
         }

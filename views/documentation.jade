@@ -10,23 +10,18 @@ mixin schema-example
 .row.docs-row
   +sidebar(false)
   .col-xs-12.col-sm-9.docs-col
-    div(
-        ng-controller="Route"
-        ng-repeat="route in routesFiltered"
-        id="ScrollRoute{{$index}}")
+    div(ng-controller="Route"
+        ng-repeat="route in routesFiltered")
 
-      .row.scroll-route.scroll-target(
-          ng-if="tag")
+      .row.bg-primary.tag-header(ng-show="tag" ng-class="{'tag-header-first': $first}" data-tag="{{tag.name}}")
         .col-xs-12
-          hr(ng-show="!($first)")
           h1.text-regular(ng-bind="tag.name")
           p(ng-bind="tag.description")
           p details
 
-      .row.scroll-route.scroll-target
+      .row.scroll-route.scroll-target(ng-class="{'scroll-route-last': $last}" id="ScrollRoute{{$index}}")
         a(name="route{{$index}}")
         .col-xs-12
-          hr(ng-show="!($first || tag)")
           h2.text-regular
             span
               span.text-uppercase(data-verb="{{ route.method }}" ng-bind="route.method")
