@@ -228,26 +228,22 @@ App.controller('Route', function($scope) {
   }
 
   var getTagIfFirstRoute = function () {
-    if ($scope.spec.tags && $scope.spec.tags.length) {
-      var tags = $scope.spec.tags.map(function (tag) {
-        tag.children = $scope.routesFiltered.filter(function(r) {
-          return r.operation.tags && r.operation.tags.indexOf(tag.name) !== -1;
-        })
-        return tag;
-      });
-      var matched = tags.filter(function(tag) {
-        return tag.children.indexOf($scope.route) === 0;
-      });
-      if (matched.length > 0) {
-        return matched[0];
-      }
+    if (!$scope.spec.tags || !$scope.spec.tags.length) return;
+    var opsByTag = $scope.spec.tags.map(function (tag) {
+      return $scope.routesFiltered.filter(function(r) {
+        return r.operation.tags && r.operation.tags.indexOf(tag.name) !== -1;
+      })
+    });
+    var matches = opsByTag.map(function(ops, index) {
+      return ops.indexOf($scope.route) === 0 ? index : -1;
+    }).filter(function(idx) {
+      return idx >= 0;
+    });
+    if (matches.length > 0) {
+      return $scope.spec.tags[matches[0]];
     }
-    return false;
   }
   $scope.tag = getTagIfFirstRoute();
-  $scope.$watch('routesFiltered', function () {
-    $scope.tag = getTagIfFirstRoute();
-  });
 });
 
 App.controller('EditCode', function($scope) {})
