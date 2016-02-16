@@ -9622,10 +9622,6 @@ span[data-verb="delete"] {
   right: 0;
 }
 
-.scroll-route {
-  background-color: #eee;
-}
-
 .docs-col hr {
   border-color: #333;
 }
@@ -9645,32 +9641,27 @@ span[data-verb="delete"] {
   width: 100%;
 }
 
+.tag-header {
+  margin-top: 60px;
+}
+.tag-header.tag-header-first {
+  margin-top: 0px;
+  border-top: 1px solid #333;
+}
+
 .scroll-route {
   padding-bottom: 20px;
 }
-
-#README.row {
-  background-color: #fff;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-#README.row img.logo {
-  max-height: 150px;
-  margin-bottom: 20px;
-}
-
-.scroll-route:last-of-type {
-  min-height: 100%;
+.scroll-route.scroll-route-last {
   margin-bottom: 30px;
+  min-height: 100%;
+}
+.scroll-route h2 {
+  word-wrap: break-word;
 }
 
 .route-description {
   margin-bottom: 28px;
-}
-
-.scroll-route {
-  padding-bottom: 20px;
 }
 
 table.doc-table {
@@ -9879,7 +9870,7 @@ span[data-verb="delete"] {
     top: 60px;
     bottom: 0px;
     margin-top: 0;
-    padding-bottom: 100px;
+    padding-bottom: 73px;
   }
 
   .left-col {
@@ -9900,7 +9891,8 @@ span[data-verb="delete"] {
 
 .control-row {
   background-color: #333;
-  padding: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .control-row .btn-default {

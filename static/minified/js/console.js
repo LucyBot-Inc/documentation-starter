@@ -16636,7 +16636,13 @@ App.controller('Portal', function($scope, $location, spec) {
   $scope.MAX_HIGHLIGHT_LEN = 10000;
   var DEFAULT_PAGE = 'Documentation';
   $scope.isActive = function(page) {
-    return ('/' + page) === ($location.path() || '/' + DEFAULT_PAGE);
+    return ($location.path() || '/' + DEFAULT_PAGE).indexOf(page) === 1;
+  }
+  $scope.getRouteFromLocation = function() {
+    var loc = $location.path();
+    var match = loc.match(/^\/\w+\/(\w+)\/([^\/]*)/);
+    if (!match) return;
+    return {method: match[1], path: decodeURIComponent(match[2])};
   }
   $scope.stripHtml = function(str) {
     if (!str) return str;
@@ -16774,22 +16780,28 @@ App.controller('Portal', function($scope, $location, spec) {
 
     var promptedOAuth = false;
     $scope.openConsole = function(route) {
-      if (route) $('#Console').scope().setActiveRoute(route);
-      $location.path('/Console')
+      var loc = '/Console';
+      if (route) {
+        $('#Console').scope().setActiveRoute(route);
+        loc += '/' + route.method + '/' + encodeURIComponent(route.path);
+      }
       if (!promptedOAuth && $scope.startOAuth) {
         promptedOAuth = true;
         $scope.startOAuth();
       }
+      $location.path(loc);
     }
 
     $scope.openDocumentation = function(route) {
-      $location.path('/Documentation');
+      var loc = '/Documentation';
       if (route) {
         $('#Docs').scope().query = '';
+        loc += '/' + route.method + '/' + encodeURIComponent(route.path);
         setTimeout(function() {
           $('#Docs').scope().scrollToRoute(route);
         }, 800);
       }
+      $location.path(loc);
     }
 
     $scope.openPage = function(page) {
@@ -16808,38 +16820,53 @@ App.controller('Docs', function($scope, $location) {
     return verb + '_' + path.replace(/\W/g, '_');
   }
   $scope.initMenu = function () {
+    var requested = $scope.getRouteFromLocation() || {};
     $scope.menuItems = [];
+    var active = null;
+    var getMenuItemFromRoute = function(route) {
+      var index = $scope.routesFiltered.indexOf(route);
+      var item = {
+        method: route.method,
+        title: route.path,
+        class: 'route',
+        target: '#ScrollRoute' + index + ' h2',
+      }
+      if (route.method === requested.method && route.path === requested.path) {
+        active = item;
+      }
+      return item;
+    }
     if ($scope.spec.tags && $scope.spec.tags.length) {
       $scope.menuItems = $scope.menuItems.concat($scope.spec.tags.map(function(tag) {
         var children = $scope.routesFiltered.filter(function(r) {
           return r.operation.tags && r.operation.tags.indexOf(tag.name) !== -1;
-        }).map(function(route) {
-          var index = $scope.routesFiltered.indexOf(route);
-          return {
-            method: route.method,
-            title: route.path,
-            class: 'route',
-            target: '#ScrollRoute' + index + ' h2',
-          }
-        })
+        }).map(getMenuItemFromRoute)
         if (!children.length) return null;
         return {
           title: tag.name,
+          description: tag.description,
+          target: '[data-tag="' + tag.name + '"] h1',
           class: 'tag',
           children: children,
         }
       }).filter(function(item) {return item}));
     } else {
-      $scope.menuItems = $scope.menuItems.concat($scope.routesFiltered.map(function(route, index) {
-        return {
-          method: route.method,
-          title: route.path,
-          class: 'route',
-          target: '#ScrollRoute' + index + ' h2',
-        }
-      }))
+      $scope.menuItems = $scope.menuItems.concat($scope.routesFiltered.map(getMenuItemFromRoute))
+    }
+    if (active) {
+      $scope.menuItems.active = active;
+      setTimeout(function() {
+        $scope.scrollToTarget(active.target);
+      }, 750);
     }
   }
+
+  $scope.$watch('menuItems.active', function() {
+    var active = ($scope.menuItems || []).active;
+    if (!active || !active.method) return;
+    if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method + '/' + encodeURIComponent(active.title));
+  })
+
   $scope.scrollTo = function(idx) {
     var newTop = 0;
     if (idx !== -1) {
@@ -16850,11 +16877,12 @@ App.controller('Docs', function($scope, $location) {
   }
 
   $scope.scrollToTarget = function(target) {
+    if (!$scope.isActive('Documentation')) return;
     var curTop = $('.docs-col').scrollTop();
     var colTop = $('.docs-col').offset().top;
     var targetTop = $(target).offset().top;
     newTop = targetTop - colTop + curTop - 15;
-    
+
     $scope.animatingScroll = true;
     $('.docs-col').animate({
       scrollTop: newTop
@@ -16881,7 +16909,7 @@ App.controller('Docs', function($scope, $location) {
   }
   $scope.onScroll= function() {
     if ($scope.animatingScroll) return;
-    if ($location.path() !== '/Documentation') return;
+    if ($location.path().indexOf('/Documentation') !== 0) return;
     var visibleHeight = $('.docs-col').height() - 50;
     var closest = null;
     var minDist = Infinity;
@@ -17012,6 +17040,24 @@ App.controller('Route', function($scope) {
   $scope.removeResponse = function(code) {
     delete $scope.route.operation.responses[code];
   }
+
+  var getTagIfFirstRoute = function () {
+    if (!$scope.spec.tags || !$scope.spec.tags.length) return;
+    var opsByTag = $scope.spec.tags.map(function (tag) {
+      return $scope.routesFiltered.filter(function(r) {
+        return r.operation.tags && r.operation.tags.indexOf(tag.name) !== -1;
+      })
+    });
+    var matches = opsByTag.map(function(ops, index) {
+      return ops.indexOf($scope.route) === 0 ? index : -1;
+    }).filter(function(idx) {
+      return idx >= 0;
+    });
+    if (matches.length > 0) {
+      return $scope.spec.tags[matches[0]];
+    }
+  }
+  $scope.tag = getTagIfFirstRoute();
 });
 
 App.controller('EditCode', function($scope) {})
@@ -17122,7 +17168,7 @@ var oauthIsImplicit = function(defns) {
   return false;
 }
 
-App.controller('Console', function($scope) {
+App.controller('Console', function($scope, $location) {
   $scope.onAnswerChanged = function() {
     if ($('#SampleCode').length) $('#SampleCode').scope().refresh();
     if ($('#Response').length) $('#Response').scope().autorefresh();
@@ -17130,6 +17176,7 @@ App.controller('Console', function($scope) {
 
   $scope.setActiveRoute = function(route) {
     $scope.answers = {}
+    if ($scope.isActive('Console')) $location.path('/Console/' + route.method + '/' + encodeURIComponent(route.path));
     route.operation.parameters.forEach(function(parameter) {
       if (parameter['x-consoleDefault']) {
         $scope.answers[parameter.name] = parameter['x-consoleDefault'];
@@ -17146,11 +17193,16 @@ App.controller('Console', function($scope) {
   }
 
   $scope.goToBestRoute = function() {
+    var startRoute = null;
+    var requested = $scope.getRouteFromLocation();
+    if (requested) {
+      startRoute = $scope.routes.filter(function(r) {return r.method === requested.method && r.path === requested.path})[0];
+    }
     var taggedRoutes= $scope.routes
         .filter(function(r) {
           return !$scope.activeTag || (r.operation.tags && r.operation.tags.indexOf($scope.activeTag.name) !== -1)
         })
-    var startRoute = taggedRoutes.filter(function(r) {return r.visual})[0];
+    startRoute = startRoute || taggedRoutes.filter(function(r) {return r.visual})[0];
     startRoute = startRoute || taggedRoutes[0] || $scope.routes[0];
     $scope.setActiveRoute(startRoute);
   }
@@ -17321,8 +17373,11 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
       for (var key in keys) {
         answers[key] = keys[key];
       }
+      for (var key in OPTIONS.embedParameters || {}) {
+        answers[key] = OPTIONS.embedParameters[key];
+      }
       var req =  JSON.stringify({
-        swagger: $scope.spec,
+        swagger: OPTIONS.disableSwaggerUpload ? undefined : $scope.spec,
         method: $scope.activeRoute.method,
         path: $scope.activeRoute.path,
         keys: keys,
@@ -17494,9 +17549,24 @@ var DEFAULT_KEYS = {
   'api.datumbox.com': ['api_key'],
   'netlicensing.labs64.com': [{username: 'demo', password: 'demo'}]
 }
+
+var getKeys = function() {
+  var stored = '{}';
+  if (OPTIONS.credentialCookie) {
+    var cookieKey = OPTIONS.credentialCookie;
+    var cookies = document.cookie.split(';').map(function(c) {return c.trim()});
+    var credCookie = cookies.filter(function(c) {
+      return c.indexOf(cookieKey) === 0;
+    })[0];
+    if (credCookie) stored = credCookie.substring(cookieKey.length + 1);
+  } else {
+    stored = localStorage.getItem(LOCAL_STORAGE_KEY) || stored;
+  }
+  return JSON.parse(stored);
+}
+
 App.controller('Keys', function($scope) {
-  var keys = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
-  $scope.keys = JSON.parse(keys) || {};
+  $scope.keys = getKeys();
   $scope.checks = {
     saveKeys: true
   }
