@@ -1,3 +1,4 @@
+var COOKIE_TIMEOUT_MS = 900000;
 var LOCAL_STORAGE_KEY = 'API_KEYS:' + window.location.pathname;
 var DEFAULT_KEYS = {
   'api.gettyimages.com': ['Api-Key'],
@@ -20,8 +21,30 @@ var getKeys = function() {
   return JSON.parse(stored);
 }
 
+var setKeys = function(keys) {
+  keys = JSON.stringify(keys);
+  if (OPTIONS.credentialCookie) {
+    var now = new Date();
+    var expires = new Date(now.getTime() + COOKIE_TIMEOUT_MS);
+    var cookie = OPTIONS.credentialCookie + '=' + keys + '; expires=' + expires.toUTCString() + '; Path=/';
+    document.cookie = cookie;
+  } else {
+    localStorage.setItem(LOCAL_STORAGE_KEY, keys);
+  }
+}
+
 App.controller('Keys', function($scope) {
-  $scope.keys = getKeys();
+  var refreshKeys = function() {
+    $scope.keys = getKeys();
+    if (window.credentialFields) {
+      var haveAll = true;
+      window.credentialFields.forEach(function(f) {
+        if (!$scope.keys[f]) haveAll = false;
+      })
+      if (!haveAll) setTimeout(refreshKeys, 1000);
+    }
+  }
+  refreshKeys();
   $scope.checks = {
     saveKeys: true
   }
@@ -29,10 +52,7 @@ App.controller('Keys', function($scope) {
   $scope.keyChanged = function() {
     $scope.changedKeys = true;
     $('#Console').scope().onAnswerChanged();
-    if ($scope.checks.saveKeys) {
-      var keys = JSON.stringify($scope.keys);
-      localStorage.setItem(LOCAL_STORAGE_KEY, keys);
-    }
+    if ($scope.checks.saveKeys) setKeys($scope.keys);
   }
   $scope.$watch('keys', $scope.keyChanged, true)
   $scope.saveChanged = function() {
