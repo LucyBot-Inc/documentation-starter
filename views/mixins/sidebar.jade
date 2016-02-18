@@ -15,12 +15,15 @@ mixin sidebar(editable)
         span(ng-bind="#{name}.title")
     ul.nav.nav-list(ng-cloak)
       li(ng-repeat="item in menuItems"
-         ng-class="{'scrolled-parent': item.children && item.children.indexOf(menuItems.active) !== -1, 'scrolled-item': item === menuItems.active}"
+         ng-class="{'scrolled-parent': isActiveParent(item), 'scrolled-item': item === menuItems.active}"
          class="menu-{{ item.class }}")
         +menuItem('item')
         ul.nav.nav-list(ng-show="item.children && item.children.indexOf(menuItems.active) !== -1")
-          li(ng-repeat="child in item.children" ng-class="{'scrolled-item': child === menuItems.active}")
+          li(ng-repeat="child in item.children" ng-class="{'scrolled-item': child === menuItems.active, 'scrolled-parent': isActiveParent(item)}")
             +menuItem('child')
+            ul.nav.nav-list(ng-show="child.children && child.children.indexOf(menuItems.active) !== -1")
+              li(ng-repeat="grandchild in child.children" ng-class="{'scrolled-item': child === menuItems.active}")
+                +menuItem('grandchild')
       if editable
         li.route-link
           a(ng-click="addOperation()") Add Operation
