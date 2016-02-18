@@ -17241,6 +17241,17 @@ App.controller('Console', function($scope, $location) {
     $scope.onAnswerChanged();
   }
 
+  $scope.showRouteInDropdown = function(route) {
+    var terms = ($scope.routeFilterInput || '').split(' ');
+    for (var i = 0; i < terms.length; ++i) {
+      if (route.path.indexOf(terms[i]) === -1) return false;
+    }
+    if (!$scope.activeTag) return true;
+    if (route.visual && $scope.activeTag.name === 'Has Visual') return true;
+    if (!route.operation.tags) return false;
+    return route.operation.tags.indexOf($scope.activeTag.name) >= 0;
+  }
+
   $scope.goToBestRoute = function() {
     var startRoute = null;
     var requested = $scope.getRouteFromLocation();

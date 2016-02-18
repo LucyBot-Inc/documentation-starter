@@ -9914,6 +9914,10 @@ span[data-verb="delete"] {
   padding-top: 20px;
 }
 
+.route-dropdown > ul {
+  width: 100%;
+}
+
 .dropdown .btn.route-dropdown-btn {
   border-width: 3px;
 }
