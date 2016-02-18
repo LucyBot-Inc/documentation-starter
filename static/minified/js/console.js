@@ -16812,6 +16812,12 @@ App.controller('Portal', function($scope, $location, spec) {
   })
 });
 
+App.controller('README', function($scope) {
+  $scope.README = $scope.spec.info['x-lucy/readme'] || $scope.spec.info.description;
+  $scope.showSections = Array.isArray($scope.README);
+  console.log('r', $scope.README, $scope.showSections);
+})
+
 App.controller('Docs', function($scope, $location) {
   $scope.printSchema = function(schema) {
     return JSON.stringify(EXAMPLES.schemaExample(schema), null, 2);
