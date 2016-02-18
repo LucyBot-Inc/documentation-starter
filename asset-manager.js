@@ -58,6 +58,7 @@ module.exports = function(options) {
       "js/lucy.js",
       "js/ng/app.js",
       "js/ng/portal.js",
+      "js/ng/readme.js",
       "js/ng/documentation.js",
       "js/ng/console.js",
       "js/ng/oauth2.js",
