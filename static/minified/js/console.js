@@ -17639,8 +17639,9 @@ var setKeys = function(keys) {
 }
 
 App.controller('Keys', function($scope) {
-  var refreshKeys = function() {
+  var refreshKeys = function(noApply) {
     $scope.keys = getKeys();
+    if (!noApply) $scope.$apply();
     if (window.credentialFields) {
       var haveAll = true;
       window.credentialFields.forEach(function(f) {
@@ -17649,7 +17650,7 @@ App.controller('Keys', function($scope) {
       if (!haveAll) setTimeout(refreshKeys, 1000);
     }
   }
-  refreshKeys();
+  refreshKeys(true);
   $scope.checks = {
     saveKeys: true
   }
