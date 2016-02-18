@@ -28,8 +28,12 @@
             span.text-uppercase(data-verb="{{ activeRoute.method }}") {{ activeRoute.method }}&nbsp;
             span {{ activeRoute.path }}
           ul.dropdown-menu(role="menu")
-            li(role="presentation" ng-repeat="route in routes"
-               ng-show="!activeTag || (route.operation.tags && route.operation.tags.indexOf(activeTag.name) !== -1) || (route.visual && activeTag.name === 'Has Visual')")
+            li
+              .input-group
+                span.input-group-addon
+                  i.fa.fa-search
+                input.input-sm.form-control(type="text" ng-model="$parent.routeFilterInput")
+            li(role="presentation" ng-repeat="route in routes | filter: showRouteInDropdown")
               a(ng-click="setActiveRoute(route)")
                 span.text-uppercase(data-verb="{{ route.method }}") {{ route.method }}&nbsp;
                 span {{ route.path }}
