@@ -22,11 +22,33 @@ App.controller('Docs', function($scope, $location) {
       }
       return item;
     }
+    var getMenuItemsFromTag = function(tagName) {
+      return $scope.routesFiltered.filter(function(r) {
+        return r.operation.tags && r.operation.tags.indexOf(tagName) !== -1;
+      }).map(getMenuItemFromRoute)
+    }
+    var groupedTags = [];
+    ($scope.spec.tagGroups || []).forEach(function(group) {
+      groupedTags = groupedTags.concat(group.tags);
+      $scope.menuItems.push({
+        title: group.name,
+        description: group.description,
+        class: 'tagGroup',
+        children: group.tags.map(function(tagName) {
+          return {
+            title: tagName,
+            target: '[data-tag="' + tagName + '"] h1',
+            class: 'tag',
+            children: getMenuItemsFromTag(tagName),
+          }
+        })
+      })
+    })
     if ($scope.spec.tags && $scope.spec.tags.length) {
-      $scope.menuItems = $scope.menuItems.concat($scope.spec.tags.map(function(tag) {
-        var children = $scope.routesFiltered.filter(function(r) {
-          return r.operation.tags && r.operation.tags.indexOf(tag.name) !== -1;
-        }).map(getMenuItemFromRoute)
+      $scope.menuItems = $scope.menuItems.concat($scope.spec.tags.filter(function(tag) {
+        return groupedTags.indexOf(tag.name) === -1;
+      }).map(function(tag) {
+        var children = getMenuItemsFromTag(tag.name);
         if (!children.length) return null;
         return {
           title: tag.name,
