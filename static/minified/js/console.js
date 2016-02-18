@@ -16891,9 +16891,27 @@ App.controller('Docs', function($scope, $location) {
 
   $scope.$watch('menuItems.active', function() {
     var active = ($scope.menuItems || []).active;
+    console.log('set ac', active);
     if (!active || !active.method) return;
     if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method + '/' + encodeURIComponent(active.title));
   })
+
+  $scope.setMenuItem = function(item) {
+    $scope.menuItems.active = item;
+    while ($scope.menuItems.active.children) $scope.menuItems.active = $scope.menuItems.active.children[0];
+    $scope.scrollToTarget(item.target || item.children[0].target)
+  }
+
+  $scope.isActiveParent = function(item) {
+    var isActive = false;
+    (item.children || []).forEach(function(c) {
+      if (c === $scope.menuItems.active) isActive = true;
+      (c.children || []).forEach(function(gc) {
+        if (gc === $scope.menuItems.active) isActive = true;
+      })
+    })
+    return isActive;
+  }
 
   $scope.scrollTo = function(idx) {
     var newTop = 0;
@@ -16960,6 +16978,11 @@ App.controller('Docs', function($scope, $location) {
       else if (item.children) {
         item.children.forEach(function(child) {
           if (isActive(child)) $scope.menuItems.active = child;
+          else if (child.children) {
+            child.children.forEach(function(grandchild) {
+              if (isActive(grandchild)) $scope.menuItems.active = grandchild;
+            })
+          }
         })
       }
     })
