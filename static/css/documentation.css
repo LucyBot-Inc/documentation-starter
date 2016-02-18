@@ -36,6 +36,9 @@
   padding-left: 10px;
   padding-bottom: 10px;
 }
+.sidebar > ul > li > ul > li > ul {
+  padding-left: 20px;
+}
 
 .sidebar > ul > li {
   border-radius: 4px;
@@ -76,6 +79,8 @@
   background-color: #111;
 }
 
+.sidebar > ul > li > ul > li > ul > li.scrolled-item > a:hover,
+.sidebar > ul > li > ul > li > ul > li.scrolled-item,
 .sidebar > ul > li > ul > li.scrolled-item > a:hover,
 .sidebar > ul > li > ul > li.scrolled-item {
   background-color: #333;
