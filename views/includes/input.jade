@@ -40,7 +40,7 @@
               ng-model="model[parameter.name]",
               ng-value="choice"
               ng-checked="choice === model[parameter.name]")
-        span {{ choice }} 
+        span(ng-bind="parameter.enumLabels ? parameter.enumLabels[$index] : choice ")
 
   .form-group(ng-if="inputType === 'checkbox'")
     label
