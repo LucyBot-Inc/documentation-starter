@@ -4,8 +4,10 @@ meta(content='width=device-width, initial-scale=1, minimum-scale=1.0, user-scala
 
 | !{assetManager.renderCSS('console')}
 
-if enableMixpanel
+if mixpanel === true
   script(src="#{basePath}/js/mixpanel.js")
+else if mixpanel
+  script(src=mixpanel)
 else
   script.
     window.mixpanel = {};
