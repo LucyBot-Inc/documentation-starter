@@ -9540,7 +9540,7 @@ span[data-verb="delete"] {
   }
   .sidebar, .docs-col {
     position: fixed !important;
-    top: 60px;
+    top: 52px;
     bottom: 0px;
     margin-top: 0;
     overflow-y: scroll;
