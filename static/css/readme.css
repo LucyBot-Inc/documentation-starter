@@ -1,3 +1,7 @@
+#README {
+  padding-top: 20px;
+}
+
 #README img {
-  max-width: 50%;
+  max-width: 500px;
 }

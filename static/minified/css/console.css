@@ -9361,10 +9361,6 @@ a.no-click {
   border-radius: 0px;
 }
 
-#README {
-  padding-top: 20px;
-}
-
 .fa-bolt {
   color: #df691a;
 }
@@ -9509,8 +9505,12 @@ span[data-verb="delete"] {
 
 
 
+#README {
+  padding-top: 20px;
+}
+
 #README img {
-  max-width: 50%;
+  max-width: 500px;
 }
 
 .docs-row {
@@ -9535,12 +9535,14 @@ span[data-verb="delete"] {
   color: #86E2D5;
 }
 
-.sidebar, .docs-col {
-  position: fixed !important;
-  top: 60px;
-  bottom: 0px;
-  margin-top: 0;
-  overflow-y: scroll;
+@media (min-width: 768px) {
+  .sidebar, .docs-col {
+    position: fixed !important;
+    top: 60px;
+    bottom: 0px;
+    margin-top: 0;
+    overflow-y: scroll;
+  }
 }
 
 .sidebar ul {
@@ -9864,7 +9866,6 @@ span[data-verb="delete"] {
 
 .left-col {
   left: 0px;
-  margin-top: -20px;
 }
 
 .right-col {
@@ -9879,7 +9880,7 @@ span[data-verb="delete"] {
 @media (min-width: 768px) {
   .left-col, .right-col {
     position: fixed !important;
-    top: 60px;
+    top: 52px;
     bottom: 0px;
     margin-top: 0;
     padding-bottom: 73px;

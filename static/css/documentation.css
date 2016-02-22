@@ -20,12 +20,14 @@
   color: #86E2D5;
 }
 
-.sidebar, .docs-col {
-  position: fixed !important;
-  top: 60px;
-  bottom: 0px;
-  margin-top: 0;
-  overflow-y: scroll;
+@media (min-width: 768px) {
+  .sidebar, .docs-col {
+    position: fixed !important;
+    top: 60px;
+    bottom: 0px;
+    margin-top: 0;
+    overflow-y: scroll;
+  }
 }
 
 .sidebar ul {
