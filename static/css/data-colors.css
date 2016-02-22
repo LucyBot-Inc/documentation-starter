@@ -29,6 +29,7 @@ span[data-verb="put"] {
   color: #e67e22;
 }
 
+span[data-response-code^="3"],
 span[data-verb="patch"] {
   color: #f1c40f;
 }
