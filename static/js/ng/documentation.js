@@ -15,7 +15,7 @@ App.controller('Docs', function($scope, $location) {
         method: route.method,
         title: route.path,
         class: 'route',
-        target: '#ScrollRoute' + index + ' h2',
+        target: '#ScrollRoute' + index + ' h3',
       }
       if (route.method === requested.method && route.path === requested.path) {
         active = item;
@@ -96,7 +96,7 @@ App.controller('Docs', function($scope, $location) {
     var newTop = 0;
     if (idx !== -1) {
       if ($('#ScrollRoute0').length === 0) return;
-      $scope.scrollToTarget('#ScrollRoute' + idx + ' h2');
+      $scope.scrollToTarget('#ScrollRoute' + idx + ' h3');
     }
     $scope.menuItems.active = $scope.menuItems[0];
   }
@@ -119,7 +119,7 @@ App.controller('Docs', function($scope, $location) {
   $scope.scrollToRoute = function(idx) {
     if (typeof idx === 'object') idx = $scope.routesFiltered.indexOf(idx);
     if (idx === -1) $scope.scrollToTarget('#README');
-    else $scope.scrollToTarget('#ScrollRoute' + idx + ' h2');
+    else $scope.scrollToTarget('#ScrollRoute' + idx + ' h3');
   }
 
   $scope.scrollToTag = function(idx) {
