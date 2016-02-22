@@ -1,4 +1,4 @@
-.parameter-input(ng-controller="Parameter")
+.parameter-input(ng-controller="Parameter" ng-if="!parameter.showCondition || answers[parameter.showCondition.name] === parameter.showCondition.value")
   div(ng-if="inputType === 'body'" ng-controller="BodyInput")
     label JSON Body
     .alert.alert-danger(ng-if="bodyParseError") {{ bodyParseError }}
