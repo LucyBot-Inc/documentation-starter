@@ -9505,20 +9505,16 @@ span[data-verb="delete"] {
 
 
 
-#README {
+.readme-contents {
   padding-top: 20px;
 }
 
-#README img {
+.readme-contents img {
   max-width: 500px;
 }
 
 .docs-row {
-  background-color: #333;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
+  background-color: #fff;
 }
 
 .sidebar {
@@ -9536,6 +9532,12 @@ span[data-verb="delete"] {
 }
 
 @media (min-width: 768px) {
+  .docs-row {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
   .sidebar, .docs-col {
     position: fixed !important;
     top: 60px;

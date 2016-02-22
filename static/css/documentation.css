@@ -1,9 +1,5 @@
 .docs-row {
   background-color: #333;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
 }
 
 .sidebar {
@@ -21,6 +17,12 @@
 }
 
 @media (min-width: 768px) {
+  .docs-row {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
   .sidebar, .docs-col {
     position: fixed !important;
     top: 60px;

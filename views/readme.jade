@@ -1,5 +1,5 @@
-#README.row.scroll-target(ng-show="README" ng-controller="README")
-  .col-xs-12
+.row.scroll-target(ng-show="README" ng-controller="README")
+  .col-xs-12.col-md-10.col-md-offset-1.readme-contents
     .text-center
       img.logo(ng-show="spec.info['x-logo']"
                ng-src="{{ spec.info['x-logo'].url || spec.info['x-logo'] }}"
