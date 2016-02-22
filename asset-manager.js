@@ -77,6 +77,7 @@ module.exports = function(options) {
       "css/portal.css",
       "css/spec-url.css",
       "css/data-colors.css",
+      "css/readme.css",
       "css/documentation.css",
       "css/console.css",
       "css/markdown.css",

@@ -15,7 +15,7 @@ mixin schema-example
 
       .row.bg-primary.tag-header(ng-show="tag" ng-class="{'tag-header-first': $first}" data-tag="{{tag.name}}")
         .col-xs-12
-          h1.text-regular(ng-bind="tag.name")
+          h1.text-regular.tag-name(ng-bind="tag.name")
           p(ng-bind="tag.description")
 
       .row.scroll-route.scroll-target(ng-class="{'scroll-route-last': $last}" id="ScrollRoute{{$index}}")

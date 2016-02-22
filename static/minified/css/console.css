@@ -9509,6 +9509,10 @@ span[data-verb="delete"] {
 
 
 
+#README img {
+  max-width: 50%;
+}
+
 .docs-row {
   background-color: #333;
   position: absolute;
@@ -9652,6 +9656,9 @@ span[data-verb="delete"] {
 .tag-header.tag-header-first {
   margin-top: 0px;
   border-top: 1px solid #333;
+}
+.tag-header .tag-name {
+  margin-bottom: 20px;
 }
 
 .scroll-route {

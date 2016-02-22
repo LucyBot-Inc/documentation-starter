@@ -1,8 +1,9 @@
 #README.row.scroll-target(ng-show="README" ng-controller="README")
   .col-xs-12
-    img.logo(ng-show="spec.info['x-logo']"
-             ng-src="{{ spec.info['x-logo'].url || spec.info['x-logo'] }}"
-             style="padding: 5px; background-color: {{ spec.info['x-logo'].backgroundColor || '#fff' }}")
+    .text-center
+      img.logo(ng-show="spec.info['x-logo']"
+               ng-src="{{ spec.info['x-logo'].url || spec.info['x-logo'] }}"
+               style="padding: 5px; background-color: {{ spec.info['x-logo'].backgroundColor || '#fff' }}")
     div(ng-if="showSections")
       .markdown-container(marked="section.contents" ng-repeat="section in README")
     .markdown-container(ng-if="!showSections" marked="README")
