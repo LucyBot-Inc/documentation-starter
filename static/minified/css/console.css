@@ -9328,7 +9328,7 @@ span.CodeMirror-selectedtext { background: none; }
 }
 
 body {
-  background-color: #f7f7f7;
+  background-color: #fff;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -9507,7 +9507,8 @@ span[data-verb="delete"] {
 
 
 .readme-contents {
-  padding-top: 20px;
+  padding: 40px;
+  background-color: #fff;
 }
 
 .readme-contents img {
@@ -9634,7 +9635,7 @@ span[data-verb="delete"] {
 
 .docs-col {
   overflow-y: scroll;
-  background-color: #eee;
+  background-color: #fff;
   right: 0;
 }
 
@@ -9960,7 +9961,7 @@ span[data-verb="delete"] {
   /*  mimic pre */
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #f5f5f5;
+  background-color: #fff;
   padding: 9.5px;
 }
 
