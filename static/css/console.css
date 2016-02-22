@@ -20,7 +20,7 @@
 @media (min-width: 768px) {
   .left-col, .right-col {
     position: fixed !important;
-    top: 60px;
+    top: 52px;
     bottom: 0px;
     margin-top: 0;
     padding-bottom: 73px;
