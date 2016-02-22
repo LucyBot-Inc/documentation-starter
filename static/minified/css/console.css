@@ -9510,7 +9510,9 @@ span[data-verb="delete"] {
 }
 
 .readme-contents img {
-  max-width: 500px;
+  max-width: 100%;
+  max-height: 400px;
+  margin-bottom: 20px;
 }
 
 .docs-row {
