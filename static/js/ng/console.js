@@ -238,7 +238,7 @@ App.controller('Response', ['$scope', '$sce', function($scope, $sce) {
         answers[key] = OPTIONS.embedParameters[key];
       }
       var req =  JSON.stringify({
-        swagger: OPTIONS.disableSwaggerUpload ? undefined : $scope.spec,
+        swagger: OPTIONS.disableSwaggerUpload ? undefined : window.SWAGGER,
         method: $scope.activeRoute.method,
         path: $scope.activeRoute.path,
         keys: keys,

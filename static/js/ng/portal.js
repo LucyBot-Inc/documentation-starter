@@ -121,6 +121,7 @@ App.controller('Portal', function($scope, $location, spec) {
 
   spec.then(function(spec) {
     $scope.routes = [];
+    window.SWAGGER = JSON.parse(JSON.stringify(spec.data))
     $scope.setSpec = function(spec) {
       $scope.spec = spec;
       var info = $scope.spec.info = $scope.spec.info || {};
