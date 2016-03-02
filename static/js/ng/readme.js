@@ -5,7 +5,7 @@ App.controller('README', function($scope) {
     $scope.menuItems = $scope.README.map(function(r, idx) {
       return {
         title: r.title,
-        target: '#README' + idx,
+        target: '#ScrollTarget' + idx,
       }
     })
   }

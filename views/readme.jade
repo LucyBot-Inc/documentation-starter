@@ -1,6 +1,6 @@
 include ./mixins/sidebar.jade
 .row.docs-row(ng-show="README" ng-controller="README")
-  .hidden-xs.col-sm-3(ng-if="showSections")
+  .hidden-xs.col-sm-3.sidebar-col(ng-if="showSections")
     +sidebar(false)
   .col-xs-12.readme-contents.docs-col(ng-class="{'col-sm-9': showSections}")
     .text-center
