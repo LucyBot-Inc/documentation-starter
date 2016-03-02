@@ -3,10 +3,9 @@ App.controller('README', function($scope) {
   $scope.showSections = Array.isArray($scope.README);
   if ($scope.showSections) {
     $scope.menuItems = $scope.README.map(function(r, idx) {
-      for (var i = 0; i < 10; ++i) r.contents += idx + r.contents + ' ';
       return {
         title: r.title,
-        targetID: '#README' + idx,
+        target: '#README' + idx,
       }
     })
   }
