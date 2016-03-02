@@ -2,7 +2,7 @@
   background-color: #333;
 }
 
-.sidebar {
+.sidebar-col {
   padding-top: 30px;
   padding-bottom: 100px;
   position: relative;
@@ -23,7 +23,7 @@
     bottom: 0;
     width: 100%;
   }
-  .sidebar, .docs-col {
+  .sidebar-col, .docs-col {
     position: fixed !important;
     top: 52px;
     bottom: 0px;

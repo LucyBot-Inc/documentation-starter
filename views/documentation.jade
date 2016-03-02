@@ -8,7 +8,7 @@ mixin schema-example
       code {{ schemaExample }}
 
 .row.docs-row
-  .hidden-xs.col-sm-3.sidebar
+  .hidden-xs.col-sm-3.sidebar-col
     +sidebar(false)
   .col-xs-12.col-sm-9.docs-col
     div(ng-controller="Route"
@@ -19,7 +19,7 @@ mixin schema-example
           h1.text-regular.tag-name(ng-bind="tag.name")
           p(ng-bind="tag.description")
 
-      .row.scroll-route.scroll-target(ng-class="{'scroll-route-last': $last}" id="ScrollRoute{{$index}}")
+      .row.scroll-route.scroll-target(ng-class="{'scroll-route-last': $last}" id="ScrollTarget{{$index}}")
         a(name="route{{$index}}")
         .col-xs-12
           h3.text-regular
@@ -81,10 +81,10 @@ mixin schema-example
                     ng-controller="Schema"
                     ng-show="response.schema")
                 +schema-example
-  script.
-    var scope = $('.docs-col').scope();
-    $('.docs-col').scroll(function() {
-      scope.onScroll();
-      scope.$apply();
-    })
+script.
+  $('.docs-col').scroll(function() {
+    var scope = $('.docs-row .sidebar').scope();
+    scope.onScroll();
+    scope.$apply();
+  })
 

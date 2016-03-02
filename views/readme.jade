@@ -1,6 +1,6 @@
 include ./mixins/sidebar.jade
 .row.docs-row(ng-show="README" ng-controller="README")
-  .hidden-xs.col-sm-3.sidebar(ng-if="showSections")
+  .hidden-xs.col-sm-3(ng-if="showSections")
     +sidebar(false)
   .col-xs-12.readme-contents.docs-col(ng-class="{'col-sm-9': showSections}")
     .text-center
@@ -8,6 +8,6 @@ include ./mixins/sidebar.jade
                ng-src="{{ spec.info['x-logo'].url || spec.info['x-logo'] }}"
                style="padding: 5px; background-color: {{ spec.info['x-logo'].backgroundColor || '#fff' }}")
     div(ng-if="showSections" ng-repeat="section in README")
-      h1(ng-bind="section.title" id="README{{$index}}")
+      h1(ng-bind="section.title" id="ScrollTarget{{$index}}")
       .markdown-container(marked="section.contents")
     .markdown-container(ng-if="!showSections" marked="README")

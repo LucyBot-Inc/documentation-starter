@@ -2,16 +2,16 @@
   color: #eee;
 }
 
-.sidebar {
+.sidebar-col {
   background-color: #ddd;
 }
 
-.sidebar > ul > li {
+.sidebar ul > li {
   background-color: #555;
   margin-bottom: 12px;
 }
 
-.sidebar > ul > li > a {
+.sidebar ul > li > a {
   color: #ff6600;
 }
 

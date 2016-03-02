@@ -15,7 +15,7 @@ App.controller('Docs', function($scope, $location) {
         method: route.method,
         title: route.path,
         class: 'route',
-        target: '#ScrollRoute' + index + ' h3',
+        target: '#ScrollTarget' + index + ' h3',
       }
       if (route.method === requested.method && route.path === requested.path) {
         active = item;
@@ -64,7 +64,7 @@ App.controller('Docs', function($scope, $location) {
     if (active) {
       $scope.menuItems.active = active;
       setTimeout(function() {
-        $scope.scrollToTarget(active.target);
+        $('.docs-row .sidebar').scope().scrollToTarget(active.target);
       }, 750);
     }
   }
@@ -74,57 +74,6 @@ App.controller('Docs', function($scope, $location) {
     if (!active || !active.method) return;
     if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method + '/' + encodeURIComponent(active.title));
   })
-
-  $scope.scrollToRoute = function(idx) {
-    if (typeof idx === 'object') idx = $scope.routesFiltered.indexOf(idx);
-    if (idx === -1) $scope.scrollToTarget('#README');
-    else $scope.scrollToTarget('#ScrollRoute' + idx + ' h3');
-  }
-
-  $scope.scrollToTag = function(idx) {
-    var tag = $scope.scrolledTag = $scope.spec.tags[idx];
-    var scrollToRoute = -1;
-    $scope.routesFiltered.forEach(function(r, routeIdx) {
-      if (r.operation.tags &&
-          scrollToRoute === -1 &&
-          r.operation.tags.indexOf(tag.name) !== -1) scrollToRoute = routeIdx
-    })
-    $scope.scrollToRoute(scrollToRoute);
-  }
-  $scope.onScroll= function() {
-    if ($scope.animatingScroll) return;
-    if ($location.path().indexOf('/Documentation') !== 0) return;
-    var visibleHeight = $('.docs-col').height() - 50;
-    var closest = null;
-    var minDist = Infinity;
-    $('.scroll-target').each(function(index) {
-      var thisTop = $(this).offset().top;
-      if (closest === null ||
-          (minDist < 0 && thisTop < visibleHeight) ||
-          (thisTop >= 0 && thisTop < minDist && thisTop < visibleHeight)) {
-        closest = $(this);
-        minDist = thisTop;
-      }
-    });
-    var id = closest.attr('id');
-    $scope.menuItems.active = null;
-    var isActive = function(item) {
-      return !$scope.menuItems.active && item.target && item.target.indexOf('#' + id) !== -1;
-    }
-    $scope.menuItems.forEach(function(item) {
-      if (isActive(item)) $scope.menuItems.active = item;
-      else if (item.children) {
-        item.children.forEach(function(child) {
-          if (isActive(child)) $scope.menuItems.active = child;
-          else if (child.children) {
-            child.children.forEach(function(grandchild) {
-              if (isActive(grandchild)) $scope.menuItems.active = grandchild;
-            })
-          }
-        })
-      }
-    })
-  }
 
   $scope.routesFiltered = $scope.routes;
   $scope.matchesQuery = function(route) {
@@ -164,16 +113,12 @@ App.controller('Docs', function($scope, $location) {
         .sort(sortByTag)
     $scope.initMenu();
   }
-  var filterRoutesAndScroll = function() {
-    filterRoutes();
-    $scope.scrollTo(0);
-  }
   $scope.filter = {
     query: ''
   };
-  $scope.$watch('filter.query', filterRoutesAndScroll);
-  $scope.$watch('activeTag', filterRoutesAndScroll);
-  $scope.$watch('routes', filterRoutesAndScroll);
+  $scope.$watch('filter.query', filterRoutes);
+  $scope.$watch('activeTag', filterRoutes);
+  $scope.$watch('routes', filterRoutes);
 
   $scope.editorMode = false;
   $scope.switchMode = function() {
@@ -194,9 +139,6 @@ App.controller('Docs', function($scope, $location) {
     };
     $scope.routes.push({operation: op, method: 'get', path: path});
     filterRoutes();
-    setTimeout(function() {
-      $scope.scrollTo($scope.routes.length - 1);
-    }, 800);
     $scope.initMenu();
   }
 });

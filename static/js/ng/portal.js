@@ -185,7 +185,7 @@ App.controller('Portal', function($scope, $location, spec) {
         $('#Docs').scope().query = '';
         loc += '/' + route.method + '/' + encodeURIComponent(route.path);
         setTimeout(function() {
-          $('#Docs').scope().scrollToRoute(route);
+          //$('#Docs').scope().scrollToRoute(route);
         }, 800);
       }
       $location.path(loc);
