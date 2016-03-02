@@ -8,7 +8,8 @@ mixin schema-example
       code {{ schemaExample }}
 
 .row.docs-row
-  +sidebar(false)
+  .hidden-xs.col-sm-3.sidebar
+    +sidebar(false)
   .col-xs-12.col-sm-9.docs-col
     div(ng-controller="Route"
         ng-repeat="route in routesFiltered")

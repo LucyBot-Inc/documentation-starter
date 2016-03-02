@@ -1,9 +1,14 @@
-.row.scroll-target(ng-show="README" ng-controller="README")
-  .col-xs-12.col-md-10.col-md-offset-1.readme-contents
+include ./mixins/sidebar.jade
+.row.docs-row(ng-show="README" ng-controller="README")
+  .hidden-xs.col-sm-3.sidebar(ng-if="showSections")
+    +sidebar(false)
+  .col-xs-12.readme-contents.docs-col(ng-class="{'col-sm-9': showSections}")
     .text-center
       img.logo(ng-show="spec.info['x-logo']"
                ng-src="{{ spec.info['x-logo'].url || spec.info['x-logo'] }}"
                style="padding: 5px; background-color: {{ spec.info['x-logo'].backgroundColor || '#fff' }}")
-    div(ng-if="showSections")
-      .markdown-container(marked="section.contents" ng-repeat="section in README")
+    div(ng-if="showSections" ng-repeat="section in README")
+      a(name="README{{$index}}")
+      h1(ng-bind="section.title")
+      .markdown-container(marked="section.contents" id="README{{$index}}")
     .markdown-container(ng-if="!showSections" marked="README")

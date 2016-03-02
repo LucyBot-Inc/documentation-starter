@@ -2,7 +2,8 @@ include ./mixins/editable.jade
 include ./mixins/sidebar.jade
 
 .row.docs-row
-  +sidebar(true)
+  .hidden-xs.col-sm-3.sidebar
+    +sidebar(true)
   .col-md-9.docs-col
     .api-info
       h1
