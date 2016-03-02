@@ -16631,12 +16631,7 @@ App.controller("Sidebar", function($scope) {
   }
 
   $scope.scrollTo = function(idx) {
-    var newTop = 0;
-    if (idx !== -1) {
-      if ($('#ScrollTarget0').length === 0) return;
-      $scope.scrollToTarget('#ScrollTarget' + idx);
-    }
-    $scope.menuItems.active = $scope.menuItems[0];
+    $scope.scrollToTarget('#ScrollTarget' + idx);
   }
 
   $scope.scrollToTarget = function(target) {
@@ -16645,7 +16640,7 @@ App.controller("Sidebar", function($scope) {
     var $target = $(target);
     if (!$target.length) return;
     var targetTop = $target.offset().top;
-    newTop = targetTop - colTop + curTop - 15;
+    var newTop = targetTop - colTop + curTop - 15;
 
     $scope.animatingScroll = true;
     $('.docs-col').animate({
@@ -16877,7 +16872,8 @@ App.controller('Portal', function($scope, $location, spec) {
         $('#Docs').scope().query = '';
         loc += '/' + route.method + '/' + encodeURIComponent(route.path);
         setTimeout(function() {
-          //$('#Docs').scope().scrollToRoute(route);
+          var idx = $scope.routes.indexOf(route);
+          $('#Docs').scope().initMenu();
         }, 800);
       }
       $location.path(loc);
