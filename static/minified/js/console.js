@@ -16612,6 +16612,84 @@ App.config(['uiZeroclipConfigProvider', function(uiZeroclipConfigProvider) {
 App.controller('Body', function($scope) {});
 
 
+App.controller("Sidebar", function($scope) {
+  $scope.setMenuItem = function(item) {
+    $scope.menuItems.active = item;
+    while ($scope.menuItems.active.children) $scope.menuItems.active = $scope.menuItems.active.children[0];
+    $scope.scrollToTarget(item.target || item.children[0].target)
+  }
+
+  $scope.isActiveParent = function(item) {
+    var isActive = false;
+    (item.children || []).forEach(function(c) {
+      if (c === $scope.menuItems.active) isActive = true;
+      (c.children || []).forEach(function(gc) {
+        if (gc === $scope.menuItems.active) isActive = true;
+      })
+    })
+    return isActive;
+  }
+
+  $scope.scrollTo = function(idx) {
+    var newTop = 0;
+    if (idx !== -1) {
+      if ($('#ScrollTarget0').length === 0) return;
+      $scope.scrollToTarget('#ScrollTarget' + idx);
+    }
+    $scope.menuItems.active = $scope.menuItems[0];
+  }
+
+  $scope.scrollToTarget = function(target) {
+    var curTop = $('.docs-col').scrollTop();
+    var colTop = $('.docs-col').offset().top;
+    var $target = $(target);
+    if (!$target.length) return;
+    var targetTop = $target.offset().top;
+    newTop = targetTop - colTop + curTop - 15;
+
+    $scope.animatingScroll = true;
+    $('.docs-col').animate({
+      scrollTop: newTop
+    }, 800, function() {
+      $scope.animatingScroll = false;
+    })
+  }
+
+  $scope.onScroll= function() {
+    if ($scope.animatingScroll) return;
+    var visibleHeight = $('.docs-col').height() - 50;
+    var closest = null;
+    var minDist = Infinity;
+    $('.scroll-target').each(function(index) {
+      var thisTop = $(this).offset().top;
+      if (closest === null ||
+          (minDist < 0 && thisTop < visibleHeight) ||
+          (thisTop >= 0 && thisTop < minDist && thisTop < visibleHeight)) {
+        closest = $(this);
+        minDist = thisTop;
+      }
+    });
+    var id = closest.attr('id');
+    $scope.menuItems.active = null;
+    var isActive = function(item) {
+      return !$scope.menuItems.active && item.target && item.target.indexOf('#' + id) !== -1;
+    }
+    $scope.menuItems.forEach(function(item) {
+      if (isActive(item)) $scope.menuItems.active = item;
+      else if (item.children) {
+        item.children.forEach(function(child) {
+          if (isActive(child)) $scope.menuItems.active = child;
+          else if (child.children) {
+            child.children.forEach(function(grandchild) {
+              if (isActive(grandchild)) $scope.menuItems.active = grandchild;
+            })
+          }
+        })
+      }
+    })
+  }
+})
+
 var maybeAddExternalDocs = function(description, externalDocs) {
   if (!externalDocs || !externalDocs.url) return description;
   if (description) description += '\n\n';
@@ -16799,7 +16877,7 @@ App.controller('Portal', function($scope, $location, spec) {
         $('#Docs').scope().query = '';
         loc += '/' + route.method + '/' + encodeURIComponent(route.path);
         setTimeout(function() {
-          $('#Docs').scope().scrollToRoute(route);
+          //$('#Docs').scope().scrollToRoute(route);
         }, 800);
       }
       $location.path(loc);
@@ -16820,7 +16898,7 @@ App.controller('README', function($scope) {
     $scope.menuItems = $scope.README.map(function(r, idx) {
       return {
         title: r.title,
-        target: '#README' + idx,
+        target: '#ScrollTarget' + idx,
       }
     })
   }
@@ -16843,7 +16921,7 @@ App.controller('Docs', function($scope, $location) {
         method: route.method,
         title: route.path,
         class: 'route',
-        target: '#ScrollRoute' + index + ' h3',
+        target: '#ScrollTarget' + index + ' h3',
       }
       if (route.method === requested.method && route.path === requested.path) {
         active = item;
@@ -16892,7 +16970,7 @@ App.controller('Docs', function($scope, $location) {
     if (active) {
       $scope.menuItems.active = active;
       setTimeout(function() {
-        $scope.scrollToTarget(active.target);
+        $('.docs-row .sidebar').scope().scrollToTarget(active.target);
       }, 750);
     }
   }
@@ -16902,98 +16980,6 @@ App.controller('Docs', function($scope, $location) {
     if (!active || !active.method) return;
     if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method + '/' + encodeURIComponent(active.title));
   })
-
-  $scope.setMenuItem = function(item) {
-    $scope.menuItems.active = item;
-    while ($scope.menuItems.active.children) $scope.menuItems.active = $scope.menuItems.active.children[0];
-    $scope.scrollToTarget(item.target || item.children[0].target)
-  }
-
-  $scope.isActiveParent = function(item) {
-    var isActive = false;
-    (item.children || []).forEach(function(c) {
-      if (c === $scope.menuItems.active) isActive = true;
-      (c.children || []).forEach(function(gc) {
-        if (gc === $scope.menuItems.active) isActive = true;
-      })
-    })
-    return isActive;
-  }
-
-  $scope.scrollTo = function(idx) {
-    var newTop = 0;
-    if (idx !== -1) {
-      if ($('#ScrollRoute0').length === 0) return;
-      $scope.scrollToTarget('#ScrollRoute' + idx + ' h3');
-    }
-    $scope.menuItems.active = $scope.menuItems[0];
-  }
-
-  $scope.scrollToTarget = function(target) {
-    if (!$scope.isActive('Documentation')) return;
-    var curTop = $('.docs-col').scrollTop();
-    var colTop = $('.docs-col').offset().top;
-    var targetTop = $(target).offset().top;
-    newTop = targetTop - colTop + curTop - 15;
-
-    $scope.animatingScroll = true;
-    $('.docs-col').animate({
-      scrollTop: newTop
-    }, 800, function() {
-      $scope.animatingScroll = false;
-    })
-  }
-
-  $scope.scrollToRoute = function(idx) {
-    if (typeof idx === 'object') idx = $scope.routesFiltered.indexOf(idx);
-    if (idx === -1) $scope.scrollToTarget('#README');
-    else $scope.scrollToTarget('#ScrollRoute' + idx + ' h3');
-  }
-
-  $scope.scrollToTag = function(idx) {
-    var tag = $scope.scrolledTag = $scope.spec.tags[idx];
-    var scrollToRoute = -1;
-    $scope.routesFiltered.forEach(function(r, routeIdx) {
-      if (r.operation.tags &&
-          scrollToRoute === -1 &&
-          r.operation.tags.indexOf(tag.name) !== -1) scrollToRoute = routeIdx
-    })
-    $scope.scrollToRoute(scrollToRoute);
-  }
-  $scope.onScroll= function() {
-    if ($scope.animatingScroll) return;
-    if ($location.path().indexOf('/Documentation') !== 0) return;
-    var visibleHeight = $('.docs-col').height() - 50;
-    var closest = null;
-    var minDist = Infinity;
-    $('.scroll-target').each(function(index) {
-      var thisTop = $(this).offset().top;
-      if (closest === null ||
-          (minDist < 0 && thisTop < visibleHeight) ||
-          (thisTop >= 0 && thisTop < minDist && thisTop < visibleHeight)) {
-        closest = $(this);
-        minDist = thisTop;
-      }
-    });
-    var id = closest.attr('id');
-    $scope.menuItems.active = null;
-    var isActive = function(item) {
-      return !$scope.menuItems.active && item.target && item.target.indexOf('#' + id) !== -1;
-    }
-    $scope.menuItems.forEach(function(item) {
-      if (isActive(item)) $scope.menuItems.active = item;
-      else if (item.children) {
-        item.children.forEach(function(child) {
-          if (isActive(child)) $scope.menuItems.active = child;
-          else if (child.children) {
-            child.children.forEach(function(grandchild) {
-              if (isActive(grandchild)) $scope.menuItems.active = grandchild;
-            })
-          }
-        })
-      }
-    })
-  }
 
   $scope.routesFiltered = $scope.routes;
   $scope.matchesQuery = function(route) {
@@ -17033,16 +17019,12 @@ App.controller('Docs', function($scope, $location) {
         .sort(sortByTag)
     $scope.initMenu();
   }
-  var filterRoutesAndScroll = function() {
-    filterRoutes();
-    $scope.scrollTo(0);
-  }
   $scope.filter = {
     query: ''
   };
-  $scope.$watch('filter.query', filterRoutesAndScroll);
-  $scope.$watch('activeTag', filterRoutesAndScroll);
-  $scope.$watch('routes', filterRoutesAndScroll);
+  $scope.$watch('filter.query', filterRoutes);
+  $scope.$watch('activeTag', filterRoutes);
+  $scope.$watch('routes', filterRoutes);
 
   $scope.editorMode = false;
   $scope.switchMode = function() {
@@ -17063,9 +17045,6 @@ App.controller('Docs', function($scope, $location) {
     };
     $scope.routes.push({operation: op, method: 'get', path: path});
     filterRoutes();
-    setTimeout(function() {
-      $scope.scrollTo($scope.routes.length - 1);
-    }, 800);
     $scope.initMenu();
   }
 });
