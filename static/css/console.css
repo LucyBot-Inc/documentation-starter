@@ -114,6 +114,7 @@
 .parameter-input .form-group {
   margin-bottom: 5px;
 }
+.key input.input-sm,
 .parameter-input input.input-sm {
   height: 30px;
   padding-top: 2px;
