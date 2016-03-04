@@ -9,20 +9,26 @@
       input.input-sm.form-control(
             ng-if="subSchema.type !== 'array' && subSchema.type !== 'object'"
             ng-model="body[key]"
+            ng-focus="focused = true"
+            ng-blur="focused = false"
             ng-change="onAnswerChanged()")
       textarea.form-control(
             ng-if="subSchema.type === 'array' || subSchema.type === 'object'"
             ng-model="body[key]"
+            ng-focus="focused = true"
+            ng-blur="focused = false"
             ng-change="onAnswerChanged()")
-      span.help-block(ng-if="subSchema.description" marked="subSchema.description")
+      span.help-block(ng-if="subSchema.description" marked="subSchema.description" ng-show="focused")
 
   .form-group(ng-if="inputType === 'text' || inputType === 'number'")
     label {{parameter.name}}
     input.input-sm.form-control(
           type="{{inputType}}"
           ng-change="onAnswerChanged()",
+          ng-focus="focused = true"
+          ng-blur="focused = false"
           ng-model="model[parameter.name]")
-    span.help-block(ng-if="parameter.description" marked="parameter.description")
+    span.help-block(ng-if="parameter.description" marked="parameter.description" ng-show="focused")
 
   .form-group(ng-if="inputType === 'radio'")
     label

@@ -42,6 +42,10 @@
   }
 }
 
+.left-col .body-row {
+  padding-bottom: 20px;
+}
+
 .control-row {
   background-color: #333;
   padding-top: 15px;
@@ -102,6 +106,15 @@
 .parameter-list input[type="checkbox"] {
   position: relative;
   margin-right: 5px;
+}
+.parameter-input .form-group {
+  margin-bottom: 5px;
+}
+.parameter-input input.input-sm {
+  height: 30px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-size: 12px;
 }
 
 .form-group.body-form-group {
