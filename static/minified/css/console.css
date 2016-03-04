@@ -9922,6 +9922,13 @@ span[data-verb="delete"] {
   padding-bottom: 15px;
 }
 
+.control-row .open > .dropdown-toggle.btn-default:active,
+.control-row .open > .dropdown-toggle.btn-default:focus,
+.control-row .open > .dropdown-toggle.btn-default:hover,
+.control-row .open > .dropdown-toggle.btn-default,
+.control-row .btn-default:active,
+.control-row .btn-default:focus,
+.control-row .btn-default:hover,
 .control-row .btn-default {
   background-color: #fff;
   color: #333;
