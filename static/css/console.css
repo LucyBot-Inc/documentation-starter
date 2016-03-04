@@ -118,7 +118,14 @@
   height: 30px;
   padding-top: 2px;
   padding-bottom: 2px;
+  padding-left: 6px;
   font-size: 12px;
+}
+
+.key input,
+.parameter-input input,
+.radio-choice label {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .form-group.body-form-group {
