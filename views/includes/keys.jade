@@ -1,12 +1,14 @@
 .col-xs-12
-  h3.text-regular
-    span.pull-left Credentials
+  h4.text-regular
+    span.pull-left
+      i.fa.hide-button(ng-class="{'fa-plus-square-o': hidden, 'fa-minus-square-o': !hidden}" ng-click="hidden = !hidden")
+      span Credentials
     a.btn.btn-success.pull-right(ng-show="startOAuth" ng-click="startOAuth()")
       i.fa.fa-lock
       span &nbsp;
       span Authorize
     .clearfix
-  #KeyInputs
+  #KeyInputs(ng-show="!hidden")
     .key.form-group(ng-repeat="input in keyInputs")
       label {{ input.label || input.name }}
       input.input-sm.form-control(type="text", ng-model="keys[input.name]", ng-change="keyChanged()")

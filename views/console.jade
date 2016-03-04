@@ -47,14 +47,17 @@
           include ./includes/keys.jade
         #SampleCode.row(ng-controller="SampleCode")
           .col-xs-12
-            h3 Sample Code
-              a.btn.btn-primary.copy-btn.pull-right(ui-zeroclip zeroclip-text="{{ sampleCode }}") Copy
-            .btn-group.btn-group-sm.language-buttons
-              .btn.btn-link.pin-bottom(
-                    ng-repeat="language in languages"
-                    ng-disabled="language.id === selectedLanguage.id"
-                    ng-click="setLanguage(language)") {{ language.label }}
-            div(hljs source="sampleCodeError || sampleCode" language="{{ selectedLanguage.hljsID || selectedLanguage.id }}")
+            h4
+              i.fa.hide-button(ng-class="{'fa-plus-square-o': hidden, 'fa-minus-square-o': !hidden}" ng-click="hidden = !hidden")
+              span Sample Code
+              a.btn.btn-primary.btn-xs.copy-btn.pull-right(ui-zeroclip zeroclip-text="{{ sampleCode }}" ng-show="!hidden") Copy
+            div(ng-show="!hidden")
+              .btn-group.btn-group-sm.language-buttons
+                .btn.btn-link.pin-bottom(
+                      ng-repeat="language in languages"
+                      ng-disabled="language.id === selectedLanguage.id"
+                      ng-click="setLanguage(language)") {{ language.label }}
+              div(hljs source="sampleCodeError || sampleCode" language="{{ selectedLanguage.hljsID || selectedLanguage.id }}")
         #Parameters.row(ng-show="activeRoute.operation.parameters.length > 0")
           include ./includes/parameters.jade
   #Response.col-xs-12.col-sm-6.right-col(ng-controller="Response")

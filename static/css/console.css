@@ -92,6 +92,10 @@
   margin-bottom: 0px;
 }
 
+.hide-button {
+  margin-right: 8px;
+}
+
 .parameter-list {
   max-height: 338px;
 
