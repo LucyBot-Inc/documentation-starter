@@ -72,13 +72,13 @@
     span.help-block(ng-if="parameter.description" marked="parameter.description")
     .input-group(ng-repeat="item in items")
       span.input-group-btn
-        button.btn.btn-sm.btn-width-sm.btn-warning(ng-click="removeItem($index)")
+        button.btn.btn-xs.btn-width-sm.btn-warning(ng-click="removeItem($index)")
           i.fa.fa-remove  
       input.input-sm.form-control(ng-model="item.value"
                                   ng-change="onAnswerChanged()")
     .input-group
       span.input-group-btn
-        button.btn.btn-sm.btn-width-sm.btn-default(ng-click="addItem()")
+        button.btn.btn-xs.btn-width-sm.btn-default(ng-click="addItem()")
           span.fa.fa-plus
           span &nbsp; Add
       input.input-sm.form-control(disabled)
