@@ -16612,7 +16612,7 @@ App.config(['uiZeroclipConfigProvider', function(uiZeroclipConfigProvider) {
 App.controller('Body', function($scope) {});
 
 
-App.controller("Sidebar", function($scope) {
+App.controller("Sidebar", function($scope, $location) {
   $scope.setMenuItem = function(item) {
     $scope.menuItems.active = item;
     while ($scope.menuItems.active.children) $scope.menuItems.active = $scope.menuItems.active.children[0];
@@ -16652,6 +16652,7 @@ App.controller("Sidebar", function($scope) {
 
   $scope.onScroll= function() {
     if ($scope.animatingScroll) return;
+    if ($location.path().indexOf('/Console') === 0) return;
     var visibleHeight = $('.docs-col').height() - 50;
     var closest = null;
     var minDist = Infinity;
@@ -16965,9 +16966,11 @@ App.controller('Docs', function($scope, $location) {
     }
     if (active) {
       $scope.menuItems.active = active;
-      setTimeout(function() {
-        $('.docs-row .sidebar').scope().scrollToTarget(active.target);
-      }, 750);
+      if ($location.path().indexOf('/Console') !== 0) {
+        setTimeout(function() {
+          $('.docs-row .sidebar').scope().scrollToTarget(active.target);
+        }, 750);
+      }
     }
   }
 

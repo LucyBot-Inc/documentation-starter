@@ -63,9 +63,11 @@ App.controller('Docs', function($scope, $location) {
     }
     if (active) {
       $scope.menuItems.active = active;
-      setTimeout(function() {
-        $('.docs-row .sidebar').scope().scrollToTarget(active.target);
-      }, 750);
+      if ($location.path().indexOf('/Console') !== 0) {
+        setTimeout(function() {
+          $('.docs-row .sidebar').scope().scrollToTarget(active.target);
+        }, 750);
+      }
     }
   }
 
