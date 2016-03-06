@@ -122,11 +122,11 @@ App.controller('Parameter', function($scope) {
   } else if (type === 'number' || type === 'integer') {
     $scope.inputType = 'number';
   }
+  var groupMatch = $scope.parameter.name.match(/^(\w+)\[/);
+  if (groupMatch) $scope.groupName = groupMatch[1];
 
   $scope.isFirstParameterOfGroup = function() {
-    var match = $scope.parameter.name.match(/^(\w+)\[/);
-    if (!match) return false;
-    $scope.groupName = match[1];
+    if (!$scope.groupName) return false;
     if ($scope.$index === 0) return true;
     var prevParam = $scope.activeRoute.operation.parameters[$scope.$index - 1];
     if (prevParam.name.indexOf($scope.groupName) === 0) return false;

@@ -1,97 +1,100 @@
 .parameter-input(ng-controller="Parameter" ng-if="!parameter.showCondition || answers[parameter.showCondition.name] === parameter.showCondition.value")
-  strong(ng-show="isFirstParameterOfGroup()" ng-bind="groupName")
-  div(ng-if="inputType === 'body'" ng-controller="BodyInput")
-    label JSON Body
-    .alert.alert-danger(ng-if="bodyParseError") {{ bodyParseError }}
-    span.help-block(ng-if="parameter.description" marked="parameter.description")
-    .form-group.body-form-group(
-          ng-repeat="(key, subSchema) in parameter.schema.properties")
-      label {{ key }} ({{ subSchema.type }})
+  a.btn.btn-link(ng-show="isFirstParameterOfGroup()" ng-click="$parent.$parent.$parent.activeGroup = groupName")
+    i.fa.fa-left(ng-class="{'fa-plus-square-o': activeGroup !== groupName, 'fa-minus-square-o': activeGroup === groupName}")
+    span(ng-bind="groupName")
+  div(ng-show="!groupName || groupName === activeGroup")
+    div(ng-if="inputType === 'body'" ng-controller="BodyInput")
+      label JSON Body
+      .alert.alert-danger(ng-if="bodyParseError") {{ bodyParseError }}
+      span.help-block(ng-if="parameter.description" marked="parameter.description")
+      .form-group.body-form-group(
+            ng-repeat="(key, subSchema) in parameter.schema.properties")
+        label {{ key }} ({{ subSchema.type }})
+        input.input-sm.form-control(
+              ng-if="subSchema.type !== 'array' && subSchema.type !== 'object'"
+              ng-model="body[key]"
+              ng-focus="focused = true"
+              ng-blur="focused = false"
+              ng-change="onAnswerChanged()")
+        textarea.form-control(
+              ng-if="subSchema.type === 'array' || subSchema.type === 'object'"
+              ng-model="body[key]"
+              ng-focus="focused = true"
+              ng-blur="focused = false"
+              ng-change="onAnswerChanged()")
+        span.help-block(ng-if="subSchema.description" marked="subSchema.description" ng-show="focused")
+
+    .form-group(ng-if="inputType === 'text' || inputType === 'number'" ng-class="{'body-form-group': groupName}")
+      label {{parameter.name}}
       input.input-sm.form-control(
-            ng-if="subSchema.type !== 'array' && subSchema.type !== 'object'"
-            ng-model="body[key]"
-            ng-focus="focused = true"
-            ng-blur="focused = false"
-            ng-change="onAnswerChanged()")
-      textarea.form-control(
-            ng-if="subSchema.type === 'array' || subSchema.type === 'object'"
-            ng-model="body[key]"
-            ng-focus="focused = true"
-            ng-blur="focused = false"
-            ng-change="onAnswerChanged()")
-      span.help-block(ng-if="subSchema.description" marked="subSchema.description" ng-show="focused")
-
-  .form-group(ng-if="inputType === 'text' || inputType === 'number'" ng-class="{'body-form-group': groupName}")
-    label {{parameter.name}}
-    input.input-sm.form-control(
-          type="{{inputType}}"
-          ng-change="onAnswerChanged()",
-          ng-focus="focused = true"
-          ng-blur="focused = false"
-          ng-model="model[parameter.name]")
-    span.help-block(ng-if="parameter.description" marked="parameter.description" ng-show="focused")
-
-  .form-group(ng-if="inputType === 'dropdown'" ng-class="{'body-form-group': groupName}")
-    label
-      span(ng-bind="parameter.name")
-    .dropdown
-      a.btn.btn-sm.btn-link.dropdown-toggle(data-toggle="dropdown")
-        span(ng-bind="model[parameter.name] === undefined ? 'Choose...' : answerLabel || model[parameter.name]")
-        i.fa.fa-right.fa-caret-down
-      ul.dropdown-menu
-        li(ng-repeat="choice in parameter.enum")
-          a(ng-click="model[parameter.name] = choice; $parent.answerLabel = parameter.enumLabels[$index]")
-            span(ng-bind="parameter.enumLabels ? parameter.enumLabels[$index] : choice")
-
-  .form-group(ng-if="inputType === 'radio'" ng-class="{'body-form-group': groupName}")
-    label
-      span {{parameter.name}}
-      a.btn.btn-xs.text-warning(
-            ng-show="model[parameter.name] !== undefined && !parameter.required"
-            ng-click="model[parameter.name] = undefined; onAnswerChanged()")
-        i.fa.fa-remove
-        span &nbsp;clear
-    span.help-block(ng-if="parameter.description" marked="parameter.description")
-    .radio-choice(ng-repeat="choice in parameter.enum")
-      label.text-black.radio-inline
-        input(type="radio",
-              ng-change="onAnswerChanged()",
-              ng-model="model[parameter.name]",
-              ng-value="choice"
-              ng-checked="choice === model[parameter.name]")
-        span(ng-bind="parameter.enumLabels ? parameter.enumLabels[$index] : choice ")
-
-  .form-group(ng-if="inputType === 'checkbox'" ng-class="{'body-form-group': groupName}")
-    label
-      span {{ parameter.name }}
-      input.checkbox(type="checkbox",
+            type="{{inputType}}"
             ng-change="onAnswerChanged()",
+            ng-focus="focused = true"
+            ng-blur="focused = false"
             ng-model="model[parameter.name]")
-    span.help-block(ng-if="parameter.description" marked="parameter.description")
+      span.help-block(ng-if="parameter.description" marked="parameter.description" ng-show="focused")
 
-  .form-group(ng-if="inputType === 'checkboxes'"
-              ng-controller="Checkboxes" ng-class="{'body-form-group': groupName}")
-    label {{parameter.name}}
-    span.help-block(ng-if="parameter.description" marked="parameter.description")
-    .checkbox-choice(ng-repeat="choice in parameter.enum")
-      label.text-black.checkbox-inline
-        input(type="checkbox",
+    .form-group(ng-if="inputType === 'dropdown'" ng-class="{'body-form-group': groupName}")
+      label
+        span(ng-bind="parameter.name")
+      .dropdown
+        a.btn.btn-sm.btn-link.dropdown-toggle(data-toggle="dropdown")
+          span(ng-bind="model[parameter.name] === undefined ? 'Choose...' : answerLabel || model[parameter.name]")
+          i.fa.fa-right.fa-caret-down
+        ul.dropdown-menu
+          li(ng-repeat="choice in parameter.enum")
+            a(ng-click="model[parameter.name] = choice; $parent.answerLabel = parameter.enumLabels[$index]; onAnswerChanged()")
+              span(ng-bind="parameter.enumLabels ? parameter.enumLabels[$index] : choice")
+
+    .form-group(ng-if="inputType === 'radio'" ng-class="{'body-form-group': groupName}")
+      label
+        span {{parameter.name}}
+        a.btn.btn-xs.text-warning(
+              ng-show="model[parameter.name] !== undefined && !parameter.required"
+              ng-click="model[parameter.name] = undefined; onAnswerChanged()")
+          i.fa.fa-remove
+          span &nbsp;clear
+      span.help-block(ng-if="parameter.description" marked="parameter.description")
+      .radio-choice(ng-repeat="choice in parameter.enum")
+        label.text-black.radio-inline
+          input(type="radio",
+                ng-change="onAnswerChanged()",
+                ng-model="model[parameter.name]",
+                ng-value="choice"
+                ng-checked="choice === model[parameter.name]")
+          span(ng-bind="parameter.enumLabels ? parameter.enumLabels[$index] : choice ")
+
+    .form-group(ng-if="inputType === 'checkbox'" ng-class="{'body-form-group': groupName}")
+      label
+        span {{ parameter.name }}
+        input.checkbox(type="checkbox",
               ng-change="onAnswerChanged()",
-              ng-model="chosen[choice]")
-        span {{ choice }}
+              ng-model="model[parameter.name]")
+      span.help-block(ng-if="parameter.description" marked="parameter.description")
 
-  .form-group(ng-if="inputType === 'dynamicArray'" ng-controller="DynamicArray" ng-class="{'body-form-group': groupName}")
-    label {{parameter.name}}
-    span.help-block(ng-if="parameter.description" marked="parameter.description")
-    .input-group(ng-repeat="item in items")
-      span.input-group-btn
-        button.btn.btn-xs.btn-width-sm.btn-warning(ng-click="removeItem($index)")
-          i.fa.fa-remove  
-      input.input-sm.form-control(ng-model="item.value"
-                                  ng-change="onAnswerChanged()")
-    .input-group
-      span.input-group-btn
-        button.btn.btn-xs.btn-width-sm.btn-default(ng-click="addItem()")
-          span.fa.fa-plus
-          span &nbsp; Add
-      input.input-sm.form-control(disabled)
+    .form-group(ng-if="inputType === 'checkboxes'"
+                ng-controller="Checkboxes" ng-class="{'body-form-group': groupName}")
+      label {{parameter.name}}
+      span.help-block(ng-if="parameter.description" marked="parameter.description")
+      .checkbox-choice(ng-repeat="choice in parameter.enum")
+        label.text-black.checkbox-inline
+          input(type="checkbox",
+                ng-change="onAnswerChanged()",
+                ng-model="chosen[choice]")
+          span {{ choice }}
+
+    .form-group(ng-if="inputType === 'dynamicArray'" ng-controller="DynamicArray" ng-class="{'body-form-group': groupName}")
+      label {{parameter.name}}
+      span.help-block(ng-if="parameter.description" marked="parameter.description")
+      .input-group(ng-repeat="item in items")
+        span.input-group-btn
+          button.btn.btn-xs.btn-width-sm.btn-warning(ng-click="removeItem($index)")
+            i.fa.fa-remove  
+        input.input-sm.form-control(ng-model="item.value"
+                                    ng-change="onAnswerChanged()")
+      .input-group
+        span.input-group-btn
+          button.btn.btn-xs.btn-width-sm.btn-default(ng-click="addItem()")
+            span.fa.fa-plus
+            span &nbsp; Add
+        input.input-sm.form-control(disabled)
