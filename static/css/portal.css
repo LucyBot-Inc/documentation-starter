@@ -19,6 +19,13 @@ a.no-click {
   cursor: text;
 }
 
+.fa-right {
+  margin-left: 8px;
+}
+.fa-left {
+  margin-right: 8px;
+}
+
 .spec-loading {
   font-size: 150px;
   padding-top: 150px;

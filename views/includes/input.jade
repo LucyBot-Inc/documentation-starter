@@ -30,6 +30,18 @@
           ng-model="model[parameter.name]")
     span.help-block(ng-if="parameter.description" marked="parameter.description" ng-show="focused")
 
+  .form-group(ng-if="inputType === 'dropdown'")
+    label
+      span(ng-bind="parameter.name")
+    .dropdown
+      a.btn.btn-sm.btn-default.dropdown-toggle(data-toggle="dropdown")
+        span(ng-bind="model[parameter.name] === undefined ? 'Choose...' : answerLabel || model[parameter.name]")
+        i.fa.fa-right.fa-caret-down
+      ul.dropdown-menu
+        li(ng-repeat="choice in parameter.enum")
+          a(ng-click="model[parameter.name] = choice; $parent.answerLabel = parameter.enumLabels[$index]")
+            span(ng-bind="parameter.enumLabels ? parameter.enumLabels[$index] : choice")
+
   .form-group(ng-if="inputType === 'radio'")
     label
       span {{parameter.name}}

@@ -118,7 +118,7 @@ App.controller('Parameter', function($scope) {
       $scope.inputType = 'dynamicArray';
     }
   } else if ($scope.parameter.enum) {
-    $scope.inputType = 'radio';
+    $scope.inputType = 'dropdown';
   } else if (type === 'number' || type === 'integer') {
     $scope.inputType = 'number';
   }
