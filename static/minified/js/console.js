@@ -16916,7 +16916,9 @@ App.controller('Docs', function($scope, $location) {
       var index = $scope.routesFiltered.indexOf(route);
       var item = {
         method: route.method,
-        title: route.path,
+        path: route.path,
+        operationId: route.operation.operationId,
+        title: route.operation.operationId || route.path,
         class: 'route',
         target: '#ScrollTarget' + index + ' h3',
       }
@@ -16977,7 +16979,7 @@ App.controller('Docs', function($scope, $location) {
   $scope.$watch('menuItems.active', function() {
     var active = ($scope.menuItems || []).active;
     if (!active || !active.method) return;
-    if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method.toUpperCase() + active.title);
+    if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method.toUpperCase() + active.path);
   })
 
   $scope.routesFiltered = $scope.routes;
