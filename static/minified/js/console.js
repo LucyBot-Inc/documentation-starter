@@ -17723,7 +17723,6 @@ App.controller('Parameter', function($scope) {
     $scope.groupName = match[1];
     if ($scope.$index === 0) return true;
     var prevParam = $scope.activeRoute.operation.parameters[$scope.$index - 1];
-    console.log('prev', prevParam.name, $scope.groupName)
     if (prevParam.name.indexOf($scope.groupName) === 0) return false;
     return true;
   }
