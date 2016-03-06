@@ -35,9 +35,17 @@
             ng-model="model[parameter.name]")
       span.help-block(ng-if="parameter.description" marked="parameter.description" ng-show="focused")
 
+    mixin clear-button
+      a.btn.btn-xs.text-warning(
+            ng-show="model[parameter.name] !== undefined && !parameter.required"
+            ng-click="model[parameter.name] = undefined; onAnswerChanged()")
+        i.fa.fa-remove
+        span &nbsp;clear
+
     .form-group(ng-if="inputType === 'dropdown'" ng-class="{'body-form-group': groupName}")
       label
         span(ng-bind="parameter.name")
+        +clear-button
       .dropdown
         a.btn.btn-sm.btn-link.dropdown-toggle(data-toggle="dropdown")
           span(ng-bind="model[parameter.name] === undefined ? 'Choose...' : answerLabel || model[parameter.name]")
@@ -50,11 +58,7 @@
     .form-group(ng-if="inputType === 'radio'" ng-class="{'body-form-group': groupName}")
       label
         span {{parameter.name}}
-        a.btn.btn-xs.text-warning(
-              ng-show="model[parameter.name] !== undefined && !parameter.required"
-              ng-click="model[parameter.name] = undefined; onAnswerChanged()")
-          i.fa.fa-remove
-          span &nbsp;clear
+        +clear-button
       span.help-block(ng-if="parameter.description" marked="parameter.description")
       .radio-choice(ng-repeat="choice in parameter.enum")
         label.text-black.radio-inline
