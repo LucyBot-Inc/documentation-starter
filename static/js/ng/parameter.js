@@ -122,6 +122,17 @@ App.controller('Parameter', function($scope) {
   } else if (type === 'number' || type === 'integer') {
     $scope.inputType = 'number';
   }
+
+  $scope.isFirstParameterOfGroup = function() {
+    var match = $scope.parameter.name.match(/^(\w+)\[/);
+    if (!match) return false;
+    $scope.groupName = match[1];
+    if ($scope.$index === 0) return true;
+    var prevParam = $scope.activeRoute.operation.parameters[$scope.$index - 1];
+    console.log('prev', prevParam.name, $scope.groupName)
+    if (prevParam.name.indexOf($scope.groupName) === 0) return false;
+    return true;
+  }
 });
 
 App.controller('Checkboxes', function($scope) {

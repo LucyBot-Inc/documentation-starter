@@ -1,4 +1,5 @@
 .parameter-input(ng-controller="Parameter" ng-if="!parameter.showCondition || answers[parameter.showCondition.name] === parameter.showCondition.value")
+  strong(ng-show="isFirstParameterOfGroup()" ng-bind="groupName")
   div(ng-if="inputType === 'body'" ng-controller="BodyInput")
     label JSON Body
     .alert.alert-danger(ng-if="bodyParseError") {{ bodyParseError }}
@@ -20,7 +21,7 @@
             ng-change="onAnswerChanged()")
       span.help-block(ng-if="subSchema.description" marked="subSchema.description" ng-show="focused")
 
-  .form-group(ng-if="inputType === 'text' || inputType === 'number'")
+  .form-group(ng-if="inputType === 'text' || inputType === 'number'" ng-class="{'body-form-group': groupName}")
     label {{parameter.name}}
     input.input-sm.form-control(
           type="{{inputType}}"
@@ -30,7 +31,7 @@
           ng-model="model[parameter.name]")
     span.help-block(ng-if="parameter.description" marked="parameter.description" ng-show="focused")
 
-  .form-group(ng-if="inputType === 'dropdown'")
+  .form-group(ng-if="inputType === 'dropdown'" ng-class="{'body-form-group': groupName}")
     label
       span(ng-bind="parameter.name")
     .dropdown
@@ -42,7 +43,7 @@
           a(ng-click="model[parameter.name] = choice; $parent.answerLabel = parameter.enumLabels[$index]")
             span(ng-bind="parameter.enumLabels ? parameter.enumLabels[$index] : choice")
 
-  .form-group(ng-if="inputType === 'radio'")
+  .form-group(ng-if="inputType === 'radio'" ng-class="{'body-form-group': groupName}")
     label
       span {{parameter.name}}
       a.btn.btn-xs.text-warning(
@@ -60,7 +61,7 @@
               ng-checked="choice === model[parameter.name]")
         span(ng-bind="parameter.enumLabels ? parameter.enumLabels[$index] : choice ")
 
-  .form-group(ng-if="inputType === 'checkbox'")
+  .form-group(ng-if="inputType === 'checkbox'" ng-class="{'body-form-group': groupName}")
     label
       span {{ parameter.name }}
       input.checkbox(type="checkbox",
@@ -69,7 +70,7 @@
     span.help-block(ng-if="parameter.description" marked="parameter.description")
 
   .form-group(ng-if="inputType === 'checkboxes'"
-              ng-controller="Checkboxes")
+              ng-controller="Checkboxes" ng-class="{'body-form-group': groupName}")
     label {{parameter.name}}
     span.help-block(ng-if="parameter.description" marked="parameter.description")
     .checkbox-choice(ng-repeat="choice in parameter.enum")
@@ -79,7 +80,7 @@
               ng-model="chosen[choice]")
         span {{ choice }}
 
-  .form-group(ng-if="inputType === 'dynamicArray'" ng-controller="DynamicArray")
+  .form-group(ng-if="inputType === 'dynamicArray'" ng-controller="DynamicArray" ng-class="{'body-form-group': groupName}")
     label {{parameter.name}}
     span.help-block(ng-if="parameter.description" marked="parameter.description")
     .input-group(ng-repeat="item in items")
