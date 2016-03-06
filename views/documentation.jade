@@ -23,7 +23,7 @@ mixin schema-example
         a(name="route{{$index}}")
         include ./includes/operation-docs
 script.
-  $('.docs-col').scroll(function() {
+  $('.docs-col').last().scroll(function() {
     var scope = $('.docs-row .sidebar').scope();
     scope.onScroll();
     scope.$apply();
