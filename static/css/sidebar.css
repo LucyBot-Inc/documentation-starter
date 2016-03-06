@@ -48,6 +48,7 @@
   border-radius: 4px;
 }
 .sidebar  ul > li > ul > li {
+  border-radius: 0px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
