@@ -34,7 +34,7 @@
     label
       span(ng-bind="parameter.name")
     .dropdown
-      a.btn.btn-sm.btn-default.dropdown-toggle(data-toggle="dropdown")
+      a.btn.btn-sm.btn-link.dropdown-toggle(data-toggle="dropdown")
         span(ng-bind="model[parameter.name] === undefined ? 'Choose...' : answerLabel || model[parameter.name]")
         i.fa.fa-right.fa-caret-down
       ul.dropdown-menu
