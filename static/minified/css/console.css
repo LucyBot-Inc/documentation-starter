@@ -9487,10 +9487,10 @@ span.pull-right {
   background-color: #333;
 }
 
-.sidebar ul.nav > li.scrolled-parent > a:hover,
-.sidebar ul.nav > li.scrolled-item > a:hover,
-.sidebar ul.nav > li.scrolled-parent,
-.sidebar ul.nav > li.scrolled-item {
+.sidebar ul > li.scrolled-parent > a:hover,
+.sidebar ul > li.scrolled-item > a:hover,
+.sidebar ul > li.scrolled-parent,
+.sidebar ul > li.scrolled-item {
   background-color: #111;
 }
 
@@ -9503,11 +9503,6 @@ span.pull-right {
 .sidebar ul > li > ul > li.scrolled-item > a:hover,
 .sidebar ul > li > ul > li.scrolled-item {
   background-color: #333;
-}
-
-.sidebar ul.nav > ul > li a:hover,
-.sidebar ul.nav > li a:hover {
-  background-color: #444;
 }
 
 .sidebar a {
