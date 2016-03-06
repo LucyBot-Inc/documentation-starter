@@ -1,5 +1,6 @@
 .parameter-input(ng-controller="Parameter" ng-if="!parameter.showCondition || answers[parameter.showCondition.name] === parameter.showCondition.value")
-  a.btn.btn-link(ng-show="isFirstParameterOfGroup()" ng-click="$parent.$parent.$parent.activeGroup = groupName")
+  a.btn.btn-link(ng-show="isFirstParameterOfGroup()"
+                 ng-click="$parent.$parent.$parent.activeGroup = (activeGroup === groupName ? null : groupName)")
     i.fa.fa-left(ng-class="{'fa-plus-square-o': activeGroup !== groupName, 'fa-minus-square-o': activeGroup === groupName}")
     span(ng-bind="groupName")
   div(ng-show="!groupName || groupName === activeGroup")
