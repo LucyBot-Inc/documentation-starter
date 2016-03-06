@@ -74,7 +74,7 @@ App.controller('Docs', function($scope, $location) {
   $scope.$watch('menuItems.active', function() {
     var active = ($scope.menuItems || []).active;
     if (!active || !active.method) return;
-    if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method + '/' + encodeURIComponent(active.title));
+    if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method + active.title);
   })
 
   $scope.routesFiltered = $scope.routes;
