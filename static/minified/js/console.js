@@ -16714,9 +16714,9 @@ App.controller('Portal', function($scope, $location, spec) {
   }
   $scope.getRouteFromLocation = function() {
     var loc = $location.path();
-    var match = loc.match(/^\/\w+\/(\w+)\/([^\/]*)/);
+    var match = loc.match(/^\/\w+\/(\w+)(\/.*)$/);
     if (!match) return;
-    return {method: match[1], path: decodeURIComponent(match[2])};
+    return {method: match[1].toLowerCase(), path: match[2]};
   }
   $scope.stripHtml = function(str) {
     if (!str) return str;
@@ -16858,7 +16858,7 @@ App.controller('Portal', function($scope, $location, spec) {
       var loc = '/Console';
       if (route) {
         $('#Console').scope().setActiveRoute(route);
-        loc += '/' + route.method + '/' + encodeURIComponent(route.path);
+        loc += '/' + route.method.toUpperCase() + route.path;
       }
       if (!promptedOAuth && $scope.startOAuth) {
         promptedOAuth = true;
@@ -16871,7 +16871,7 @@ App.controller('Portal', function($scope, $location, spec) {
       var loc = '/Documentation';
       if (route) {
         $('#Docs').scope().query = '';
-        loc += '/' + route.method + '/' + encodeURIComponent(route.path);
+        loc += '/' + route.method.toUpperCase() + route.path;
         setTimeout(function() {
           var idx = $scope.routes.indexOf(route);
           $('#Docs').scope().initMenu();
@@ -16977,7 +16977,7 @@ App.controller('Docs', function($scope, $location) {
   $scope.$watch('menuItems.active', function() {
     var active = ($scope.menuItems || []).active;
     if (!active || !active.method) return;
-    if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method + '/' + encodeURIComponent(active.title));
+    if ($scope.isActive('Documentation')) $location.path('/Documentation/' + active.method.toUpperCase() + active.title);
   })
 
   $scope.routesFiltered = $scope.routes;
@@ -17212,7 +17212,7 @@ App.controller('Console', function($scope, $location) {
 
   $scope.setActiveRoute = function(route) {
     $scope.answers = {}
-    if ($scope.isActive('Console')) $location.path('/Console/' + route.method + '/' + encodeURIComponent(route.path));
+    if ($scope.isActive('Console')) $location.path('/Console/' + route.method.toUpperCase() + route.path);
     route.operation.parameters.forEach(function(parameter) {
       if (parameter['x-consoleDefault']) {
         $scope.answers[parameter.name] = parameter['x-consoleDefault'];
