@@ -127,3 +127,24 @@ For the /users endpoint, we only get an array of user IDs. In order to display t
 Contributions are welcome and encouraged. We'll try to respond to Pull Requests within 24 hours.
 
 See Issues for some things that need to get done.
+
+### Development Mode
+To work with a local copy:
+```bash
+git clone https://github.com/lucybot/lucy-console && cd lucy-console && npm link && npm install
+cd /path/to/your/project
+npm link lucy-console
+```
+
+In your project, you can specify
+```js
+var apiConsole = new LucyConsole({
+  swagger: SWAGGER,
+  development: true,
+})
+```
+
+This will cause console to use the raw assets in the ./static/ directory.  To regenerate minified assets, run
+```js
+node asset-manager.js
+```
