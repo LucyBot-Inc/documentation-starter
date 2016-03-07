@@ -198,6 +198,7 @@ App.controller('Route', function($scope) {
 App.controller('EditCode', function($scope) {})
 
 App.controller('Schema', function($scope) {
+  $scope.showing = 'schema';
   $scope.schemaExample = $scope.printSchema($scope.schema);
   var removeView = function(key, val) {
     if (key === 'x-lucy/view') return undefined;

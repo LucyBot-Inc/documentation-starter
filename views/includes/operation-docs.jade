@@ -1,3 +1,16 @@
+mixin schema-display
+  .btn-group.btn-group-sm
+    a.btn.btn-link(ng-click="showing = 'schema'") Schema
+    a.btn.btn-link(ng-click="showing = 'example'") Example
+  div(ng-show="showing === 'schema'")
+    json-schema-view(schema="schema" open="2")
+  div(ng-show="showing === 'example'")
+    div(ng-if="schemaExample.length < MAX_HIGHLIGHT_LEN"
+        hljs source="schemaExample")
+    div(ng-if="schemaExample.length >= MAX_HIGHLIGHT_LEN")
+      pre
+        code {{ schemaExample }}
+
 .col-xs-12
   h3.text-regular
     span
@@ -41,7 +54,7 @@ div(ng-if="expanded")
         p
           .request-schema.hide-code(ng-show="parameter.schema"
                                     ng-controller="Schema")
-            +schema-example
+            +schema-display
           div(ng-show="parameter.collectionFormat") {{ getCollectionFormatMessage() }}
           div(ng-show="parameter.enum") Allowed values are:
             .enum-list
@@ -57,5 +70,5 @@ div(ng-if="expanded")
       .response-schema.hide-code(
             ng-controller="Schema"
             ng-show="response.schema")
-        +schema-example
+        +schema-display
 

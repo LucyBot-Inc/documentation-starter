@@ -224,3 +224,9 @@ span[data-verb="delete"] {
   background-color: #27557d;
   padding: 10px;
 }
+
+.json-schema-view.collapsed .toggle-handle:after,
+json-schema-view.collapsed .toggle-handle:after {
+  content: "▶";
+}
+

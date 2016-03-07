@@ -1,12 +1,5 @@
 include ./mixins/sidebar.jade
 
-mixin schema-example
-  div(ng-if="schemaExample.length < MAX_HIGHLIGHT_LEN"
-      hljs source="schemaExample")
-  div(ng-if="schemaExample.length >= MAX_HIGHLIGHT_LEN")
-    pre
-      code {{ schemaExample }}
-
 .row.docs-row
   .hidden-xs.col-sm-3.sidebar-col
     +sidebar(false)

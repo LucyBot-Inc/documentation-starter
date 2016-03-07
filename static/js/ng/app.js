@@ -1,4 +1,4 @@
-var App = angular.module('App', ['hc.marked', 'zeroclipboard', 'hljs', 'xeditable', 'ui.codemirror', 'ngRoute'])
+var App = angular.module('App', ['hc.marked', 'zeroclipboard', 'hljs', 'xeditable', 'ui.codemirror', 'ngRoute', 'mohsen1.json-schema-view'])
 App.run(function(editableOptions) {
   editableOptions.buttons = 'no';
   editableOptions.theme = 'bs3';
