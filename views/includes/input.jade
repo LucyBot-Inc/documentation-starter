@@ -1,11 +1,11 @@
 .parameter-input(
       ng-controller="Parameter"
       ng-if="!parameter.showCondition || parameter.showCondition.value.indexOf(answers[parameter.showCondition.name]) !== -1")
-  a.btn.btn-link(ng-show="isFirstParameterOfGroup()"
+  a.btn.btn-link(ng-show="isFirstParameterOfGroup() && (!parentGroup || activeGroup === parentGroup)"
                  ng-click="$parent.$parent.$parent.activeGroup = (activeGroup === groupName ? null : groupName)")
     i.fa.fa-left(ng-class="{'fa-plus-square-o': activeGroup !== groupName, 'fa-minus-square-o': activeGroup === groupName}")
     span(ng-bind="groupName")
-  div(ng-show="!groupName || groupName === activeGroup")
+  div(ng-show="!groupName || activeGroup.indexOf(groupName) === 0")
     div(ng-if="inputType === 'body'" ng-controller="BodyInput")
       label JSON Body
       .alert.alert-danger(ng-if="bodyParseError") {{ bodyParseError }}

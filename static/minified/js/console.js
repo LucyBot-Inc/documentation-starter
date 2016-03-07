@@ -17716,8 +17716,13 @@ App.controller('Parameter', function($scope) {
   } else if (type === 'number' || type === 'integer') {
     $scope.inputType = 'number';
   }
-  var groupMatch = $scope.parameter.name.match(/^(\w+)\[/);
-  if (groupMatch) $scope.groupName = groupMatch[1];
+  var groupRegex = /^(.*)\[\w+\]$/;
+  var groupMatch = $scope.parameter.name.match(groupRegex);
+  if (groupMatch) {
+    $scope.groupName = groupMatch[1];
+    groupMatch = $scope.groupName.match(groupRegex);
+    if (groupMatch) $scope.parentGroup = groupMatch[1];
+  }
 
   $scope.isFirstParameterOfGroup = function() {
     if (!$scope.groupName) return false;
