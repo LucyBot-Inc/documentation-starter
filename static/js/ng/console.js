@@ -25,7 +25,7 @@ App.controller('Console', function($scope, $location) {
   }
 
   $scope.setActiveRoute = function(route) {
-    $scope.answers = {}
+    $scope.answers = JSON.parse(JSON.stringify(window.DEFAULT_ANSWERS || {}))
     if ($scope.isActive('Console')) $location.path('/Console/' + route.method.toUpperCase() + route.path);
     route.operation.parameters.forEach(function(parameter) {
       if (parameter['x-consoleDefault']) {

@@ -44,8 +44,8 @@ module.exports = function() {
     route.responses['200'] = route.responses['200'] || {};
 
     var viewName = (req.body.method + req.body.path + '200').replace(/\W/g, '');
-    buildOpts.views[viewName] = {};
-    buildOpts.views[viewName].all = route.responses['200']['x-lucy/view'] || '';
+    buildOpts.views.setup = {all: req.swagger['x-lucy/viewSetup'] || ''};
+    buildOpts.views[viewName] = {all: route.responses['200']['x-lucy/view'] || ''};
     buildOpts.main.view = viewName;
     buildOpts.main.data = {
       action: (route.operationId || req.body.method + req.body.path).replace(/\W/g, ''),
