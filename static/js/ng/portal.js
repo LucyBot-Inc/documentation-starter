@@ -135,6 +135,7 @@ App.controller('Portal', function($scope, $location, spec) {
     }
     var addBaseDefs = function(def, bases) {
       bases = bases || def.allOf || [];
+      def.properties = def.properties || {};
       bases.forEach(function(base) {
         for (var propName in base.properties) {
           def.properties[propName] = base.properties[propName];
