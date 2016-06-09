@@ -2,7 +2,7 @@
   $scope.isActive = function(name) {
     var path = window.location.pathname;
     path = path.substring(path.indexOf('/'));
-    return path.indexOf(name) !== -1;
+    return path.lastIndexOf(name) !== -1;
   }
 })
 </script><style>body {
