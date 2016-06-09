@@ -1,10 +1,11 @@
 # LucyBot API Console
 
-This is the open-source version of LucyBot's API Console.  It utilizes the **OpenAPI** specification
+Serverless documentation for your API
+
+We utilize [OpenAPI](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 (formerly Swagger) to generate both static documentation and an interactive API console
 
-
-If you use another type of API Specification, such as **RAML**, **WADL**, or **API Blueprint**,
+If you use another type of API specification, such as **RAML**, **WADL**, or **API Blueprint**,
 you can use [api-spec-converter](https://github.com/lucybot/api-spec-converter) to generate an OpenAPI document.
 
 ## Demo
