@@ -1,6 +1,6 @@
 # LucyBot API Console
 
-**Serverless documentation for your API**
+**Interactive documentation for your API**
 
 We utilize [OpenAPI](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 (formerly **Swagger**) to generate both static documentation and an interactive API console
@@ -31,9 +31,9 @@ A commercial version of the LucyBot console is also available for a one-time lic
 Additional features include:
 * Sample code generation
 * Recipes (step-by-step tutorials for complex workflows)
+* Embeddable UI components
 * Simple customization and branding
 * Custom authentication schemes
-* Embeddable UI components
 * Support via phone and e-mail
 
 Please contact sales@lucybot.com for more information
