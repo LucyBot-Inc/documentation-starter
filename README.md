@@ -1,7 +1,17 @@
 # LucyBot API Console
 
-This is the open-source version of LucyBot's API Console.  It utilizes the OpenAPI specification
+This is the open-source version of LucyBot's API Console.  It utilizes the **OpenAPI** specification
 (formerly Swagger) to generate both static documentation and an interactive API console
+
+
+If you use another type of API Specification, such as **RAML**, **WADL**, or **API Blueprint**,
+you can use [api-spec-converter](https://github.com/lucybot/api-spec-converter) to generate an OpenAPI document.
+
+## Demo
+You can see the console in action for over 250 different APIs at [AnyAPI](https://any-api.com).
+
+You can also see the [Hacker News example](http://lucybot.github.io/lucy-console/console.html#/getStories)
+contained in this repository
 
 ## Usage
 Simply clone this repository, and replace `swagger.json` with your Swagger file.
