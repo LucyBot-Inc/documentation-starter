@@ -41,7 +41,7 @@ v1 will continue to exist on the master branch, and we will continue responding
 to bugs and pull requests. However, all active development will take place in
 the commercial repository, with some features propagating down into this branch.
 
-We encourage all existing users to migrate to the static-site branch or consider
+We encourage all existing users to migrate to the `static-site` branch or consider
 purchasing a commercial license.
 
 ## Contributing
