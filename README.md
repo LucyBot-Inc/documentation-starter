@@ -1,6 +1,6 @@
 # LucyBot API Console
 
-Serverless documentation for your API
+**Serverless documentation for your API**
 
 We utilize [OpenAPI](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 (formerly **Swagger**) to generate both static documentation and an interactive API console
