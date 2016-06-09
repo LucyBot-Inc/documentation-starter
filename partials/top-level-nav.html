@@ -1,6 +1,8 @@
 <script>App.controller('TopLevelNav', function($scope, $location) {
   $scope.isActive = function(name) {
-    return window.location.pathname.indexOf(name) !== -1;
+    var path = window.location.pathname;
+    path = path.substring(path.indexOf('/'));
+    return path.indexOf(name) !== -1;
   }
 })
 </script><style>body {
