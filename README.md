@@ -27,6 +27,7 @@ Additional features include:
 * Recipes (step-by-step tutorials for complex workflows)
 * Simple customization and branding
 * Custom authentication schemes
+* Embeddable UI components
 * Support via phone and e-mail
 
 Please contact sales@lucybot.com for more information
