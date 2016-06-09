@@ -12,8 +12,8 @@ tracker.track('load', {path: window.location.pathname})
 </script></head><body ng-app="App"><div id="Body" ng-controller="Body"><script>App.controller('TopLevelNav', function($scope, $location) {
   $scope.isActive = function(name) {
     var path = window.location.pathname;
-    path = path.substring(path.indexOf('/'));
-    return path.lastIndexOf(name) !== -1;
+    path = path.substring(path.lastIndexOf('/'));
+    return path.indexOf(name) !== -1;
   }
 })
 </script><style>body {
