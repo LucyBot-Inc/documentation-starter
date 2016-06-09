@@ -22,7 +22,6 @@ If you work on the `gh-pages` branch of your fork, you should be able to see it 
 
 `https://your-username.github.io/lucy-console`
 
-
 You can also add additional styles by editing `styles.css`, or replacing `minified/css/bootstrap.css` with a custom Bootstrap theme.
 
 ## Commercial Version
