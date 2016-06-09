@@ -15,7 +15,12 @@ You can also see the [Hacker News example](http://lucybot.github.io/lucy-console
 contained in this repository.
 
 ## Usage
-Simply clone this repository, and replace `swagger.json` with your Swagger file.
+Simply clone this repository, and replace `swagger.json` with your Swagger file. You can then
+serve the site statically using Apache, NodeJS, or whatever else.
+
+If you work on the `gh-pages` branch of your fork, you should be able to see it running at
+https://your-username.github.io/lucy-console
+
 
 You can also add additional styles by editing `styles.css`.
 
