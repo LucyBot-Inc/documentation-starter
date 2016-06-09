@@ -1,0 +1,6 @@
+#NavbarTitle span {
+  display: none;
+}
+#NavbarTitle:after {
+  content: "Hacker News API";
+}
