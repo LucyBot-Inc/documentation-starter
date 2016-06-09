@@ -10,8 +10,8 @@ you can use [api-spec-converter](https://github.com/lucybot/api-spec-converter) 
 ## Demo
 You can see the console in action for over 250 different APIs at [AnyAPI](https://any-api.com).
 
-You can also see the [Hacker News example](http://lucybot.github.io/lucy-console/console.html#/getStories)
-contained in this repository
+You can also see the [Hacker News example](http://lucybot.github.io/lucy-console)
+contained in this repository.
 
 ## Usage
 Simply clone this repository, and replace `swagger.json` with your Swagger file.
