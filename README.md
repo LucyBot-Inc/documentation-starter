@@ -18,11 +18,30 @@ contained in this repository.
 Simply clone this repository, and replace `swagger.json` with your Swagger file. You can then
 serve the site statically using Apache, NodeJS, or whatever else.
 
+** To change the title ** of the console, edit `styles.css`.
+
 If you work on the `gh-pages` branch of your fork, you should be able to see it running at
 
 `https://your-username.github.io/lucy-console`
 
-You can also add additional styles by editing `styles.css`, or replacing `minified/css/bootstrap.css` with a custom Bootstrap theme.
+You can also add additional styles or by editing `styles.css`, or replacing `minified/css/bootstrap.css` with a custom Bootstrap theme.
+
+### Serving for Multiple APIs
+You can serve these assets for several different APIs by introducing a server-side component,
+e.g. NodeJS with Express:
+
+```js
+var path = require('path');
+var app = require('express')();
+app.get('/:api_name/swagger.json', function(req, res) {
+  res.json(require('./specs/' + req.params.api_name + '/swagger.json'));
+});
+app.get('/:api_name/:filename', function(req, res) {
+  filename = path.join('/', req.params.filename);
+  filename = path.join(__dirname, filename);
+  res.sendFile(filename);
+});
+```
 
 ## Commercial Version
 
