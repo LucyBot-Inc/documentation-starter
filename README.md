@@ -32,15 +32,12 @@ e.g. NodeJS with Express:
 
 ```js
 var path = require('path');
-var app = require('express')();
+var express = require('express');
+var app = express();
 app.get('/:api_name/swagger.json', function(req, res) {
-  res.json(require('./specs/' + req.params.api_name + '/swagger.json'));
+  res.json(require('./specs/' + req.params.api_name + '_swagger.json'));
 });
-app.get('/:api_name/:filename', function(req, res) {
-  filename = path.join('/', req.params.filename);
-  filename = path.join(__dirname, filename);
-  res.sendFile(filename);
-});
+app.use('/:api_name', express.static(__dirname));
 ```
 
 ## Commercial Version
