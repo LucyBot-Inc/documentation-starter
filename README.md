@@ -10,6 +10,14 @@ You can see the console in action for over 150 different APIs at [AnyAPI](https:
 There is also a [small gallery](https://lucybot.com/console_demo) of consoles using custom styles.
 
 ## Installation
+
+### **NEW** Serverless Setup
+Going forward, active development will occur on the
+[static-site branch](https://github.com/lucybot/lucy-console/tree/static-site).
+
+Please follow the instructions there to install.
+
+### NodeJS Server (Legacy)
 The API Console can be installed as a NodeJS package, which will expose an Express router that you can attatch to any existing Express server:
 
 ```bash
