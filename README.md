@@ -50,6 +50,7 @@ Additional features include:
 * Embeddable UI components
 * Simple customization and branding
 * Custom authentication schemes
+* API galleries and discovery
 * Support via phone and e-mail
 
 Please contact sales@lucybot.com for more information
