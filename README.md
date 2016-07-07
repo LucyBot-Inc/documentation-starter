@@ -1,6 +1,6 @@
 # LucyBot API Console
 
-**Serverless documentation for your API**
+**Interactive documentation for your API**
 
 We utilize [OpenAPI](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 (formerly **Swagger**) to generate both static documentation and an interactive API console
@@ -15,9 +15,30 @@ You can also see the [Hacker News example](http://lucybot.github.io/lucy-console
 contained in this repository.
 
 ## Usage
-Simply clone this repository, and replace `swagger.json` with your Swagger file.
+Simply clone this repository, and replace `swagger.json` with your Swagger file. You can then
+serve the site statically using Apache, NodeJS, or whatever else.
 
-You can also add additional styles by editing `styles.css`.
+**To change the title** of the console, edit `styles.css`.
+
+If you work on the `gh-pages` branch of your fork, you should be able to see it running at
+
+`https://your-username.github.io/lucy-console`
+
+You can also add additional styles or by editing `styles.css`, or replacing `minified/css/bootstrap.css` with a custom Bootstrap theme.
+
+### Serving for Multiple APIs
+You can serve these assets for several different APIs by introducing a server-side component,
+e.g. NodeJS with Express:
+
+```js
+var path = require('path');
+var express = require('express');
+var app = express();
+app.get('/:api_name/swagger.json', function(req, res) {
+  res.json(require('./specs/' + req.params.api_name + '_swagger.json'));
+});
+app.use('/:api_name', express.static(__dirname));
+```
 
 ## Commercial Version
 
@@ -26,9 +47,10 @@ A commercial version of the LucyBot console is also available for a one-time lic
 Additional features include:
 * Sample code generation
 * Recipes (step-by-step tutorials for complex workflows)
+* Embeddable UI components
 * Simple customization and branding
 * Custom authentication schemes
-* Embeddable UI components
+* API galleries and discovery
 * Support via phone and e-mail
 
 Please contact sales@lucybot.com for more information
