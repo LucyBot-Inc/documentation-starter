@@ -24,8 +24,6 @@ If you work on the `gh-pages` branch of your fork, you should be able to see it 
 
 `https://your-username.github.io/lucy-console`
 
-You can also add additional styles or by editing `styles.css`, or replacing `minified/css/bootstrap.css` with a custom Bootstrap theme.
-
 ### Serving for Multiple APIs
 You can serve these assets for several different APIs by introducing a server-side component,
 e.g. NodeJS with Express:
