@@ -27,12 +27,15 @@ If you work on the `gh-pages` branch of your fork, you should be able to see it 
 A commercial version of the LucyBot console is also available for a one-time licensing fee.
 
 Additional features include:
+* Simple customization and branding
+* Inject custom CSS and JavaScript
+* Include unlimited Markdown/HTML sections
+* Customized navigation bars
+* Custom authentication schemes
+* API galleries and discovery
 * Sample code generation
 * Recipes (step-by-step tutorials for complex workflows)
 * Embeddable UI components
-* Simple customization and branding
-* Custom authentication schemes
-* API galleries and discovery
 * Support via phone and e-mail
 
 Please contact sales@lucybot.com for more information
