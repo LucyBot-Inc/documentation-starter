@@ -18,8 +18,6 @@ contained in this repository.
 Simply clone this repository, and replace `swagger.json` with your Swagger file. You can then
 serve the site statically using Apache, NodeJS, or whatever else.
 
-**To change the title** of the console, edit `styles.css`.
-
 If you work on the `gh-pages` branch of your fork, you should be able to see it running at
 
 `https://your-username.github.io/lucy-console`
