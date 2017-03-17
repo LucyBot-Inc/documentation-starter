@@ -1,97 +1,52 @@
-# lucy-console
+# LucyBot Starter API Console
+This is the default build for [LucyBot's API Documentation](http://lucybot.com).
+It can be used in non-commercial projects, or for demo purposes.
 
-This respository contains the LucyBot API Console UI. It uses Swagger 2.0 to generate documentation and a console for your API.
+Check out the [Pet Store demo](http://demo.lucybot.com)
 
-## Sample Usage
-```js
-var FS = require('fs');
-var App = require('express')();
-var LucyConsole = require('lucy-console');
+Commercial licenses and additional features are available at [lucybot.com](http://lucybot.com)
 
-var SWAGGER_FILE = __dirname + '/node_modules/lucy-console/examples/hacker_news.json';
-var hackerNewsConsole = new LucyConsole({
-  swagger: JSON.parse(FS.readFileSync(SWAGGER_FILE, 'utf8')),
-});
+## Usage
+Simply fork this repository and replace `openapi.json` with your
+[OpenAPI specification](https://www.openapis.org/).
 
-App.get('/', function(req, res) {
-  res.redirect('/console');
-});
+> Have RAML, WADL, API Blueprint, or I/O Docs?
+> Check out [api-spec-converter](https://github.com/lucybot/api-spec-converter)
 
-App.use(hackerNewsConsole.router);
+The easiest way to serve the documentation is with GitHub pages: in your fork,
+visit the Settings page, and choose "master branch" as the source in the
+GitHub Pages section. You can also set a custom domain there.
 
-App.listen(process.env.PORT || 3000);
-```
+You can also serve this directory with Apache, NodeJS, PHP, etc.
 
-## Options
-You can initialize a LucyConsole object with a few different options:
-```js
-var LucyConsole = require('lucy-console');
-var myConsole = new LucyConsole({
-  swagger: swagger, // A JS object representing your Swagger specification
-  basePath: '/api', // The path on which the router will be mounted
-  oauth_callback: 'https://example.com/api/html/oauth_callback.html', // The URL that the user will be redirected to after authorization. A default callback page is provided at /{basePath}/html/oauth_callback.html
-  client_ids: { // A mapping from hostname to OAuth2 client IDs
-    'example.com': 'abcd1234'
-  },
-  cache: 1000 * 60 * 60, // The number of ms to cache static assets like JS and CSS
-});
-App.use('/api', myConsole.router);
-```
+## Customization
+### Title and Description
+The API title and description are controlled by
+the `info` field in `openapi.json`.  You can use
+[Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+in the description.
 
-## Visual Overlays
-In addition to showing the raw output of your API, the LucyBot Console UI allows you to display neatly-formatted output using snippets of HTML.
+### Themes
+You can use your own Bootstrap theme to customize colors, fonts, sizes, and more.
+Just replace `dist/bootstrap.css` with your own bootstrap.css
 
-Views are snippets of HTML for displaying responses from the API. Any valid HTML can be used here, including ```<script>``` and ```<style>``` tags.  You can attach HTML to any endpoint's response, or to a definition's schema, by adding the field 'x-lucy/view'.
+You can generate a bootstrap.css file using:
+* [Strapping!](http://bobby-brennan.github.io/strapping)
+* [Bootstrap Live Customizer](http://bootstrap-live-customizer.com/)
 
-LucyBot also provides some helper tags:
-* Use ```{{ variable.name }}``` to print the value of a given variable
-* Use ```<lucy for="thing" in="array">``` to iterate over an array
-* Use ```<lucy if="condition">``` to add conditionals
-* Use ```<lucy include="ViewName">``` to include other views
+### More
+The full commercial version offers several additional features:
+* Additional Markdown/HTML sections
+* Custom navbar and footer
+* Custom homepage
+* Event tracking
+* SEO (`<meta>` and `<title>` tags, `sitemap.xml`)
+* User authentication
+* Galleries for multiple APIs
 
-You have access to two global variables inside of your views:
-* ```result``` which is the API's response (but can be overriden via ```<lucy include>```)
-* ```answers``` which contains the user's responses from inside the recipe
+For a full list of features available see [lucybot.com](http://lucybot.com)
 
-```<lucy include>``` can operate in two different ways:
+## License
+[Creative Commons 4.0 - Non-commercial](https://creativecommons.org/licenses/by-nc/4.0/)
 
-1. It can simply copy the HTML of the included view
-
-2. It can make a new call to the API, and use the included view as a template for displaying the result.
-
-Case (1) is the default behavior. In addition, you can use ```<lucy include="ViewName" resultvar="foo">``` to use variable "foo" in place of API output.
-
-Case (2) is useful if you need more data from the API. You can specify ```action```, which is the name of the action to use, and ```inputvars``` which is a mapping from variable names to API inputs.
-
-### Example
-Let's consider an API with two endpoints:
-* ```GET /users```, which returns an array of user IDs
-* ```GET /users/{id}```, which returns the details for a given user
-
-First let's tell LucyBot how to display the details for a given User by setting
-``` swagger.definitions.User['x-lucy/view'] ```
-
-```html
-<h2>{{ result.name }}</h2>
-<p>{{ result.about }}</p>
-```
-
-Next let's tell LucyBot to use that view for the /users/{id} endpoint by setting
-``` swagger.paths['/users/{id}'].responses['200']['x-lucy/view'] ```
-
-```html
-<lucy include="User"></lucy>
-```
-
-For the /users endpoint, we only get an array of user IDs. In order to display their details, we'll need to tell LucyBot to call the /users/{id} endpoint. For this example, we assume GET /users/{id} has its operationId set to "getUserById". To show the details for the first 10 users, set
-``` swagger.paths['/users'].responses['200']['x-lucy/view'] ```
-
-```html
-<lucy for="userID" in="result">
-  <lucy if="index < 10">
-    <lucy include="User" action="getUserById" inputvars="{id: userID}">
-    </lucy>
-  </lucy>
-</lucy>
-```
-
+For a commercial license, [contact us](http://lucybot.com/#Contact)
