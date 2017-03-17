@@ -1,7 +1,0 @@
-.col-xs-12
-  h4.text-regular
-    i.fa.hide-button(ng-class="{'fa-plus-square-o': hidden, 'fa-minus-square-o': !hidden}" ng-click="hidden = !hidden")
-    span Parameters
-  #ParameterInputs(ng-show="!hidden")
-    div(ng-repeat="parameter in activeRoute.operation.parameters")
-      include ./input.jade
