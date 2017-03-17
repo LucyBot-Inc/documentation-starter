@@ -1,5 +1,7 @@
 # LucyBot API Console
 
+> DEPRECATED: Please visit [LucyBot-Inc/documentation-starter](https://github.com/LucyBot-Inc/documentation-starter) for the latest version
+
 **Interactive documentation for your API**
 
 We utilize [OpenAPI](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
