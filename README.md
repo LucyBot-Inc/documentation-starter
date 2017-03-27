@@ -36,7 +36,7 @@ The easiest way to serve the documentation publicly is with GitHub pages:
 in your fork, visit the Settings page, and choose "master branch" as the source in the
 GitHub Pages section. You can also set a custom domain there.
 
-You can also serve this directory with Apache, NodeJS, PHP, etc.
+You can also serve this directory with Apache, NodeJS Express, etc.
 
 ## Customization
 ### Title and Description
