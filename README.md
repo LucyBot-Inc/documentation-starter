@@ -10,11 +10,30 @@ Commercial licenses and additional features are available at [lucybot.com](http:
 Simply fork this repository and replace `openapi.json` with your
 [OpenAPI specification](https://www.openapis.org/).
 
+```bash
+git clone https://github.com/LucyBot-Inc/documentation-starter
+cp /path/to/my/openapi.json documentation-starter/openapi.json
+```
+
 > Have RAML, WADL, API Blueprint, or I/O Docs?
 > Check out [api-spec-converter](https://github.com/lucybot/api-spec-converter)
 
-The easiest way to serve the documentation is with GitHub pages: in your fork,
-visit the Settings page, and choose "master branch" as the source in the
+## Serving
+You can serve the website with any static HTTP server.
+
+e.g. with [http-server](https://github.com/indexzero/http-server)
+```
+npm install -g http-server
+http-server ./documentation-starter
+```
+
+or with PHP:
+```
+php -S 0.0.0.0:80 -t ./documentation-starter
+```
+
+The easiest way to serve the documentation publicly is with GitHub pages:
+in your fork, visit the Settings page, and choose "master branch" as the source in the
 GitHub Pages section. You can also set a custom domain there.
 
 You can also serve this directory with Apache, NodeJS, PHP, etc.
