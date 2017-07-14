@@ -2,6 +2,7 @@
   "name": "lucybot-documentation-starter",
   "version": "1.0.0",
   "description": "Customizable Documentation for REST APIs",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
